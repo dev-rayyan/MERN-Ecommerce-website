@@ -15,6 +15,7 @@ import UserOptions from "./component/layout/Header/UserOptions.js";
 import { useSelector } from "react-redux";
 import Profile from "./component/User/Profile.js";
 import ProtectedRoute from "./component/Route/ProtectedRoute";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
 	const { isAuthenticated, user } = useSelector((state) => state.user);

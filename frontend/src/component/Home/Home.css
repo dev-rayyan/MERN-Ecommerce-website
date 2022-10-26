@@ -1,16 +1,17 @@
 .banner {
 	/* background-image: url("../../images/cover.jfif"); */
-	background-image: linear-gradient(to right, #635dc0, #3027ae);
+	/* background-image: linear-gradient(to right, #635dc0, #3027ae); */
+	background: #fff;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	height: 100vmin;
+	height: 90vmin;
 	display: flex;
 	flex-direction: column;
 	text-align: center;
 	align-items: center;
 	justify-content: center;
-	color: white;
+	color: black;
 }
 
 .banner > h1 {
@@ -27,7 +28,7 @@
 	margin-bottom: 5vmax;
 	cursor: pointer;
 	background-color: white;
-	border: 1px solid white;
+	border: 1px solid black;
 	border-radius: 0;
 	padding: 1vmax;
 	transition: all 0.5s;
@@ -62,7 +63,7 @@
 	color: rgb(0, 0, 0, 0.7);
 }
 
-.container {
+.container1 {
 	display: flex;
 	margin: 2vmax auto;
 	width: 80vw;
