@@ -1,16 +1,5 @@
 import React, { Fragment } from "react";
-import { Helmet } from "react-helmet";
 import $ from "jquery";
-
-import { ReactNavbar } from "overlay-navbar";
-import {
-	Navbar,
-	Nav,
-	NavDropdown,
-	Form,
-	FormControl,
-	Button,
-} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../../../images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,11 +7,10 @@ import {
 	faTachometer,
 	faAddressBook,
 	faCalendar,
-	faClone,
 	faChartBar,
 	faCopy,
-	faUser,
 	faWarehouse,
+	faBars,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
@@ -65,8 +53,7 @@ const Header = () => {
 			test();
 		}, 500);
 	});
-	$(".navbar-toggler").click(function () {
-		$(".navbar-collapse").slideToggle(300);
+	$(".navbar-toggler").on("click", function () {
 		setTimeout(function () {
 			test();
 		});
@@ -78,7 +65,7 @@ const Header = () => {
 		var path = window.location.pathname.split("/").pop();
 
 		// Account for home page with empty path
-		if (path == "") {
+		if (path === "") {
 			path = "index.html";
 		}
 
@@ -89,60 +76,62 @@ const Header = () => {
 
 	return (
 		<Fragment>
-			<nav class="navbar navbar-expand-custom navbar-mainbg">
-				<a class="navbar-brand navbar-logo" href="#">
+			<nav className="navbar navbar-expand-custom navbar-mainbg">
+				<a className="navbar-brand navbar-logo" href="#">
 					<img src={logo} className="img-fluid logo" />
 				</a>
-				<button
-					class="navbar-toggler"
+				<div
+					className="navbar-toggler"
 					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarSupportedContent"
 					aria-controls="navbarSupportedContent"
 					aria-expanded="false"
 					aria-label="Toggle navigation"
 				>
-					<i class="fas fa-bars text-white"></i>
-				</button>
+					<FontAwesomeIcon icon={faBars} />
+				</div>
 				<div
-					class="collapse navbar-collapse justify-content-center"
+					className="collapse navbar-collapse justify-content-center"
 					id="navbarSupportedContent"
 				>
-					<ul class="navbar-nav ml-auto">
-						<div class="hori-selector">
-							<div class="left"></div>
-							<div class="right"></div>
+					<ul className="navbar-nav ml-auto">
+						<div className="hori-selector">
+							<div className="left"></div>
+							<div className="right"></div>
 						</div>
-						<li class="nav-item active">
-							<Link class="nav-link" to="/">
+						<li className="nav-item active">
+							<Link className="nav-link" to="/">
 								<FontAwesomeIcon icon={faTachometer} />
 								Dashboard
 							</Link>
 						</li>
-						<li class="nav-item">
-							<Link class="nav-link" to="/products">
+						<li className="nav-item">
+							<Link className="nav-link" to="/products">
 								<FontAwesomeIcon icon={faWarehouse} />
 								Products
 							</Link>
 						</li>
-						<li class="nav-item">
-							<Link class="nav-link" to="/account">
+						<li className="nav-item">
+							<Link className="nav-link" to="/account">
 								<FontAwesomeIcon icon={faAddressBook} />
 								Account
 							</Link>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);">
+						<li className="nav-item">
+							<a className="nav-link">
 								<FontAwesomeIcon icon={faCalendar} />
 								Calendar
 							</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);">
+						<li className="nav-item">
+							<a className="nav-link">
 								<FontAwesomeIcon icon={faChartBar} />
 								Charts
 							</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);">
+						<li className="nav-item">
+							<a className="nav-link">
 								<FontAwesomeIcon icon={faCopy} />
 								Documents
 							</a>
