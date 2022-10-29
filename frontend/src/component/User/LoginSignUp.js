@@ -13,6 +13,7 @@ const LoginSignUp = () => {
 	const dispatch = useDispatch();
 	const alert = useAlert();
 	const navigate = useNavigate();
+
 	const { error, loading, isAuthenticated } = useSelector(
 		(state) => state.user
 	);
