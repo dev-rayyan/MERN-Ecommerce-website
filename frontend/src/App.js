@@ -15,6 +15,9 @@ import UserOptions from "./component/layout/Header/UserOptions.js";
 import { useSelector } from "react-redux";
 import Profile from "./component/User/Profile.js";
 import UpdateProfile from "./component/User/UpdateProfile.js";
+import UpdatePassword from "./component/User/UpdatePassword.js";
+import ForgotPassowrd from "./component/User/ForgotPassowrd.js";
+import ResetPassword from "./component/User/ResetPassword.js";
 import ProtectedRoute from "./component/Route/ProtectedRoute";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
@@ -58,6 +61,21 @@ function App() {
 							<UpdateProfile />
 						</ProtectedRoute>
 					}
+				/>
+				<Route
+					exact
+					path="/password/update"
+					element={
+						<ProtectedRoute>
+							<UpdatePassword />
+						</ProtectedRoute>
+					}
+				/>
+				<Route exact path="/password/forgot" element={<ForgotPassowrd />} />
+				<Route
+					exact
+					path="/password/reset/:token"
+					element={<ResetPassword />}
 				/>
 				<Route exact path="/login" element={<LoginSignUp />} />
 			</Routes>
