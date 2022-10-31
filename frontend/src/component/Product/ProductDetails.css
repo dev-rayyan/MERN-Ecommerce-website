@@ -7,6 +7,10 @@
 	display: flex;
 }
 
+.ProductDetails > div > div {
+	width: 20vmax;
+}
+
 .ProductDetails > div {
 	width: 100%;
 	display: flex;
@@ -80,7 +84,7 @@
 .detailsBlock-3-1-1 > input {
 	border: none;
 	padding: 0.5vmax;
-	width: 1vmax;
+	width: 3vmax;
 	text-align: center;
 	outline: none;
 	font: 400 0.8vmax "Roboto";
