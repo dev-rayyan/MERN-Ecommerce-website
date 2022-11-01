@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState, useEffect } from "react";
 import Header from "./component/layout/Header/Header.js";
 import Footer from "./component/layout/Footer/Footer.js";
 import Home from "./component/Home/Home.js";
@@ -19,12 +20,29 @@ import UpdatePassword from "./component/User/UpdatePassword.js";
 import ForgotPassowrd from "./component/User/ForgotPassowrd.js";
 import ResetPassword from "./component/User/ResetPassword.js";
 import ProtectedRoute from "./component/Route/ProtectedRoute";
+import Cart from "./component/Cart/Cart.js";
+import Shipping from "./component/Cart/Shipping.js";
+import ConfirmOrder from "./component/Cart/ConfirmOrder.js";
+import Payment from "./component/Cart/Payment.js";
+import OrderSuccess from "./component/Cart/OrderSuccess.js";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
+import axios from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 function App() {
 	const { isAuthenticated, user } = useSelector((state) => state.user);
-	React.useEffect(() => {
+
+	const [stripeApiKey, setStripeApiKey] = useState("");
+
+	async function getSripteApiKey() {
+		const { data } = await axios.get("/api/v1/stripeapikey");
+
+		setStripeApiKey(data.stripeApiKey);
+	}
+
+	useEffect(() => {
 		WebFont.load({
 			google: {
 				families: ["Roboto", "Driod Sans", "Chilanka"],
@@ -32,6 +50,8 @@ function App() {
 		});
 
 		store.dispatch(loadUser());
+
+		getSripteApiKey();
 	}, []);
 
 	return (
@@ -78,6 +98,47 @@ function App() {
 					element={<ResetPassword />}
 				/>
 				<Route exact path="/login" element={<LoginSignUp />} />
+				<Route exact path="/cart" element={<Cart />} />
+				<Route
+					exact
+					path="/shipping"
+					element={
+						<ProtectedRoute>
+							<Shipping />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					exact
+					path="/order/confirm"
+					element={
+						<ProtectedRoute>
+							<ConfirmOrder />
+						</ProtectedRoute>
+					}
+				/>
+				{stripeApiKey && (
+					<Route
+						exact
+						path="/process/payment"
+						element={
+							<Elements stripe={loadStripe(stripeApiKey)}>
+								<ProtectedRoute>
+									<Payment />
+								</ProtectedRoute>
+							</Elements>
+						}
+					/>
+				)}
+				<Route
+					exact
+					path="/success"
+					element={
+						<ProtectedRoute>
+							<OrderSuccess />
+						</ProtectedRoute>
+					}
+				/>
 			</Routes>
 			<Footer />
 		</Router>

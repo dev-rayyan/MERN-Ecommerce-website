@@ -1,14 +1,22 @@
 import React, { Fragment, useState } from "react";
 import "./Header.css";
 import { SpeedDial, SpeedDialAction } from "@mui/material";
-import { Dashboard, ListAlt, ExitToApp, Person } from "@mui/icons-material";
+import {
+	Dashboard,
+	ListAlt,
+	ExitToApp,
+	Person,
+	ShoppingCart,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { logout } from "../../../actions/userAction.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Backdrop } from "@material-ui/core";
 
 const UserOptions = ({ user }) => {
+	const { cartItems } = useSelector((state) => state.cart);
+
 	const [open, setOpen] = useState(false);
 	const navigate = useNavigate();
 	const alert = useAlert();
@@ -17,6 +25,11 @@ const UserOptions = ({ user }) => {
 	const options = [
 		{ icon: <ListAlt />, name: "Orders", func: orders },
 		{ icon: <Person />, name: "Profile", func: account },
+		{
+			icon: <ShoppingCart />,
+			name: `Cart(${cartItems.length})`,
+			func: cart,
+		},
 		{ icon: <ExitToApp />, name: "Logout", func: logoutUser },
 	];
 
@@ -29,7 +42,7 @@ const UserOptions = ({ user }) => {
 	}
 
 	function dashboard() {
-		navigate("/dashboard");
+		navigate("/");
 	}
 
 	function orders() {
@@ -38,6 +51,10 @@ const UserOptions = ({ user }) => {
 
 	function account() {
 		navigate("/account");
+	}
+
+	function cart() {
+		navigate("/cart");
 	}
 
 	function logoutUser() {

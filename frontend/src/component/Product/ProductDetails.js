@@ -9,6 +9,7 @@ import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader";
 import MetaData from "../layout/MetaData";
 import { useAlert } from "react-alert";
+import { addItemsToCart } from "../../actions/cartAction";
 
 const ProductDetails = ({ match }) => {
 	const dispatch = useDispatch();
@@ -45,13 +46,18 @@ const ProductDetails = ({ match }) => {
 		setQuantity(qty);
 	};
 
+	const addToCartHandler = () => {
+		dispatch(addItemsToCart(id, quantity));
+		alert.success("Item Added To Cart");
+	};
+
 	useEffect(() => {
 		if (error) {
 			alert.error(error);
 			dispatch(clearErrors());
 		}
 		dispatch(getProductDetails(id));
-	}, [dispatch, id]);
+	}, [dispatch, id, error, alert]);
 
 	return (
 		<Fragment>
@@ -89,10 +95,10 @@ const ProductDetails = ({ match }) => {
 								<div className="detailsBlock-3-1">
 									<div className="detailsBlock-3-1-1">
 										<button onClick={decreaseQuantity}>-</button>
-										<input type="number" value={quantity} />
+										<input readOnly type="number" value={quantity} />
 										<button onClick={increaseQuantity}>+</button>
 									</div>
-									<button>Add to Cart</button>
+									<button onClick={addToCartHandler}>Add to Cart</button>
 								</div>
 
 								<p>
