@@ -25,6 +25,8 @@ import Shipping from "./component/Cart/Shipping.js";
 import ConfirmOrder from "./component/Cart/ConfirmOrder.js";
 import Payment from "./component/Cart/Payment.js";
 import OrderSuccess from "./component/Cart/OrderSuccess.js";
+import MyOrders from "./component/Order/MyOrders.js";
+import OrderDetails from "./component/Order/OrderDetails.js";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import axios from "axios";
@@ -136,6 +138,24 @@ function App() {
 					element={
 						<ProtectedRoute>
 							<OrderSuccess />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					exact
+					path="/orders"
+					element={
+						<ProtectedRoute>
+							<MyOrders />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					exact
+					path="/order/:id"
+					element={
+						<ProtectedRoute>
+							<OrderDetails />
 						</ProtectedRoute>
 					}
 				/>

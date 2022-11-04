@@ -17,7 +17,7 @@ import { CreditCard, Event, VpnKey } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { createOrder, clearErrors } from "../../actions/orderAction";
 
-const Payment = ({ history }) => {
+const Payment = () => {
 	const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
 
 	const dispatch = useDispatch();
