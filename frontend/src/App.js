@@ -27,6 +27,10 @@ import Payment from "./component/Cart/Payment.js";
 import OrderSuccess from "./component/Cart/OrderSuccess.js";
 import MyOrders from "./component/Order/MyOrders.js";
 import OrderDetails from "./component/Order/OrderDetails.js";
+import Dashboard from "./component/Admin/Dashboard.js";
+import ProductList from "./component/Admin/ProductList.js";
+import NewProduct from "./component/Admin/NewProduct.js";
+import UpdateProduct from "./component/Admin/UpdateProduct.js";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import axios from "axios";
@@ -156,6 +160,46 @@ function App() {
 					element={
 						<ProtectedRoute>
 							<OrderDetails />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/dashboard"
+					element={
+						<ProtectedRoute>
+							<Dashboard />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/products"
+					element={
+						<ProtectedRoute>
+							<ProductList />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/product"
+					element={
+						<ProtectedRoute>
+							<NewProduct />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/product/:id"
+					element={
+						<ProtectedRoute>
+							<UpdateProduct />
 						</ProtectedRoute>
 					}
 				/>

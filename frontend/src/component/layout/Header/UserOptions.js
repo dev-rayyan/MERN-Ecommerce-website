@@ -42,7 +42,7 @@ const UserOptions = ({ user }) => {
 	}
 
 	function dashboard() {
-		navigate("/");
+		navigate("/admin/dashboard");
 	}
 
 	function orders() {

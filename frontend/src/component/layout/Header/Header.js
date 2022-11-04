@@ -11,6 +11,7 @@ import {
 	faCopy,
 	faWarehouse,
 	faBars,
+	faHome,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
@@ -102,6 +103,12 @@ const Header = () => {
 						</div>
 						<li className="nav-item active">
 							<Link className="nav-link" to="/">
+								<FontAwesomeIcon icon={faHome} />
+								Home
+							</Link>
+						</li>
+						<li className="nav-item">
+							<Link className="nav-link" to="/admin/dashboard">
 								<FontAwesomeIcon icon={faTachometer} />
 								Dashboard
 							</Link>
