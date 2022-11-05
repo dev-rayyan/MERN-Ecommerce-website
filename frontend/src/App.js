@@ -31,6 +31,11 @@ import Dashboard from "./component/Admin/Dashboard.js";
 import ProductList from "./component/Admin/ProductList.js";
 import NewProduct from "./component/Admin/NewProduct.js";
 import UpdateProduct from "./component/Admin/UpdateProduct.js";
+import OrderList from "./component/Admin/OrderList.js";
+import ProcessOrder from "./component/Admin/ProcessOrder.js";
+import UsersList from "./component/Admin/UsersList.js";
+import UpdateUser from "./component/Admin/UpdateUser.js";
+import ProductReviews from "./component/Admin/ProductReviews.js";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import axios from "axios";
@@ -59,6 +64,8 @@ function App() {
 
 		getSripteApiKey();
 	}, []);
+
+	window.addEventListener("contextmenu", (e) => e.preventDefault());
 
 	return (
 		<Router>
@@ -200,6 +207,56 @@ function App() {
 					element={
 						<ProtectedRoute>
 							<UpdateProduct />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/orders"
+					element={
+						<ProtectedRoute>
+							<OrderList />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/order/:id"
+					element={
+						<ProtectedRoute>
+							<ProcessOrder />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/users"
+					element={
+						<ProtectedRoute>
+							<UsersList />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/user/:id"
+					element={
+						<ProtectedRoute>
+							<UpdateUser />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					isAdmin={true}
+					exact
+					path="/admin/reviews"
+					element={
+						<ProtectedRoute>
+							<ProductReviews />
 						</ProtectedRoute>
 					}
 				/>
