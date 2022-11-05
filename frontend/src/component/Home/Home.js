@@ -32,11 +32,11 @@ const Home = () => {
 
 					<div className="banner">
 						<p>Welcome to Ecommerce</p>
-						<div class="wrap">
-							<div class="clip-block">
-								<div class="clip-each clip-solid">
-									<div class="social-share-block">
-										<span class="social-each">
+						<div className="wrap">
+							<div className="clip-block">
+								<div className="clip-each clip-solid">
+									<div className="social-share-block">
+										<span className="social-each">
 											<strong>10</strong>
 										</span>{" "}
 										<span>&hearts;</span>
@@ -44,21 +44,21 @@ const Home = () => {
 								</div>
 							</div>
 
-							<div class="clip-block">
-								<a href="#container" class="clip-each clip-gradient">
-									<div class="clip-caption">Products</div>
+							<div className="clip-block">
+								<a href="#container" className="clip-each clip-gradient">
+									<div className="clip-caption">Products</div>
 								</a>
-								<Link to="/account" class="clip-each clip-border">
-									<div class="clip-caption">Accounts</div>
+								<Link to="/account" className="clip-each clip-border">
+									<div className="clip-caption">Accounts</div>
 								</Link>
 							</div>
 
-							<div class="clip-block">
-								<a href="#" class="clip-tagline">
+							<div className="clip-block">
+								<a href="#" className="clip-tagline">
 									Categories
 								</a>
 							</div>
-							<svg class="clip-svg">
+							<svg className="clip-svg">
 								<defs>
 									<clipPath id="hexagon-clip" clipPathUnits="objectBoundingBox">
 										<polygon points="0.25 0.05, 0.75 0.05, 1 0.5, 0.75 0.95, 0.25 0.95, 0 0.5" />
@@ -66,7 +66,7 @@ const Home = () => {
 								</defs>
 							</svg>
 
-							<svg class="clip-svg">
+							<svg className="clip-svg">
 								<defs>
 									<clipPath
 										id="triangle-clip"

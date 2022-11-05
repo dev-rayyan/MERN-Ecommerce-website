@@ -41,6 +41,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import axios from "axios";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import $ from "jquery";
 
 function App() {
 	const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -65,7 +66,38 @@ function App() {
 		getSripteApiKey();
 	}, []);
 
-	window.addEventListener("contextmenu", (e) => e.preventDefault());
+	// Disable Right Click
+
+	// window.addEventListener("contextmenu", (e) => e.preventDefault());
+
+	$(document).ready(function () {
+		const loginBtn = document.getElementById("login");
+		const signupBtn = document.getElementById("signup");
+
+		loginBtn.addEventListener("click", (e) => {
+			let parent = e.target.parentNode.parentNode;
+			Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+				if (element !== "slide-up") {
+					parent.classList.add("slide-up");
+				} else {
+					signupBtn.parentNode.classList.add("slide-up");
+					parent.classList.remove("slide-up");
+				}
+			});
+		});
+
+		signupBtn.addEventListener("click", (e) => {
+			let parent = e.target.parentNode;
+			Array.from(e.target.parentNode.classList).find((element) => {
+				if (element !== "slide-up") {
+					parent.classList.add("slide-up");
+				} else {
+					loginBtn.parentNode.parentNode.classList.add("slide-up");
+					parent.classList.remove("slide-up");
+				}
+			});
+		});
+	});
 
 	return (
 		<Router>

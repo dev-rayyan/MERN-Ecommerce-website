@@ -132,10 +132,10 @@ const Header = () => {
 							</a>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link">
+							<Link className="nav-link" to="/login">
 								<FontAwesomeIcon icon={faChartBar} />
-								Charts
-							</a>
+								Login
+							</Link>
 						</li>
 						<li className="nav-item">
 							<a className="nav-link">
