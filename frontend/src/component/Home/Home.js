@@ -87,7 +87,7 @@ const Home = () => {
 
 					<div className="container1" id="container">
 						{products &&
-							products.map((product) => <ProductCard product={product} />)}
+							products.map((product) => <ProductCard key={''} product={product} />)}
 					</div>
 				</Fragment>
 			)}

@@ -109,13 +109,13 @@ const LoginSignUp = () => {
 			) : (
 				<Fragment>
 					<div className="LoginSignUpContainer">
-						<div class="form-structor">
-							<div class="signup">
-								<h2 class="form-title" id="signup">
+						<div className="form-structor">
+							<div className="signup">
+								<h2 className="form-title" id="signup">
 									<span>or</span>Sign up
 								</h2>
 								<form onSubmit={registerSubmit} encType="multipart/form-data">
-									<div class="form-holder">
+									<div className="form-holder">
 										<div>
 											<input
 												type="text"
@@ -171,13 +171,13 @@ const LoginSignUp = () => {
 									<input type="submit" value="Sign Up" className="submit-btn" />
 								</form>
 							</div>
-							<div class="login slide-up">
-								<div class="center">
-									<h2 class="form-title" id="login">
+							<div className="login slide-up">
+								<div className="center">
+									<h2 className="form-title" id="login">
 										<span>or</span>Log in
 									</h2>
 									<form onSubmit={loginSubmit}>
-										<div class="form-holder">
+										<div className="form-holder">
 											<input
 												type="email"
 												placeholder="Email"
