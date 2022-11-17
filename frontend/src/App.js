@@ -44,258 +44,230 @@ import { loadStripe } from "@stripe/stripe-js";
 import $ from "jquery";
 
 function App() {
-	const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
-	const [stripeApiKey, setStripeApiKey] = useState("");
+  const [stripeApiKey, setStripeApiKey] = useState("");
 
-	async function getSripteApiKey() {
-		const { data } = await axios.get("/api/v1/stripeapikey");
+  async function getSripteApiKey() {
+    const { data } = await axios.get("/api/v1/stripeapikey");
 
-		setStripeApiKey(data.stripeApiKey);
-	}
+    setStripeApiKey(data.stripeApiKey);
+  }
 
-	useEffect(() => {
-		WebFont.load({
-			google: {
-				families: ["Roboto", "Driod Sans", "Chilanka"],
-			},
-		});
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ["Roboto", "Driod Sans", "Chilanka"],
+      },
+    });
 
-		store.dispatch(loadUser());
+    store.dispatch(loadUser());
 
-		getSripteApiKey();
-	}, []);
+    getSripteApiKey();
+  }, []);
 
-	// Disable Right Click
+  // Disable Right Click
 
-	// window.addEventListener("contextmenu", (e) => e.preventDefault());
+  // window.addEventListener("contextmenu", (e) => e.preventDefault());
 
-	$(document).ready(function () {
-		const loginBtn = document.getElementById("login");
-		const signupBtn = document.getElementById("signup");
-
-		loginBtn.addEventListener("click", (e) => {
-			let parent = e.target.parentNode.parentNode;
-			Array.from(e.target.parentNode.parentNode.classList).find((element) => {
-				if (element !== "slide-up") {
-					parent.classList.add("slide-up");
-				} else {
-					signupBtn.parentNode.classList.add("slide-up");
-					parent.classList.remove("slide-up");
-				}
-			});
-		});
-
-		signupBtn.addEventListener("click", (e) => {
-			let parent = e.target.parentNode;
-			Array.from(e.target.parentNode.classList).find((element) => {
-				if (element !== "slide-up") {
-					parent.classList.add("slide-up");
-				} else {
-					loginBtn.parentNode.parentNode.classList.add("slide-up");
-					parent.classList.remove("slide-up");
-				}
-			});
-		});
-	});
-
-	return (
-		<Router>
-			<Header />
-			{isAuthenticated && <UserOptions user={user} />}
-			<Routes>
-				<Route exact path="/" element={<Home />} />
-				<Route exact path="/product/:id" element={<ProductDetails />} />
-				<Route exact path="/products" element={<Products />} />
-				<Route path="/products/:keyword" element={<Products />} />
-				<Route exact path="/search" element={<Search />} />
-				<Route
-					exact
-					path="/account"
-					element={
-						<ProtectedRoute>
-							<Profile />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					exact
-					path="/me/update"
-					element={
-						<ProtectedRoute>
-							<UpdateProfile />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					exact
-					path="/password/update"
-					element={
-						<ProtectedRoute>
-							<UpdatePassword />
-						</ProtectedRoute>
-					}
-				/>
-				<Route exact path="/password/forgot" element={<ForgotPassowrd />} />
-				<Route
-					exact
-					path="/password/reset/:token"
-					element={<ResetPassword />}
-				/>
-				<Route exact path="/login" element={<LoginSignUp />} />
-				<Route exact path="/cart" element={<Cart />} />
-				<Route
-					exact
-					path="/shipping"
-					element={
-						<ProtectedRoute>
-							<Shipping />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					exact
-					path="/order/confirm"
-					element={
-						<ProtectedRoute>
-							<ConfirmOrder />
-						</ProtectedRoute>
-					}
-				/>
-				{stripeApiKey && (
-					<Route
-						exact
-						path="/process/payment"
-						element={
-							<Elements stripe={loadStripe(stripeApiKey)}>
-								<ProtectedRoute>
-									<Payment />
-								</ProtectedRoute>
-							</Elements>
-						}
-					/>
-				)}
-				<Route
-					exact
-					path="/success"
-					element={
-						<ProtectedRoute>
-							<OrderSuccess />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					exact
-					path="/orders"
-					element={
-						<ProtectedRoute>
-							<MyOrders />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					exact
-					path="/order/:id"
-					element={
-						<ProtectedRoute>
-							<OrderDetails />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/dashboard"
-					element={
-						<ProtectedRoute>
-							<Dashboard />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/products"
-					element={
-						<ProtectedRoute>
-							<ProductList />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/product"
-					element={
-						<ProtectedRoute>
-							<NewProduct />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/product/:id"
-					element={
-						<ProtectedRoute>
-							<UpdateProduct />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/orders"
-					element={
-						<ProtectedRoute>
-							<OrderList />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/order/:id"
-					element={
-						<ProtectedRoute>
-							<ProcessOrder />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/users"
-					element={
-						<ProtectedRoute>
-							<UsersList />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/user/:id"
-					element={
-						<ProtectedRoute>
-							<UpdateUser />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					isAdmin={true}
-					exact
-					path="/admin/reviews"
-					element={
-						<ProtectedRoute>
-							<ProductReviews />
-						</ProtectedRoute>
-					}
-				/>
-			</Routes>
-			<Footer />
-		</Router>
-	);
+  return (	
+    <Router>
+      <Header />
+      {isAuthenticated && <UserOptions user={user} />}
+      {isAdmin===false && <Header/>}
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/product/:id" element={<ProductDetails />} />
+        <Route exact path="/products" element={<Products />} />
+        <Route path="/products/:keyword" element={<Products />} />
+        <Route exact path="/search" element={<Search />} />
+        <Route
+          exact
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/me/update"
+          element={
+            <ProtectedRoute>
+              <UpdateProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/password/update"
+          element={
+            <ProtectedRoute>
+              <UpdatePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route exact path="/password/forgot" element={<ForgotPassowrd />} />
+        <Route
+          exact
+          path="/password/reset/:token"
+          element={<ResetPassword />}
+        />
+        <Route exact path="/login" element={<LoginSignUp />} />
+        <Route exact path="/cart" element={<Cart />} />
+        <Route
+          exact
+          path="/shipping"
+          element={
+            <ProtectedRoute>
+              <Shipping />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/order/confirm"
+          element={
+            <ProtectedRoute>
+              <ConfirmOrder />
+            </ProtectedRoute>
+          }
+        />
+        {stripeApiKey && (
+          <Route
+            exact
+            path="/process/payment"
+            element={
+              <Elements stripe={loadStripe(stripeApiKey)}>
+                <ProtectedRoute>
+                  <Payment />
+                </ProtectedRoute>
+              </Elements>
+            }
+          />
+        )}
+        <Route
+          exact
+          path="/success"
+          element={
+            <ProtectedRoute>
+              <OrderSuccess />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/order/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/products"
+          element={
+            <ProtectedRoute>
+              <ProductList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/product"
+          element={
+            <ProtectedRoute>
+              <NewProduct />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/product/:id"
+          element={
+            <ProtectedRoute>
+              <UpdateProduct />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/orders"
+          element={
+            <ProtectedRoute>
+              <OrderList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/order/:id"
+          element={
+            <ProtectedRoute>
+              <ProcessOrder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <UsersList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/user/:id"
+          element={
+            <ProtectedRoute>
+              <UpdateUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          isAdmin={true}
+          exact
+          path="/admin/reviews"
+          element={
+            <ProtectedRoute>
+              <ProductReviews />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <Footer />
+    </Router>
+  );
 }
 
 export default App;
