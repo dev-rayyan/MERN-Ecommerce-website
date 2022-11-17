@@ -74,14 +74,34 @@ const LoginSignUp = () => {
 		}
 	}, [dispatch, error, alert, isAuthenticated, navigate, redirect]);
 
-	$('.login').on('click', function(){
-		$('.signup').addClass('slide-up')
-		$('.login').removeClass('slide-up')
-	})
-	$('.signup').on('click', function(){
-		$('.login').addClass('slide-up')
-		$('.signup').removeClass('slide-up')
-	})
+	window.onload = function () {
+		const loginBtn = document.getElementById("login");
+		const signupBtn = document.getElementById("signup");
+
+		loginBtn.addEventListener("click", (e) => {
+			let parent = e.target.parentNode.parentNode;
+			Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+				if (element !== "slide-up") {
+					parent.classList.add("slide-up");
+				} else {
+					signupBtn.parentNode.classList.add("slide-up");
+					parent.classList.remove("slide-up");
+				}
+			});
+		});
+
+		signupBtn.addEventListener("click", (e) => {
+			let parent = e.target.parentNode;
+			Array.from(e.target.parentNode.classList).find((element) => {
+				if (element !== "slide-up") {
+					parent.classList.add("slide-up");
+				} else {
+					loginBtn.parentNode.parentNode.classList.add("slide-up");
+					parent.classList.remove("slide-up");
+				}
+			});
+		});
+	};
 	return (
 		<Fragment>
 			{loading ? (
@@ -90,7 +110,7 @@ const LoginSignUp = () => {
 				<Fragment>
 					<div className="LoginSignUpContainer">
 						<div class="form-structor">
-							<div class="signup slide-up">
+							<div class="signup">
 								<h2 class="form-title" id="signup">
 									<span>or</span>Sign up
 								</h2>
@@ -151,7 +171,7 @@ const LoginSignUp = () => {
 									<input type="submit" value="Sign Up" className="submit-btn" />
 								</form>
 							</div>
-							<div class="login">
+							<div class="login slide-up">
 								<div class="center">
 									<h2 class="form-title" id="login">
 										<span>or</span>Log in
