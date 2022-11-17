@@ -1,261 +1,144 @@
-import React from "react";
+import * as React from "react";
 import "./sidebar.css";
-import logo from "../../images/logo.png";
-import { Link } from "react-router-dom";
-import { TreeView, TreeItem } from "@mui/lab";
-import {
-  ExpandMore,
-  PostAdd,
-  Add,
-  ImportExport,
-  ListAlt,
-  Dashboard,
-  People,
-  RateReview,
-} from "@mui/icons-material";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import TreeView from "@mui/lab/TreeView";
+import TreeItem, { treeItemClasses } from "@mui/lab/TreeItem";
+import Typography from "@mui/material/Typography";
+import MailIcon from "@mui/icons-material/Mail";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Label from "@mui/icons-material/Label";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import InfoIcon from "@mui/icons-material/Info";
+import ForumIcon from "@mui/icons-material/Forum";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-const Sidebar = () => {
+const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  [`& .${treeItemClasses.content}`]: {
+    color: theme.palette.text.secondary,
+    borderTopRightRadius: theme.spacing(2),
+    borderBottomRightRadius: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    fontWeight: theme.typography.fontWeightMedium,
+    "&.Mui-expanded": {
+      fontWeight: theme.typography.fontWeightRegular,
+    },
+    "&:hover": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    "&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused": {
+      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
+      color: "var(--tree-view-color)",
+    },
+    [`& .${treeItemClasses.label}`]: {
+      fontWeight: "inherit",
+      color: "inherit",
+    },
+  },
+  [`& .${treeItemClasses.group}`]: {
+    marginLeft: 0,
+    [`& .${treeItemClasses.content}`]: {
+      paddingLeft: theme.spacing(2),
+    },
+  },
+}));
+
+function StyledTreeItem(props) {
+  const {
+    bgColor,
+    color,
+    labelIcon: LabelIcon,
+    labelInfo,
+    labelText,
+    ...other
+  } = props;
+
   return (
-    <div class="layout has-sidebar fixed-sidebar fixed-header">
-      <aside id="sidebar" class="sidebar break-point-lg has-bg-image">
-        <div class="image-wrapper">
-          <img
-            src="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
-            alt="sidebar background"
-          />
-        </div>
-        <div class="sidebar-layout">
-          <div class="sidebar-header"></div>
-          <div class="sidebar-content">
-            <nav class="menu open-current-submenu">
-              <ul>
-                <li class="menu-item sub-menu">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-vip-diamond-fill"></i>
-                    </span>
-                    <span class="menu-title">Components</span>
-                    <span class="menu-suffix">&#x1F525;</span>
-                  </a>
-                  <div class="sub-menu-list">
-                    <ul>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Grid</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Layout</span>
-                        </a>
-                      </li>
-                      <li class="menu-item sub-menu">
-                        <a href="#">
-                          <span class="menu-title">Forms</span>
-                        </a>
-                        <div class="sub-menu-list">
-                          <ul>
-                            <li class="menu-item">
-                              <a href="#">
-                                <span class="menu-title">Input</span>
-                              </a>
-                            </li>
-                            <li class="menu-item">
-                              <a href="#">
-                                <span class="menu-title">Select</span>
-                              </a>
-                            </li>
-                            <li class="menu-item sub-menu">
-                              <a href="#">
-                                <span class="menu-title">More</span>
-                              </a>
-                              <div class="sub-menu-list">
-                                <ul>
-                                  <li class="menu-item">
-                                    <a href="#">
-                                      <span class="menu-title">CheckBox</span>
-                                    </a>
-                                  </li>
-                                  <li class="menu-item">
-                                    <a href="#">
-                                      <span class="menu-title">Radio</span>
-                                    </a>
-                                  </li>
-                                  <li class="menu-item sub-menu">
-                                    <a href="#">
-                                      <span class="menu-title">
-                                        Want more ?
-                                      </span>
-                                      <span class="menu-suffix">&#x1F914;</span>
-                                    </a>
-                                    <div class="sub-menu-list">
-                                      <ul>
-                                        <li class="menu-item">
-                                          <a href="#">
-                                            <span class="menu-prefix">
-                                              &#127881;
-                                            </span>
-                                            <span class="menu-title">
-                                              You made it{" "}
-                                            </span>
-                                          </a>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="menu-item sub-menu">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-bar-chart-2-fill"></i>
-                    </span>
-                    <span class="menu-title">Charts</span>
-                  </a>
-                  <div class="sub-menu-list">
-                    <ul>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Pie chart</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Line chart</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Bar chart</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="menu-item sub-menu">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-shopping-cart-fill"></i>
-                    </span>
-                    <span class="menu-title">E-commerce</span>
-                  </a>
-                  <div class="sub-menu-list">
-                    <ul>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Products</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Orders</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">credit card</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="menu-item sub-menu">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-global-fill"></i>
-                    </span>
-                    <span class="menu-title">Maps</span>
-                  </a>
-                  <div class="sub-menu-list">
-                    <ul>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Google maps</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Open street map</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="menu-item sub-menu">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-brush-3-fill"></i>
-                    </span>
-                    <span class="menu-title">Theme</span>
-                  </a>
-                  <div class="sub-menu-list">
-                    <ul>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Dark</span>
-                        </a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="#">
-                          <span class="menu-title">Light</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="menu-item">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-book-2-fill"></i>
-                    </span>
-                    <span class="menu-title">Documentation</span>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-calendar-fill"></i>
-                    </span>
-                    <span class="menu-title">Calendar</span>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="#">
-                    <span class="menu-icon">
-                      <i class="ri-service-fill"></i>
-                    </span>
-                    <span class="menu-title">Examples</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div class="sidebar-footer">
-            <span>Sidebar footer</span>
-          </div>
-        </div>
-      </aside>
-      <div id="overlay" class="overlay"></div>
-      <div class="layout">
-        <header class="header">
-          <a id="btn-collapse" href="#">
-            <i class="ri-menu-line ri-xl"></i>
-          </a>
-          <a id="btn-toggle" href="#" class="sidebar-toggler break-point-lg">
-            <i class="ri-menu-line ri-xl"></i>
-          </a>
-        </header>
-        <div class="overlay"></div>
-      </div>
-    </div>
+    <StyledTreeItemRoot
+      label={
+        <Box sx={{ display: "flex", alignItems: "center", p: 0.5, pr: 0 }}>
+          <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: "inherit", flexGrow: 1 }}
+          >
+            {labelText}
+          </Typography>
+          <Typography variant="caption" color="inherit">
+            {labelInfo}
+          </Typography>
+        </Box>
+      }
+      style={{
+        "--tree-view-color": color,
+        "--tree-view-bg-color": bgColor,
+      }}
+      {...other}
+    />
   );
+}
+
+StyledTreeItem.propTypes = {
+  bgColor: PropTypes.string,
+  color: PropTypes.string,
+  labelIcon: PropTypes.elementType.isRequired,
+  labelInfo: PropTypes.string,
+  labelText: PropTypes.string.isRequired,
 };
 
-export default Sidebar;
+export default function Sidebar() {
+  return (
+    <div className="sidebar">
+      <TreeView
+        aria-label="gmail"
+        defaultExpanded={["3"]}
+        defaultCollapseIcon={<ArrowDropDownIcon />}
+        defaultExpandIcon={<ArrowRightIcon />}
+        defaultEndIcon={<div style={{ width: 24 }} />}
+        sx={{ height: 264, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}
+      >
+        <StyledTreeItem nodeId="1" labelText="All Mail" labelIcon={MailIcon} />
+        <StyledTreeItem nodeId="2" labelText="Trash" labelIcon={DeleteIcon} />
+        <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
+          <StyledTreeItem
+            nodeId="5"
+            labelText="Social"
+            labelIcon={SupervisorAccountIcon}
+            labelInfo="90"
+            color="#1a73e8"
+            bgColor="#e8f0fe"
+          />
+          <StyledTreeItem
+            nodeId="6"
+            labelText="Updates"
+            labelIcon={InfoIcon}
+            labelInfo="2,294"
+            color="#e3742f"
+            bgColor="#fcefe3"
+          />
+          <StyledTreeItem
+            nodeId="7"
+            labelText="Forums"
+            labelIcon={ForumIcon}
+            labelInfo="3,566"
+            color="#a250f5"
+            bgColor="#f3e8fd"
+          />
+          <StyledTreeItem
+            nodeId="8"
+            labelText="Promotions"
+            labelIcon={LocalOfferIcon}
+            labelInfo="733"
+            color="#3c8039"
+            bgColor="#e6f4ea"
+          />
+        </StyledTreeItem>
+        <StyledTreeItem nodeId="4" labelText="History" labelIcon={Label} />
+      </TreeView>
+    </div>
+  );
+}

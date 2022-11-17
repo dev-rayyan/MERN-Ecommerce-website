@@ -14,8 +14,6 @@ import ProtectedRoute from "./component/Route/ProtectedRoute";
 const admin = () => {
   return (
     <div className="admin-panel-container">
-      {/* <AdminMenu /> */}
-      <h1>ADMIN</h1>
       <Routes>
         <Route
           isAdmin={true}
