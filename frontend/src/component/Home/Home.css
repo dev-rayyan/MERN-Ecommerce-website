@@ -187,7 +187,6 @@ a.clip-each:hover {
 .clip-solid {
 	width: 300px;
 	height: 300px;
-	background-image: url("http://karenmenezes.com/shapes-polygon/clip-demo-img.jpg");
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-color: #5161ce;

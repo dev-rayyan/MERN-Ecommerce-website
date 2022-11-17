@@ -1,13 +1,15 @@
+:root {
+	--tree-view-bg-color: none;
+	--tree-view-color: #faf0e6;
+  }
+
 .sidebar {
-	background-color: rgb(255, 255, 255);
+	background-color: #182330;
 	display: flex;
 	flex-direction: column;
 	padding: 4rem 0;
 }
 
-.sidebar > a:first-child {
-	padding: 0;
-}
 .sidebar > a > img {
 	width: 100%;
 	transition: all 0.5s;
@@ -18,14 +20,13 @@
 }
 .sidebar a {
 	text-decoration: none;
-	color: rgba(0, 0, 0, 0.493);
+	color: #b6babc;
 	font: 200 1rem "Roboto";
-	padding: 2rem;
+	padding: 1rem 2rem;
 	transition: all 0.5s;
 }
 .sidebar a:hover {
-	color: tomato;
-	transform: scale(1.1);
+	color: #e4e8eb;
 }
 
 .sidebar a > P {
@@ -34,8 +35,4 @@
 }
 .sidebar a > p > svg {
 	margin-right: 0.5rem;
-}
-
-.MuiTypography-root {
-	background-color: #fff !important;
 }
