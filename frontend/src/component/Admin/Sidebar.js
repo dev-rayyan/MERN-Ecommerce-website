@@ -15,13 +15,22 @@ import ForumIcon from "@mui/icons-material/Forum";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import {
+  ExpandMore,
+  PostAdd,
+  Add,
+  ImportExport,
+  ListAlt,
+  Dashboard,
+  People,
+  RateReview,
+} from "@mui/icons-material";
+import {Link} from "react-router-dom"
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
-  color: theme.palette.text.secondary,
+  color:'#e0e0e0',
   [`& .${treeItemClasses.content}`]: {
-    color: theme.palette.text.secondary,
-    borderTopRightRadius: theme.spacing(2),
-    borderBottomRightRadius: theme.spacing(2),
+    color: '#e0e0e0',
     paddingRight: theme.spacing(1),
     fontWeight: theme.typography.fontWeightMedium,
     "&.Mui-expanded": {
@@ -60,7 +69,7 @@ function StyledTreeItem(props) {
   return (
     <StyledTreeItemRoot
       label={
-        <Box sx={{ display: "flex", alignItems: "center", p: 0.5, pr: 0 }}>
+        <Box sx={{ display: "flex", alignItems: "center", px: 2,py:1.5, pr: 0 }}>
           <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography
             variant="body2"
@@ -101,43 +110,36 @@ export default function Sidebar() {
         defaultEndIcon={<div style={{ width: 24 }} />}
         sx={{ height: 264, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}
       >
-        <StyledTreeItem nodeId="1" labelText="All Mail" labelIcon={MailIcon} />
-        <StyledTreeItem nodeId="2" labelText="Trash" labelIcon={DeleteIcon} />
-        <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
-          <StyledTreeItem
-            nodeId="5"
-            labelText="Social"
-            labelIcon={SupervisorAccountIcon}
-            labelInfo="90"
-            color="#1a73e8"
-            bgColor="#e8f0fe"
-          />
-          <StyledTreeItem
-            nodeId="6"
-            labelText="Updates"
-            labelIcon={InfoIcon}
-            labelInfo="2,294"
-            color="#e3742f"
-            bgColor="#fcefe3"
-          />
+        <Link to="/admin/dashboard">
+        <StyledTreeItem color="#182330" bgColor="#e0e0e0" nodeId="1" labelText="Dashboard" labelIcon={Dashboard} />
+        </Link>
+        <Link to="/admin/orders">
+        <StyledTreeItem color="#182330" bgColor="#e0e0e0" nodeId="2" labelText="Orders" labelIcon={ListAlt} />
+        </Link>
+        <StyledTreeItem color="#182330" bgColor="#e0e0e0" nodeId="3" labelText="Products" labelIcon={ImportExport}>
+        <Link to="/admin/products">
           <StyledTreeItem
             nodeId="7"
-            labelText="Forums"
-            labelIcon={ForumIcon}
+            labelText="All Products"
+            labelIcon={PostAdd}
             labelInfo="3,566"
-            color="#a250f5"
-            bgColor="#f3e8fd"
+            color="#182330" 
+            bgColor="#e0e0e0"
           />
+          </Link>
+          <Link to="/admin/product">
           <StyledTreeItem
             nodeId="8"
-            labelText="Promotions"
-            labelIcon={LocalOfferIcon}
+            labelText="Create New Product"
+            labelIcon={Add}
             labelInfo="733"
-            color="#3c8039"
-            bgColor="#e6f4ea"
-          />
+            color="#182330" 
+            bgColor="#e0e0e0"
+          /></Link>
         </StyledTreeItem>
-        <StyledTreeItem nodeId="4" labelText="History" labelIcon={Label} />
+        <Link to="/admin/users">
+        <StyledTreeItem color="#182330" bgColor="#e0e0e0" nodeId="4" labelText="Users" labelIcon={People} />
+        </Link>
       </TreeView>
     </div>
   );
