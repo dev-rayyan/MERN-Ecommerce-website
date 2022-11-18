@@ -9,136 +9,164 @@ import MetaData from "../layout/MetaData";
 import { Delete, Edit } from "@mui/icons-material";
 import SideBar from "./Sidebar";
 import {
-	deleteOrder,
-	getAllOrders,
-	clearErrors,
+  deleteOrder,
+  getAllOrders,
+  clearErrors,
 } from "../../actions/orderAction";
+import { getAllUsers } from "../../actions/userAction";
+
 import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 
 const OrderList = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const alert = useAlert();
-	const navigate = useNavigate();
+  const alert = useAlert();
+  const navigate = useNavigate();
 
-	const { error, orders } = useSelector((state) => state.allOrders);
+  const { users } = useSelector((state) => state.allUsers);
 
-	const { error: deleteError, isDeleted } = useSelector((state) => state.order);
+  const { error, orders } = useSelector((state) => state.allOrders);
 
-	const deleteOrderHandler = (id) => {
-		dispatch(deleteOrder(id));
-	};
+  const { error: deleteError, isDeleted } = useSelector((state) => state.order);
 
-	useEffect(() => {
-		if (error) {
-			alert.error(error);
-			dispatch(clearErrors());
-		}
+  const deleteOrderHandler = (id) => {
+    dispatch(deleteOrder(id));
+  };
 
-		if (deleteError) {
-			alert.error(deleteError);
-			dispatch(clearErrors());
-		}
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
 
-		if (isDeleted) {
-			alert.success("Order Deleted Successfully");
-			navigate("/admin/orders");
-			dispatch({ type: DELETE_ORDER_RESET });
-		}
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
 
-		dispatch(getAllOrders());
-	}, [dispatch, alert, error, deleteError, navigate, isDeleted]);
+    if (isDeleted) {
+      alert.success("Order Deleted Successfully");
+      navigate("/admin/orders");
+      dispatch({ type: DELETE_ORDER_RESET });
+    }
 
-	const columns = [
-		{ field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+    dispatch(getAllOrders());
+    dispatch(getAllUsers());
+  }, [dispatch, alert, error, deleteError, navigate, isDeleted]);
 
-		{
-			field: "status",
-			headerName: "Status",
-			minWidth: 150,
-			flex: 0.5,
-			cellClassName: (params) => {
-				return params.getValue(params.id, "status") === "Delivered"
-					? "greenColor"
-					: "redColor";
-			},
-		},
-		{
-			field: "itemsQty",
-			headerName: "Items Qty",
-			type: "number",
-			minWidth: 150,
-			flex: 0.4,
-		},
+  const columns1 = [
+    { field: "itemId", headerName: "User ID", minWidth: 300, flex: 1 },
 
-		{
-			field: "amount",
-			headerName: "Amount",
-			type: "number",
-			minWidth: 270,
-			flex: 0.5,
-		},
+    {
+      field: "actions",
+      flex: 0.3,
+      headerName: "Actions",
+      minWidth: 150,
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <Fragment>
+            <Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
+              <Edit />
+            </Link>
 
-		{
-			field: "actions",
-			flex: 0.3,
-			headerName: "Actions",
-			minWidth: 150,
-			type: "number",
-			sortable: false,
-			renderCell: (params) => {
-				return (
-					<Fragment>
-						<Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
-							<Edit />
-						</Link>
+            <Button
+              onClick={() =>
+                deleteOrderHandler(params.getValue(params.id, "id"))
+              }
+            >
+              <Delete />
+            </Button>
+          </Fragment>
+        );
+      },
+    },
+  ];
 
-						<Button
-							onClick={() =>
-								deleteOrderHandler(params.getValue(params.id, "id"))
-							}
-						>
-							<Delete />
-						</Button>
-					</Fragment>
-				);
-			},
-		},
-	];
+  const columns = [
+    { field: "userName", headerName: "Order ID", minWidth: 300, flex: 1 },
 
-	const rows = [];
+    {
+      field: "actions",
+      flex: 0.3,
+      headerName: "Actions",
+      minWidth: 150,
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <Fragment>
+            <Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
+              <Edit />
+            </Link>
 
-	orders &&
-		orders.forEach((item) => {
-			rows.push({
-				id: item._id,
-				itemsQty: item.orderItems.length,
-				amount: item.totalPrice,
-				status: item.orderStatus,
-			});
-		});
+            <Button
+              onClick={() =>
+                deleteOrderHandler(params.getValue(params.id, "id"))
+              }
+            >
+              <Delete />
+            </Button>
+          </Fragment>
+        );
+      },
+    },
+  ];
 
-	return (
-		<Fragment>
-			<MetaData title={`ALL ORDERS - Admin`} />
+  const rows1 = [];
+  const rows2 = [];
+  const rows = [];
 
-			<div className="dashboard">
-				<SideBar />
-				<div className="productListContainer">
-					<h1 id="productListHeading">ALL ORDERS</h1>
+  const userIds = users && users.map((user) => user._id);
 
-					<DataGrid
-						rows={rows}
-						columns={columns}
-						pageSize={10}
-						disableSelectionOnClick
-						className="productListTable"
-						autoHeight
-					/>
-				</div>
-			</div>
-		</Fragment>
-	);
+  users &&
+    users.forEach((item) => {
+      rows.push({
+        id: item._id,
+        name: item.name,
+        email: item.email,
+      });
+    });
+
+  orders &&
+    orders.forEach((order) => {
+      console.log("order id:", order._id);
+      users &&
+        users.forEach((userData) => {
+          if (order.user === userData._id) {
+            console.log("ordered by", userData.name);
+          }
+        });
+    });
+  return (
+    <Fragment>
+      <MetaData title={`ALL ORDERS - Admin`} />
+
+      <div className="dashboard">
+        <SideBar />
+        <div className="productListContainer">
+          <h1 id="productListHeading">ALL ORDERS</h1>
+          <DataGrid
+            rows={rows1}
+            columns={columns}
+            pageSize={10}
+            disableSelectionOnClick
+            className="productListTable"
+            autoHeight
+          />
+          <DataGrid
+            rows={rows2}
+            columns={columns1}
+            pageSize={10}
+            disableSelectionOnClick
+            className="productListTable"
+            autoHeight
+          />
+        </div>
+      </div>
+    </Fragment>
+  );
 };
 
 export default OrderList;

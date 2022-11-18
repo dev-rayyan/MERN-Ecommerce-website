@@ -1,34 +1,37 @@
 :root {
-	--tree-view-bg-color: none;
-	--tree-view-color: #faf0e6;
-  }
+  --tree-view-bg-color: none;
+  --tree-view-color: #e0e0e0;
+}
 
 .sidebar {
-	background-color: #182330;
-	display: flex;
-	flex-direction: column;
-	padding: 4rem 0;
+  background-color: #182330;
+  display: flex;
+  flex-direction: column;
+  padding: 4rem 0;
+  position: fixed;
+  height: 100vh;
+  width: 15vw;
 }
 
 .sidebar > a > img {
-	width: 100%;
-	transition: all 0.5s;
+  width: 100%;
+  transition: all 0.5s;
 }
 
 .sidebar > a > img:hover {
-	filter: drop-shadow(0 0 10px tomato);
+  filter: drop-shadow(0 0 10px tomato);
 }
 .sidebar a {
-	text-decoration: none;
+  text-decoration: none;
 }
 .sidebar a:hover {
-	color: #e4e8eb;
+  color: #e4e8eb;
 }
 
 .sidebar a > P {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 .sidebar a > p > svg {
-	margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
