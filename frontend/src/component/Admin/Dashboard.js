@@ -77,6 +77,34 @@ const Dashboard = () => {
       },
     ],
   };
+  var newList = [];
+  var newUser = [];
+  var itemsSold = 0;
+
+  orders &&
+    orders.forEach((order) => {
+      order.orderItems.forEach((orderItem) => {
+        itemsSold += orderItem.quantity;
+      });
+    });
+
+  orders &&
+    orders.forEach((order) => {
+      users &&
+        users.forEach((userData) => {
+          if (order.user === userData._id) {
+            newUser = userData;
+          }
+        });
+
+      newList.push({
+        orderId: order._id,
+        orderItems: order.orderItems[0].name,
+        totalPrice: order.totalPrice,
+        paymentStatus: order.paymentInfo.status,
+        user: newUser,
+      });
+    });
 
   return (
     <div className="dashboard">
@@ -496,7 +524,9 @@ const Dashboard = () => {
                   <div class="row g-0">
                     <div class="col-6 col-md-4 border-200 border-bottom border-end pb-4">
                       <h6 class="pb-1 text-700">Orders </h6>
-                      <p class="font-sans-serif lh-1 mb-1 fs-2">15,450 </p>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">
+                        {orders && orders.length}
+                      </p>
                       <div class="d-flex align-items-center">
                         <h6 class="fs--1 text-500 mb-0">13,675 </h6>
                         <h6 class="fs--2 ps-3 mb-0 text-primary">
@@ -522,7 +552,9 @@ const Dashboard = () => {
                     </div>
                     <div class="col-6 col-md-4 border-200 border-md-200 border-bottom border-md-end pb-4 ps-3">
                       <h6 class="pb-1 text-700">Items sold </h6>
-                      <p class="font-sans-serif lh-1 mb-1 fs-2">1,054 </p>
+
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">{itemsSold}</p>
+
                       <div class="d-flex align-items-center">
                         <h6 class="fs--1 text-500 mb-0">13,675 </h6>
                         <h6 class="fs--2 ps-3 mb-0 text-warning">
@@ -1200,727 +1232,148 @@ const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody class="list" id="table-purchase-body">
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-0"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              Sylvia Plath
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            john@gmail.com
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            Slick - Drag &amp; Drop Bootstrap Generator
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-success">
-                              Success
-                              <svg
-                                class="svg-inline--fa fa-check fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="check"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$99</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown0"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown0"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
+                        {newList &&
+                          newList.map((item) => (
+                            <tr class="btn-reveal-trigger">
+                              <td class="align-middle">
+                                <div class="form-check mb-0">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="recent-purchase-0"
+                                    data-bulk-select-row="data-bulk-select-row"
+                                  />
+                                </div>
+                              </td>
+                              <th class="align-middle white-space-nowrap name">
+                                <a href="../app/e-commerce/customer-details.html">
+                                  {item.user.name}
                                 </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-1"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              Homer
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            sylvia@mail.ru
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            Bose SoundSport Wireless Headphones
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-success">
-                              Success
-                              <svg
-                                class="svg-inline--fa fa-check fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="check"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$634</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown1"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown1"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-2"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              Edgar Allan Poe
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            edgar@yahoo.com
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            All-New Fire HD 8 Kids Edition Tablet
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-secondary">
-                              Blocked
-                              <svg
-                                class="svg-inline--fa fa-ban fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="ban"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M256 8C119.034 8 8 119.033 8 256s111.034 248 248 248 248-111.034 248-248S392.967 8 256 8zm130.108 117.892c65.448 65.448 70 165.481 20.677 235.637L150.47 105.216c70.204-49.356 170.226-44.735 235.638 20.676zM125.892 386.108c-65.448-65.448-70-165.481-20.677-235.637L361.53 406.784c-70.203 49.356-170.226 44.736-235.638-20.676z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$199</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown2"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown2"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-3"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              William Butler Yeats
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            william@gmail.com
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            Apple iPhone XR (64GB)
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-success">
-                              Success
-                              <svg
-                                class="svg-inline--fa fa-check fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="check"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$798</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown3"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown3"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-4"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              Rabindranath Tagore
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            tagore@twitter.com
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            ASUS Chromebook C202SA-YS02 11.6"
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-secondary">
-                              Blocked
-                              <svg
-                                class="svg-inline--fa fa-ban fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="ban"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M256 8C119.034 8 8 119.033 8 256s111.034 248 248 248 248-111.034 248-248S392.967 8 256 8zm130.108 117.892c65.448 65.448 70 165.481 20.677 235.637L150.47 105.216c70.204-49.356 170.226-44.735 235.638 20.676zM125.892 386.108c-65.448-65.448-70-165.481-20.677-235.637L361.53 406.784c-70.203 49.356-170.226 44.736-235.638-20.676z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$318</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown4"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown4"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-5"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              Emily Dickinson
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            emily@gmail.com
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            Mirari OK to Wake! Alarm Clock &amp; Night-Light
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-warning">
-                              Pending
-                              <svg
-                                class="svg-inline--fa fa-stream fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="stream"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M16 128h416c8.84 0 16-7.16 16-16V48c0-8.84-7.16-16-16-16H16C7.16 32 0 39.16 0 48v64c0 8.84 7.16 16 16 16zm480 80H80c-8.84 0-16 7.16-16 16v64c0 8.84 7.16 16 16 16h416c8.84 0 16-7.16 16-16v-64c0-8.84-7.16-16-16-16zm-64 176H16c-8.84 0-16 7.16-16 16v64c0 8.84 7.16 16 16 16h416c8.84 0 16-7.16 16-16v-64c0-8.84-7.16-16-16-16z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$11</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown5"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown5"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr class="btn-reveal-trigger">
-                          <td class="align-middle">
-                            <div class="form-check mb-0">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="recent-purchase-6"
-                                data-bulk-select-row="data-bulk-select-row"
-                              />
-                            </div>
-                          </td>
-                          <th class="align-middle white-space-nowrap name">
-                            <a href="../app/e-commerce/customer-details.html">
-                              Giovanni Boccaccio
-                            </a>
-                          </th>
-                          <td class="align-middle white-space-nowrap email">
-                            giovanni@outlook.com
-                          </td>
-                          <td class="align-middle white-space-nowrap product">
-                            Summer Infant Contoured Changing Pad
-                          </td>
-                          <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                            <span class="badge badge rounded-pill badge-soft-success">
-                              Success
-                              <svg
-                                class="svg-inline--fa fa-check fa-w-16 ms-1"
-                                data-fa-transform="shrink-2"
-                                aria-hidden="true"
-                                focusable="false"
-                                data-prefix="fas"
-                                data-icon="check"
-                                role="img"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512"
-                                data-fa-i2svg=""
-                              >
-                                <g transform="translate(256 256)">
-                                  <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
-                                    <path
-                                      fill="currentColor"
-                                      d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
-                                      transform="translate(-256 -256)"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                          </td>
-                          <td class="align-middle text-end amount">$31</td>
-                          <td class="align-middle white-space-nowrap text-end">
-                            <div class="dropstart font-sans-serif position-static d-inline-block">
-                              <button
-                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                type="button"
-                                id="dropdown6"
-                                data-bs-toggle="dropdown"
-                                data-boundary="window"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-bs-reference="parent"
-                              >
-                                <svg
-                                  class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="ellipsis-h"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512"
-                                  data-fa-i2svg=""
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
-                                  ></path>
-                                </svg>
-                              </button>
-                              <div
-                                class="dropdown-menu dropdown-menu-end border py-2"
-                                aria-labelledby="dropdown6"
-                              >
-                                <a class="dropdown-item" href="#!">
-                                  View
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Edit
-                                </a>
-                                <a class="dropdown-item" href="#!">
-                                  Refund
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-warning" href="#!">
-                                  Archive
-                                </a>
-                                <a class="dropdown-item text-danger" href="#!">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
+                              </th>
+                              <td class="align-middle white-space-nowrap email">
+                                {item.user.email}
+                              </td>
+                              <td class="align-middle white-space-nowrap product">
+                                {item.orderItems}
+                              </td>
+                              <td class="align-middle text-center fs-0 white-space-nowrap payment">
+                                {item.paymentStatus === "succeeded" ? (
+                                  <span class="badge badge rounded-pill badge-soft-success">
+                                    Success
+                                    <svg
+                                      class="svg-inline--fa fa-check fa-w-16 ms-1"
+                                      data-fa-transform="shrink-2"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      data-prefix="fas"
+                                      data-icon="check"
+                                      role="img"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 512 512"
+                                      data-fa-i2svg=""
+                                    >
+                                      <g transform="translate(256 256)">
+                                        <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
+                                          <path
+                                            fill="currentColor"
+                                            d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+                                            transform="translate(-256 -256)"
+                                          ></path>
+                                        </g>
+                                      </g>
+                                    </svg>
+                                  </span>
+                                ) : (
+                                  <span class="badge badge rounded-pill badge-soft-warning">
+                                    Pending
+                                    <svg
+                                      class="svg-inline--fa fa-stream fa-w-16 ms-1"
+                                      data-fa-transform="shrink-2"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      data-prefix="fas"
+                                      data-icon="stream"
+                                      role="img"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 512 512"
+                                      data-fa-i2svg=""
+                                    >
+                                      <g transform="translate(256 256)">
+                                        <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
+                                          <path
+                                            fill="currentColor"
+                                            d="M16 128h416c8.84 0 16-7.16 16-16V48c0-8.84-7.16-16-16-16H16C7.16 32 0 39.16 0 48v64c0 8.84 7.16 16 16 16zm480 80H80c-8.84 0-16 7.16-16 16v64c0 8.84 7.16 16 16 16h416c8.84 0 16-7.16 16-16v-64c0-8.84-7.16-16-16-16zm-64 176H16c-8.84 0-16 7.16-16 16v64c0 8.84 7.16 16 16 16h416c8.84 0 16-7.16 16-16v-64c0-8.84-7.16-16-16-16z"
+                                            transform="translate(-256 -256)"
+                                          ></path>
+                                        </g>
+                                      </g>
+                                    </svg>
+                                  </span>
+                                )}
+                              </td>
+                              <td class="align-middle text-end amount">
+                                Rs {item.totalPrice}
+                              </td>
+                              <td class="align-middle white-space-nowrap text-end">
+                                <div class="dropstart font-sans-serif position-static d-inline-block">
+                                  <button
+                                    class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
+                                    type="button"
+                                    id="dropdown0"
+                                    data-bs-toggle="dropdown"
+                                    data-boundary="window"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    data-bs-reference="parent"
+                                  >
+                                    <svg
+                                      class="svg-inline--fa fa-ellipsis-h fa-w-16 fs--1"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      data-prefix="fas"
+                                      data-icon="ellipsis-h"
+                                      role="img"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 512 512"
+                                      data-fa-i2svg=""
+                                    >
+                                      <path
+                                        fill="currentColor"
+                                        d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                  <div
+                                    class="dropdown-menu dropdown-menu-end border py-2"
+                                    aria-labelledby="dropdown0"
+                                  >
+                                    <a class="dropdown-item" href="#!">
+                                      View
+                                    </a>
+                                    <a class="dropdown-item" href="#!">
+                                      Edit
+                                    </a>
+                                    <a class="dropdown-item" href="#!">
+                                      Refund
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a
+                                      class="dropdown-item text-warning"
+                                      href="#!"
+                                    >
+                                      Archive
+                                    </a>
+                                    <a
+                                      class="dropdown-item text-danger"
+                                      href="#!"
+                                    >
+                                      Delete
+                                    </a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>

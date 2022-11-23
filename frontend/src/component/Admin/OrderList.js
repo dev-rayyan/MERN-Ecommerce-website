@@ -70,6 +70,28 @@ const OrderList = () => {
       Ordercounter++;
     });
   var OrderCounter1 = 0;
+
+  var newList = [];
+  var newUser = [];
+
+  orders &&
+    orders.forEach((order) => {
+      users &&
+        users.forEach((userData) => {
+          if (order.user === userData._id) {
+            newUser = userData;
+          }
+        });
+
+      newList.push({
+        orderId: order._id,
+        orderItems: order.orderItems[0].name,
+        totalPrice: order.totalPrice,
+        paymentStatus: order.paymentInfo.status,
+        user: newUser,
+      });
+    });
+
   return (
     <Fragment>
       <MetaData title={`ALL ORDERS - Admin`} />
@@ -78,6 +100,57 @@ const OrderList = () => {
         <SideBar />
         <div className="productListContainer">
           <h1 id="productListHeading">ALL ORDERS</h1>
+          {newList &&
+            newList.map((item) => (
+              <div>
+                <ul style={{ listStyle: "none" }}>
+                  <li>
+                    <b>Order Id:</b> {item.orderId}
+                  </li>
+                  <li>
+                    <b>Order Items:</b> {item.orderItems}
+                  </li>
+                  <li>
+                    <b>Order Payment:</b> {item.paymentStatus}
+                  </li>
+
+                  <li>
+                    <b>Order Price: </b>
+                    {item.totalPrice}
+                  </li>
+                  <li>
+                    <b>User Name:</b> {item.user.name}
+                  </li>
+                  <li>
+                    <b>User Email:</b> {item.user.email}
+                  </li>
+                </ul>
+              </div>
+            ))}
+          {users &&
+            users.map((user) => (
+              <Link className="productCard" to={`/product/${user._id}`}>
+                <img src={user.avatar.url} alt={user.name} />
+                <p>{user.name}</p>
+                <div>
+                  <span className="productCardSpan"> {user.email}</span>
+                </div>
+                <span>{user.role}</span>
+              </Link>
+            ))}
+          {orders &&
+            orders.map((order) => (
+              <Link className="productCard" to={`/product/${order._id}`}>
+                <p>{order.user}</p>
+                <div>
+                  <span className="productCardSpan">
+                    {" "}
+                    {order.orderItems.length}
+                  </span>
+                </div>
+                <span>{order.totalPrice}</span>
+              </Link>
+            ))}
           {orderUserIds.map((order) => (
             <li key={OrderCounter1++}>
               Order is {order} & It is Ordered by{" "}
