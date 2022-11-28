@@ -10,10 +10,14 @@ import UsersList from "./component/Admin/UsersList.js";
 import UpdateUser from "./component/Admin/UpdateUser.js";
 import ProductReviews from "./component/Admin/ProductReviews.js";
 import ProtectedRoute from "./component/Route/ProtectedRoute";
+import OrderDetails from "./component/Admin/OrderDetails.js";
+import Sidebar from "./component/Admin/Sidebar.js";
+import "./Admin.css";
 
 const admin = () => {
   return (
     <div className="admin-panel-container">
+      <Sidebar />
       <Routes>
         <Route
           isAdmin={true}
@@ -71,7 +75,7 @@ const admin = () => {
           path="/order/:id"
           element={
             <ProtectedRoute>
-              <ProcessOrder />
+              <OrderDetails />
             </ProtectedRoute>
           }
         />

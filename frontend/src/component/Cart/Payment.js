@@ -1,15 +1,15 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
 import { Typography } from "@material-ui/core";
 import { useAlert } from "react-alert";
 import {
-	CardNumberElement,
-	CardCvcElement,
-	CardExpiryElement,
-	useStripe,
-	useElements,
+  CardNumberElement,
+  CardCvcElement,
+  CardExpiryElement,
+  useStripe,
+  useElements,
 } from "@stripe/react-stripe-js";
 import axios from "axios";
 import "./payment.css";
@@ -18,131 +18,138 @@ import { useNavigate } from "react-router-dom";
 import { createOrder, clearErrors } from "../../actions/orderAction";
 
 const Payment = () => {
-	const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
+  const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
 
-	const dispatch = useDispatch();
-	const alert = useAlert();
-	const stripe = useStripe();
-	const elements = useElements();
-	const payBtn = useRef(null);
-	const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const stripe = useStripe();
+  const elements = useElements();
+  const payBtn = useRef(null);
+  const navigate = useNavigate();
 
-	const { shippingInfo, cartItems } = useSelector((state) => state.cart);
-	const { user } = useSelector((state) => state.user);
-	const { error } = useSelector((state) => state.newOrder);
+  const { shippingInfo, cartItems } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.newOrder);
 
-	const paymentData = {
-		amount: Math.round(orderInfo.totalPrice * 100),
-	};
+  const [status, setStatus] = useState("");
 
-	const order = {
-		shippingInfo,
-		orderItems: cartItems,
-		itemsPrice: orderInfo.subtotal,
-		taxPrice: orderInfo.tax,
-		shippingPrice: orderInfo.shippingCharges,
-		totalPrice: orderInfo.totalPrice,
-	};
+  const paymentData = {
+    amount: Math.round(orderInfo.totalPrice * 100),
+  };
 
-	const submitHandler = async (e) => {
-		e.preventDefault();
+  const order = {
+    shippingInfo,
+    orderItems: cartItems,
+    itemsPrice: orderInfo.subtotal,
+    taxPrice: orderInfo.tax,
+    shippingPrice: orderInfo.shippingCharges,
+    totalPrice: orderInfo.totalPrice,
+  };
 
-		payBtn.current.disabled = true;
+  const submitHandler = async (e) => {
+    e.preventDefault();
 
-		try {
-			const config = {
-				headers: {
-					"Content-Type": "application/json",
-				},
-			};
-			const { data } = await axios.post(
-				"/api/v1/payment/process",
-				paymentData,
-				config
-			);
+    // payBtn.current.disabled = true;
 
-			const client_secret = data.client_secret;
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "/api/v1/payment/process",
+        paymentData,
+        config
+      );
 
-			if (!stripe || !elements) return;
+      // const client_secret = data.client_secret;
 
-			const result = await stripe.confirmCardPayment(client_secret, {
-				payment_method: {
-					card: elements.getElement(CardNumberElement),
-					billing_details: {
-						name: user.name,
-						email: user.email,
-						address: {
-							line1: shippingInfo.address,
-							city: shippingInfo.city,
-							state: shippingInfo.state,
-							postal_code: shippingInfo.pinCode,
-							country: shippingInfo.country,
-						},
-					},
-				},
-			});
+      // if (!stripe || !elements) return;
 
-			if (result.error) {
-				payBtn.current.disabled = false;
+      // const result = await stripe.confirmCardPayment(client_secret, {
+      // 	payment_method: {
+      // 		card: elements.getElement(CardNumberElement),
+      // 		billing_details: {
+      // 			name: user.name,
+      // 			email: user.email,
+      // 			address: {
+      // 				line1: shippingInfo.address,
+      // 				city: shippingInfo.city,
+      // 				state: shippingInfo.state,
+      // 				postal_code: shippingInfo.pinCode,
+      // 				country: shippingInfo.country,
+      // 			},
+      // 		},
+      // 	},
+      // });
 
-				alert.error(result.error.message);
-			} else {
-				if (result.paymentIntent.status === "succeeded") {
-					order.paymentInfo = {
-						id: result.paymentIntent.id,
-						status: result.paymentIntent.status,
-					};
+      // if (result.error) {
+      // 	payBtn.current.disabled = false;
 
-					dispatch(createOrder(order));
+      // 	alert.error(result.error.message);
+      // } else {
+      // 	if (result.paymentIntent.status === "succeeded") {
+      // 		order.paymentInfo = {
+      // 			id: result.paymentIntent.id,
+      // 			status: result.paymentIntent.status,
+      // 		};
 
-					navigate("/success");
-				} else {
-					alert.error("There's some issue while processing payment ");
-				}
-			}
-		} catch (error) {
-			payBtn.current.disabled = false;
-			alert.error(error.response.data.message);
-		}
-	};
+      // 		dispatch(createOrder(order));
 
-	useEffect(() => {
-		if (error) {
-			alert.error(error);
-			dispatch(clearErrors());
-		}
-	}, [dispatch, error, alert]);
+      // 		navigate("/success");
+      // 	} else {
+      // 		alert.error("There's some issue while processing payment ");
+      // 	}
+      // }
+      order.paymentInfo = {
+        // id: "new_test_id",
+        status: status,
+      };
 
-	return (
-		<Fragment>
-			<MetaData title="Payment" />
-			<CheckoutSteps activeStep={2} />
-			<div className="paymentContainer">
-				<form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
-					<Typography>Card Info</Typography>
-					<div>
-						<CreditCard />
-						<CardNumberElement className="paymentInput" />
-					</div>
-					<div>
-						<Event />
-						<CardExpiryElement className="paymentInput" />
-					</div>
-					<div>
-						<VpnKey />
-						<CardCvcElement className="paymentInput" />
-					</div>
+      dispatch(createOrder(order));
+      navigate("/success");
+    } catch (error) {
+      payBtn.current.disabled = false;
+      alert.error(error.response.data.message);
+    }
+  };
 
-					<input
-						type="submit"
-						value={`Pay - ₹${orderInfo && orderInfo.totalPrice}`}
-						ref={payBtn}
-						className="paymentFormBtn"
-					/>
-				</form>
-			</div>
-		</Fragment>
-	);
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error, alert]);
+
+  return (
+    <Fragment>
+      <MetaData title="Payment" />
+      <CheckoutSteps activeStep={2} />
+      <div className="paymentContainer">
+        <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
+          <Typography>Payment Info</Typography>
+          <div>
+            <select
+              required
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="pending">Cash On Delivery</option>
+              <option value="success">Online</option>
+            </select>
+          </div>
+
+          <input
+            type="submit"
+            value={`Pay - ₹${orderInfo && orderInfo.totalPrice}`}
+            ref={payBtn}
+            className="paymentFormBtn"
+          />
+        </form>
+      </div>
+    </Fragment>
+  );
 };
 
 export default Payment;

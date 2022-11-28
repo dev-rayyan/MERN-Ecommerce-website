@@ -1,4 +1,7 @@
 * {
-	margin: 0;
-	scroll-behavior: smooth;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+a:hover {
+  text-decoration: none;
 }

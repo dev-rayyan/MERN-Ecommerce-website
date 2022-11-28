@@ -6,205 +6,193 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login, register } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import $ from "jquery";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faLinkedin,
+  faGooglePlus,
+} from "@fortawesome/free-brands-svg-icons";
 
 const LoginSignUp = () => {
-	const dispatch = useDispatch();
-	const alert = useAlert();
-	const navigate = useNavigate();
-	const location = useLocation();
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-	const { error, loading, isAuthenticated } = useSelector(
-		(state) => state.user
-	);
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
 
-	const [user, setUser] = useState({
-		name: "",
-		email: "",
-		password: "",
-	});
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-	const { name, email, password } = user;
-	const [avatar, setAvatar] = useState();
-	const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+  const { name, email, password } = user;
 
-	const [loginEmail, setLoginEmail] = useState("");
-	const [loginPassword, setLoginPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
-	const loginSubmit = (e) => {
-		e.preventDefault();
-		dispatch(login(loginEmail, loginPassword));
-	};
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(loginEmail, loginPassword));
+  };
 
-	const registerSubmit = (e) => {
-		e.preventDefault();
+  const registerSubmit = (e) => {
+    e.preventDefault();
 
-		const myForm = new FormData();
+    const myForm = new FormData();
 
-		myForm.set("name", name);
-		myForm.set("email", email);
-		myForm.set("password", password);
-		myForm.set("avatar", avatar);
-		dispatch(register(myForm));
-	};
+    myForm.set("name", name);
+    myForm.set("email", email);
+    myForm.set("password", password);
+    dispatch(register(myForm));
+  };
 
-	const registerDataChange = (e) => {
-		if (e.target.name === "avatar") {
-			const reader = new FileReader();
+  const registerDataChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
-			reader.onload = () => {
-				setAvatarPreview(reader.result);
-				setAvatar(reader.result);
-			};
+  const redirect = location.search ? location.search.split("=")[1] : "/profile";
 
-			reader.readAsDataURL(e.target.files[0]);
-		} else {
-			setUser({ ...user, [e.target.name]: e.target.value });
-		}
-	};
+  useEffect(() => {
+    $("#signUp").on("click", function () {
+      $("#container").addClass("right-panel-active");
+    });
+    $("#signIn").on("click", function () {
+      $("#container").removeClass("right-panel-active");
+    });
 
-	const redirect = location.search ? location.search.split("=")[1] : "/account";
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+      navigate(redirect);
+    }
+  }, [dispatch, error, alert, isAuthenticated, navigate, redirect]);
 
-	useEffect(() => {
-		if (error) {
-			alert.error(error);
-			dispatch(clearErrors());
-		}
-		if (isAuthenticated) {
-			navigate(redirect);
-		}
-	}, [dispatch, error, alert, isAuthenticated, navigate, redirect]);
+  return (
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Fragment>
+          <div className="LoginSignUpContainer">
+            <Link className="backtohome" to="/">
+              <FontAwesomeIcon icon={faArrowLeft} /> Back to Home
+            </Link>
+            <div class="login-container" id="container">
+              <div class="form-container sign-up-container">
+                <form className="login-form" onSubmit={registerSubmit}>
+                  <h1>Create Account</h1>
+                  <div class="social-container">
+                    <a href="#" class="social">
+                      <FontAwesomeIcon icon={faFacebook} />
+                    </a>
+                    <a href="#" class="social">
+                      <FontAwesomeIcon icon={faGooglePlus} />
+                    </a>
+                    <a href="#" class="social">
+                      <FontAwesomeIcon icon={faLinkedin} />
+                    </a>
+                  </div>
+                  <span>or use your email for registration</span>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    required
+                    name="name"
+                    className="login-input"
+                    value={name}
+                    onChange={registerDataChange}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    name="email"
+                    className="login-input"
+                    value={email}
+                    onChange={registerDataChange}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    required
+                    className="login-input"
+                    value={password}
+                    onChange={registerDataChange}
+                  />
 
-	window.onload = function () {
-		const loginBtn = document.getElementById("login");
-		const signupBtn = document.getElementById("signup");
-
-		loginBtn.addEventListener("click", (e) => {
-			let parent = e.target.parentNode.parentNode;
-			Array.from(e.target.parentNode.parentNode.classList).find((element) => {
-				if (element !== "slide-up") {
-					parent.classList.add("slide-up");
-				} else {
-					signupBtn.parentNode.classList.add("slide-up");
-					parent.classList.remove("slide-up");
-				}
-			});
-		});
-
-		signupBtn.addEventListener("click", (e) => {
-			let parent = e.target.parentNode;
-			Array.from(e.target.parentNode.classList).find((element) => {
-				if (element !== "slide-up") {
-					parent.classList.add("slide-up");
-				} else {
-					loginBtn.parentNode.parentNode.classList.add("slide-up");
-					parent.classList.remove("slide-up");
-				}
-			});
-		});
-	};
-	return (
-		<Fragment>
-			{loading ? (
-				<Loader />
-			) : (
-				<Fragment>
-					<div className="LoginSignUpContainer">
-						<div className="form-structor">
-							<div className="signup">
-								<h2 className="form-title" id="signup">
-									<span>or</span>Sign up
-								</h2>
-								<form onSubmit={registerSubmit} encType="multipart/form-data">
-									<div className="form-holder">
-										<div>
-											<input
-												type="text"
-												placeholder="Name"
-												required
-												name="name"
-												className="input"
-												value={name}
-												onChange={registerDataChange}
-											/>
-										</div>
-										<div>
-											<input
-												type="email"
-												placeholder="Email"
-												required
-												name="email"
-												className="input"
-												value={email}
-												onChange={registerDataChange}
-											/>
-										</div>
-										<div>
-											<input
-												type="password"
-												placeholder="Password"
-												name="password"
-												className="input"
-												required
-												value={password}
-												onChange={registerDataChange}
-											/>
-										</div>
-										<div
-											className="row input m-0"
-											style={{ height: "70px", alignItems: "center" }}
-										>
-											<input
-												type="file"
-												name="avatar"
-												className="col p-0"
-												accept="image/*"
-												onChange={registerDataChange}
-											/>
-											<img
-												id="registerImage"
-												src={avatarPreview}
-												alt="Avatar Preview"
-												className="col p-0"
-											/>
-										</div>
-									</div>
-									<input type="submit" value="Sign Up" className="submit-btn" />
-								</form>
-							</div>
-							<div className="login slide-up">
-								<div className="center">
-									<h2 className="form-title" id="login">
-										<span>or</span>Log in
-									</h2>
-									<form onSubmit={loginSubmit}>
-										<div className="form-holder">
-											<input
-												type="email"
-												placeholder="Email"
-												required
-												className="input"
-												value={loginEmail}
-												onChange={(e) => setLoginEmail(e.target.value)}
-											/>
-											<input
-												type="password"
-												placeholder="Password"
-												required
-												className="input"
-												value={loginPassword}
-												onChange={(e) => setLoginPassword(e.target.value)}
-											/>
-										</div>
-										<input type="submit" value="Login" className="submit-btn" />
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</Fragment>
-			)}
-		</Fragment>
-	);
+                  <input type="submit" value="Sign Up" className="submit-btn" />
+                </form>
+              </div>
+              <div class="form-container sign-in-container">
+                <form className="login-form" onSubmit={loginSubmit}>
+                  <h1>Sign in</h1>
+                  <div class="social-container">
+                    <a href="#" class="social">
+                      <FontAwesomeIcon icon={faFacebook} />
+                    </a>
+                    <a href="#" class="social">
+                      <FontAwesomeIcon icon={faGooglePlus} />
+                    </a>
+                    <a href="#" class="social">
+                      <FontAwesomeIcon icon={faLinkedin} />
+                    </a>
+                  </div>
+                  <span>or use your account</span>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    className="login-input"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    required
+                    className="login-input"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                  />
+                  <a href="#">Forgot your password?</a>
+                  <input type="submit" value="Sign In" className="submit-btn" />
+                </form>
+              </div>
+              <div class="overlay-container">
+                <div class="overlay">
+                  <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>
+                      To keep connected with us please login with your personal
+                      info
+                    </p>
+                    <button class="ghost submit-btn" id="signIn">
+                      Sign In
+                    </button>
+                  </div>
+                  <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost submit-btn" id="signUp">
+                      Sign Up
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Fragment>
+      )}
+    </Fragment>
+  );
 };
 
 export default LoginSignUp;

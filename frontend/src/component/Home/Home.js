@@ -49,8 +49,8 @@ const Home = () => {
                 <a href="#container" className="clip-each clip-gradient">
                   <div className="clip-caption">Products</div>
                 </a>
-                <Link to="/account" className="clip-each clip-border">
-                  <div className="clip-caption">Accounts</div>
+                <Link to="/profile" className="clip-each clip-border">
+                  <div className="clip-caption">Profile</div>
                 </Link>
               </div>
 

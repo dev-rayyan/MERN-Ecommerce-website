@@ -80,6 +80,7 @@ const Dashboard = () => {
   var newList = [];
   var newUser = [];
   var itemsSold = 0;
+  var itemsSoldTotalPrice = 0;
 
   orders &&
     orders.forEach((order) => {
@@ -90,6 +91,7 @@ const Dashboard = () => {
 
   orders &&
     orders.forEach((order) => {
+      itemsSoldTotalPrice += order.totalPrice;
       users &&
         users.forEach((userData) => {
           if (order.user === userData._id) {
@@ -105,11 +107,10 @@ const Dashboard = () => {
         user: newUser,
       });
     });
-
+  console.log(Date.now());
   return (
     <div className="dashboard">
       <MetaData title="Dashboard - Admin Panel" />
-      <Sidebar />
 
       <div className="dashboardContainer">
         <div class="content">
@@ -606,7 +607,9 @@ const Dashboard = () => {
                     </div>
                     <div class="col-6 col-md-4 border-200 border-md-200 border-bottom border-md-bottom-0 border-md-end pt-4 pb-md-0 ps-3 ps-md-0">
                       <h6 class="pb-1 text-700">Gross sale </h6>
-                      <p class="font-sans-serif lh-1 mb-1 fs-2">$100.26 </p>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">
+                        Rs {itemsSoldTotalPrice}
+                      </p>
                       <div class="d-flex align-items-center">
                         <h6 class="fs--1 text-500 mb-0">$109.65 </h6>
                         <h6 class="fs--2 ps-3 mb-0 text-danger">
@@ -2070,37 +2073,6 @@ const Dashboard = () => {
               </div>
             </div>
           </footer>
-        </div>
-        <Typography component="h1">Dashboard</Typography>
-
-        <div className="dashboardSummary">
-          <div>
-            <p>
-              Total Amount <br /> ₹{totalAmount}
-            </p>
-          </div>
-          <div className="dashboardSummaryBox2">
-            <Link to="/admin/products">
-              <p>Product</p>
-              <p>{products && products.length}</p>
-            </Link>
-            <Link to="/admin/orders">
-              <p>Orders</p>
-              <p>{orders && orders.length}</p>
-            </Link>
-            <Link to="/admin/users">
-              <p>Users</p>
-              <p>{users && users.length}</p>
-            </Link>
-          </div>
-        </div>
-
-        <div className="lineChart">
-          <Line data={lineState} />
-        </div>
-
-        <div className="doughnutChart">
-          <Doughnut data={doughnutState} />
         </div>
       </div>
     </div>

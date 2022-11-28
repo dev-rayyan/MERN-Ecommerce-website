@@ -6,13 +6,6 @@ import Box from "@mui/material/Box";
 import TreeView from "@mui/lab/TreeView";
 import TreeItem, { treeItemClasses } from "@mui/lab/TreeItem";
 import Typography from "@mui/material/Typography";
-import MailIcon from "@mui/icons-material/Mail";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Label from "@mui/icons-material/Label";
-import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import InfoIcon from "@mui/icons-material/Info";
-import ForumIcon from "@mui/icons-material/Forum";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import {
@@ -73,15 +66,8 @@ function StyledTreeItem(props) {
           sx={{ display: "flex", alignItems: "center", px: 2, py: 1.5, pr: 0 }}
         >
           <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: "inherit", flexGrow: 1 }}
-          >
-            {labelText}
-          </Typography>
-          <Typography variant="caption" color="inherit">
-            {labelInfo}
-          </Typography>
+
+          {labelText}
         </Box>
       }
       style={{
@@ -142,7 +128,6 @@ export default function Sidebar() {
               nodeId="7"
               labelText="All Products"
               labelIcon={PostAdd}
-              labelInfo="3,566"
               color="#182330"
               bgColor="#edf2f9"
             />
@@ -152,7 +137,6 @@ export default function Sidebar() {
               nodeId="8"
               labelText="Create New Product"
               labelIcon={Add}
-              labelInfo="733"
               color="#182330"
               bgColor="#edf2f9"
             />
