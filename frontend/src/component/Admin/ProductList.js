@@ -72,6 +72,12 @@ const ProductList = ({ history }) => {
                       </th>
                       <th
                         class="sort pe-1 align-middle white-space-nowrap"
+                        data-sort="sku"
+                      >
+                        SKU
+                      </th>
+                      <th
+                        class="sort pe-1 align-middle white-space-nowrap"
                         data-sort="image"
                       >
                         Image
@@ -82,12 +88,7 @@ const ProductList = ({ history }) => {
                       >
                         Name
                       </th>
-                      <th
-                        class="sort pe-1 align-middle white-space-nowrap"
-                        data-sort="sku"
-                      >
-                        SKU
-                      </th>
+
                       <th
                         class="sort pe-1 align-middle white-space-nowrap "
                         data-sort="stock"
@@ -99,6 +100,12 @@ const ProductList = ({ history }) => {
                         data-sort="price"
                       >
                         Price
+                      </th>
+                      <th
+                        class="sort pe-1 align-middle white-space-nowrap text-end"
+                        data-sort="visibleOnSite"
+                      >
+                        Visible On Site
                       </th>
                       <th
                         class="sort pe-1 align-middle white-space-nowrap text-end"
@@ -123,20 +130,32 @@ const ProductList = ({ history }) => {
                               />
                             </div>
                           </td>
-                          <th class="align-middle white-space-nowrap image">
+                          <td class="align-middle white-space-nowrap sku">
+                            {item.SKU}
+                          </td>
+                          <td class="align-middle white-space-nowrap image">
                             <img src={item.images[0].url} alt={item.name} />
-                          </th>
+                          </td>
                           <td class="align-middle white-space-nowrap name">
                             {item.name}
                           </td>
-                          <td class="align-middle white-space-nowrap sku">
-                            {item._id}
-                          </td>
+
                           <td class="align-middle white-space-nowrap stock">
                             {item.Stock}
                           </td>
                           <td class="align-middle text-end amount">
                             Rs {item.price}
+                          </td>
+                          <td class="align-middle text-end visibleOnSite">
+                            {item.visibleOnSite === true ? (
+                              <span class="badge rounded-pill badge-soft-success">
+                                True
+                              </span>
+                            ) : (
+                              <span class="badge rounded-pill badge-soft-danger">
+                                False
+                              </span>
+                            )}
                           </td>
                           <td class="align-middle text-end createdAt">
                             {String(item.createdAt).substr(0, 10)}
@@ -174,9 +193,13 @@ const ProductList = ({ history }) => {
                                 class="dropdown-menu dropdown-menu-end border py-2"
                                 aria-labelledby="dropdown0"
                               >
-                                <a class="dropdown-item" href="#!">
+                                <Link
+                                  class="dropdown-item"
+                                  target="_blank"
+                                  to={`/product/${item._id}`}
+                                >
                                   View
-                                </a>
+                                </Link>
                                 <Link
                                   class="dropdown-item"
                                   to={`/admin/product/${item._id}`}

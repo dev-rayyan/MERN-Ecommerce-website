@@ -33,7 +33,7 @@ import { logout } from "../../../actions/userAction";
 const Header = () => {
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const alert = useAlert;
+  const alert = useAlert();
 
   function logoutUser() {
     dispatch(logout());

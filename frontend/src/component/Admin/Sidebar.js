@@ -17,6 +17,7 @@ import {
   Dashboard,
   People,
   RateReview,
+  CategoryRounded,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
@@ -136,6 +137,32 @@ export default function Sidebar() {
             <StyledTreeItem
               nodeId="8"
               labelText="Create New Product"
+              labelIcon={Add}
+              color="#182330"
+              bgColor="#edf2f9"
+            />
+          </Link>
+        </StyledTreeItem>
+        <StyledTreeItem
+          color="#182330"
+          bgColor="#edf2f9"
+          nodeId="3"
+          labelText="Categories"
+          labelIcon={CategoryRounded}
+        >
+          <Link to="/admin/products">
+            <StyledTreeItem
+              nodeId="7"
+              labelText="All Categories"
+              labelIcon={PostAdd}
+              color="#182330"
+              bgColor="#edf2f9"
+            />
+          </Link>
+          <Link to="/admin/product">
+            <StyledTreeItem
+              nodeId="8"
+              labelText="Create New Category"
               labelIcon={Add}
               color="#182330"
               bgColor="#edf2f9"

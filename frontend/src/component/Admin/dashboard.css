@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr 5fr;
 }
-th.image > img {
+td.image > img {
   height: 10%;
   width: 80px;
 }
