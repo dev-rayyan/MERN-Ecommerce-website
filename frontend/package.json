@@ -7,6 +7,7 @@
 		"@emotion/styled": "^11.10.5",
 		"@fortawesome/fontawesome-svg-core": "^6.2.0",
 		"@fortawesome/free-brands-svg-icons": "^6.2.1",
+		"@fortawesome/free-regular-svg-icons": "^6.2.1",
 		"@fortawesome/free-solid-svg-icons": "^6.2.0",
 		"@fortawesome/react-fontawesome": "^0.2.0",
 		"@mui/icons-material": "^5.10.9",
@@ -21,9 +22,11 @@
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
 		"axios": "^1.1.2",
+		"babel-plugin-macros": "^3.1.0",
 		"bootstrap": "^5.2.2",
 		"chart.js": "^3.9.1",
 		"country-state-city": "^3.1.2",
+		"font-awesome": "^4.7.0",
 		"jquery": "^3.6.1",
 		"overlay-navbar": "^1.2.3",
 		"react": "^18.2.0",
@@ -37,6 +40,7 @@
 		"react-js-pagination": "^3.0.3",
 		"react-material-ui-carousel": "^3.4.2",
 		"react-popper": "^2.3.0",
+		"react-pro-sidebar": "^1.0.0-alpha.9",
 		"react-redux": "^8.0.4",
 		"react-router-dom": "^6.4.2",
 		"react-scripts": "5.0.1",
@@ -70,5 +74,8 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "http://192.168.100.13:4000"
+	"proxy": "http://192.168.100.13:4000",
+	"devDependencies": {
+		"react-script-tag": "^1.1.2"
+	}
 }
