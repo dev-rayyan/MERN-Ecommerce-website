@@ -16,100 +16,104 @@ import "./Admin.css";
 
 const admin = () => {
   return (
-    <div className="admin-panel-container">
+    <div class="page-wrapper chiller-theme toggled">
       <Sidebar />
-      <Routes>
-        <Route
-          isAdmin={true}
-          exact
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/products"
-          element={
-            <ProtectedRoute>
-              <ProductList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/product"
-          element={
-            <ProtectedRoute>
-              <NewProduct />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/product/:id"
-          element={
-            <ProtectedRoute>
-              <UpdateProduct />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/orders"
-          element={
-            <ProtectedRoute>
-              <OrderList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/order/:id"
-          element={
-            <ProtectedRoute>
-              <OrderDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/users"
-          element={
-            <ProtectedRoute>
-              <UsersList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/user/:id"
-          element={
-            <ProtectedRoute>
-              <UpdateUser />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          isAdmin={true}
-          exact
-          path="/reviews"
-          element={
-            <ProtectedRoute>
-              <ProductReviews />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <main class="page-content">
+        <div class="container-fluid bg-200">
+          <Routes>
+            <Route
+              isAdmin={true}
+              exact
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <ProductList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/product"
+              element={
+                <ProtectedRoute>
+                  <NewProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/product/:id"
+              element={
+                <ProtectedRoute>
+                  <UpdateProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <OrderList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/order/:id"
+              element={
+                <ProtectedRoute>
+                  <OrderDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <UsersList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/user/:id"
+              element={
+                <ProtectedRoute>
+                  <UpdateUser />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/reviews"
+              element={
+                <ProtectedRoute>
+                  <ProductReviews />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+      </main>
     </div>
   );
 };
