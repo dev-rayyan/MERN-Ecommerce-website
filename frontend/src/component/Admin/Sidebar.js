@@ -1,30 +1,13 @@
 import * as React from "react";
 import "./sidebar.css";
-import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import TreeView from "@mui/lab/TreeView";
-import TreeItem, { treeItemClasses } from "@mui/lab/TreeItem";
-import Typography from "@mui/material/Typography";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import {
-  ExpandMore,
-  PostAdd,
-  Add,
-  ImportExport,
-  ListAlt,
-  Dashboard,
-  People,
-  RateReview,
-  CategoryRounded,
-} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Fragment } from "react";
 import Loader from "../layout/Loader/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
   const { user, isAuthenticated, loading } = useSelector((state) => state.user);
@@ -60,7 +43,7 @@ const Sidebar = () => {
     $("#show-sidebar").on("click", function () {
       $(".page-wrapper").addClass("toggled");
     });
-  }, [loading]);
+  }, [loading, isAuthenticated]);
 
   return (
     <Fragment>
@@ -75,21 +58,34 @@ const Sidebar = () => {
           <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
               <div class="sidebar-brand">
-                <a href="#">pro sidebar</a>
+                <Link to="/">
+                  {" "}
+                  <FontAwesomeIcon icon={faArrowLeft} className="me-2" /> Back
+                  to Home
+                </Link>
                 <div id="close-sidebar">
                   <i class="fas fa-times"></i>
                 </div>
               </div>
               <div class="sidebar-header">
                 <div class="user-pic" style={{ color: "#fff" }}>
-                  {/* <img src={} /> */}
+                  <img
+                    src={
+                      user.avatar && user.avatar.url
+                        ? user.avatar.url
+                        : "/Profile.png"
+                    }
+                    alt="Profile"
+                  />
                 </div>
                 <div class="user-info">
                   <span class="user-name">
                     {" "}
-                    <strong></strong>
+                    <strong>{user.name}</strong>
                   </span>
-                  <span class="user-role">Administrator</span>
+                  <span class="user-role">
+                    {user.role === "admin" ? "Administrator" : "Moderator"}
+                  </span>
                   <span class="user-status">
                     <i class="fa fa-circle"></i> <span>Online</span>
                   </span>
@@ -157,16 +153,53 @@ const Sidebar = () => {
                     </a>
                     <div class="sidebar-submenu">
                       <ul>
-                        <li>
+                        <li class="sidebar-sub-dropdown">
                           <a href="#">
-                            Products <span>Pro</span>
+                            <i class="fas fa-warehouse"></i>
+                            <span>Products</span>
                           </a>
+                          <div class="sidebar-sub-submenu">
+                            <ul>
+                              <li>
+                                <a href="#">Add Product</a>
+                              </li>
+                              <li>
+                                <a href="#">All Products</a>
+                              </li>
+                            </ul>
+                          </div>
                         </li>
-                        <li>
-                          <a href="#">Orders</a>
+                        <li class="sidebar-sub-dropdown">
+                          <a href="#">
+                            <i class="fas fa-th-large"></i>
+                            <span>Categories</span>
+                          </a>
+                          <div class="sidebar-sub-submenu">
+                            <ul>
+                              <li>
+                                <a href="#">Add Category</a>
+                              </li>
+                              <li>
+                                <a href="#">All Categories</a>
+                              </li>
+                            </ul>
+                          </div>
                         </li>
-                        <li>
-                          <a href="#">Credit cart</a>
+                        <li class="sidebar-sub-dropdown">
+                          <a href="#">
+                            <i class="fas fa-wallet"></i>
+                            <span>Orders</span>
+                          </a>
+                          <div class="sidebar-sub-submenu">
+                            <ul>
+                              <li>
+                                <a href="#">Update Order</a>
+                              </li>
+                              <li>
+                                <a href="#">All Orders</a>
+                              </li>
+                            </ul>
+                          </div>
                         </li>
                       </ul>
                     </div>
