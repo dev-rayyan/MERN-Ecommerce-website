@@ -161,10 +161,10 @@ const Sidebar = () => {
                           <div class="sidebar-sub-submenu">
                             <ul>
                               <li>
-                                <a href="#">Add Product</a>
+                                <Link to="/admin/product">Add Product</Link>
                               </li>
                               <li>
-                                <a href="#">All Products</a>
+                                <Link to="/admin/products">All Product</Link>
                               </li>
                             </ul>
                           </div>
@@ -177,10 +177,12 @@ const Sidebar = () => {
                           <div class="sidebar-sub-submenu">
                             <ul>
                               <li>
-                                <a href="#">Add Category</a>
+                                <Link to="/admin/category">Add Category</Link>
                               </li>
                               <li>
-                                <a href="#">All Categories</a>
+                                <Link to="/admin/categories">
+                                  All Categories
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -193,13 +195,19 @@ const Sidebar = () => {
                           <div class="sidebar-sub-submenu">
                             <ul>
                               <li>
-                                <a href="#">Update Order</a>
+                                <Link to="/admin/order/:id">Update Order</Link>
                               </li>
                               <li>
-                                <a href="#">All Orders</a>
+                                <Link to="/admin/orders">All Orders</Link>
                               </li>
                             </ul>
                           </div>
+                        </li>
+                        <li>
+                          <Link to="/admin/users">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                          </Link>
                         </li>
                       </ul>
                     </div>
