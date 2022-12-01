@@ -177,7 +177,7 @@ const OrderList = () => {
                         {item.orderStatus}
                       </td>
                       <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                        {item.paymentStatus === "succeeded" ? (
+                        {item.paymentStatus === "success" ? (
                           <span class="badge badge rounded-pill badge-soft-success">
                             Success
                             <svg

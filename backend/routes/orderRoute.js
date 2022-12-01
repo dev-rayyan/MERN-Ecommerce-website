@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const {
-	newOrder,
-	getSingleOrder,
-	myOrders,
-	getAllOrders,
-	updateOrder,
-	deleteOrder,
+  newOrder,
+  getSingleOrder,
+  myOrders,
+  getAllOrders,
+  updateOrder,
+  deleteOrder,
+  getTodayOrders,
 } = require("../controllers/orderController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
@@ -17,12 +18,16 @@ router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
 router.route("/orders/me").get(isAuthenticatedUser, myOrders);
 
 router
-	.route("/admin/orders/")
-	.get(isAuthenticatedUser, authorizeRoles("admin"), getAllOrders);
+  .route("/admin/orders/")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getAllOrders);
 
 router
-	.route("/admin/order/:id")
-	.put(isAuthenticatedUser, authorizeRoles("admin"), updateOrder)
-	.delete(isAuthenticatedUser, authorizeRoles("admin"), deleteOrder);
+  .route("/admin/orders/today")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getTodayOrders);
+
+router
+  .route("/admin/order/:id")
+  .put(isAuthenticatedUser, authorizeRoles("admin"), updateOrder)
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteOrder);
 
 module.exports = router;

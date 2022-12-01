@@ -64,16 +64,26 @@ exports.myOrders = catchAsyncErrors(async (req, res, next) => {
 exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
   const orders = await Order.find().sort({ $natural: -1 });
 
-  let totalAmount = 0;
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+});
 
-  orders.forEach((order) => {
-    totalAmount += order.totalPrice;
+// Get Today's Orders -- Admin
+exports.getTodayOrders = catchAsyncErrors(async (req, res, next) => {
+  var start = new Date();
+  start.setHours(0, 0, 0, 0);
+
+  var end = new Date();
+  end.setHours(23, 59, 59, 999);
+  const todayOrders = await Order.find({
+    createdAt: { $gte: start, $lt: end },
   });
 
   res.status(200).json({
     success: true,
-    totalAmount,
-    orders,
+    todayOrders,
   });
 });
 

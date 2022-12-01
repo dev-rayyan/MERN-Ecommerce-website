@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdminProduct } from "../../actions/productAction";
-import { getAllOrders } from "../../actions/orderAction.js";
+import { getAllOrders, getTodayOrders } from "../../actions/orderAction.js";
 import { getAllUsers } from "../../actions/userAction.js";
 import MetaData from "../layout/MetaData";
 import { Chart, registerables } from "chart.js";
@@ -34,6 +34,8 @@ const Dashboard = () => {
 
   const { users } = useSelector((state) => state.allUsers);
 
+  const { todayOrders } = useSelector((state) => state.todayOrders);
+
   let outOfStock = 0;
 
   products &&
@@ -47,6 +49,7 @@ const Dashboard = () => {
     dispatch(getAdminProduct());
     dispatch(getAllOrders());
     dispatch(getAllUsers());
+    dispatch(getTodayOrders());
   }, [dispatch]);
 
   let totalAmount = 0;
@@ -81,6 +84,9 @@ const Dashboard = () => {
   var newUser = [];
   var itemsSold = 0;
   var itemsSoldTotalPrice = 0;
+  var totalOrdersProcessing = 0;
+  var todaySales = 0;
+  var pendingPayments = 0;
 
   orders &&
     orders.forEach((order) => {
@@ -89,8 +95,18 @@ const Dashboard = () => {
       });
     });
 
+  todayOrders &&
+    todayOrders.forEach((order) => {
+      todaySales += order.totalPrice;
+    });
   orders &&
     orders.forEach((order) => {
+      if (order.orderStatus === "Processing") {
+        totalOrdersProcessing++;
+      }
+      if (order.paymentInfo.status === "pending") {
+        pendingPayments++;
+      }
       itemsSoldTotalPrice += order.totalPrice;
       users &&
         users.forEach((userData) => {
@@ -135,7 +151,7 @@ const Dashboard = () => {
                         </div>
                         <div class="ps-3">
                           <p class="text-600 fs--1">Today’s total sales </p>
-                          <h4 class="text-800 mb-0">$21,349.29 </h4>
+                          <h4 class="text-800 mb-0">Rs {todaySales}</h4>
                         </div>
                       </div>
                     </div>
@@ -212,13 +228,16 @@ const Dashboard = () => {
                                 ></path>
                               </svg>
                               <p class="fs--1 ps-2 mb-0">
-                                <strong>7 orders</strong> have payments that
-                                need to be captured
+                                <strong>{pendingPayments} orders</strong> have
+                                payments that need to be captured
                               </p>
                             </div>
                           </div>
                           <div class="col-auto d-flex align-items-center">
-                            <a class="alert-link fs--1 fw-medium" href="#!">
+                            <Link
+                              class="alert-link fs--1 fw-medium"
+                              to="/admin/orders"
+                            >
                               View payments
                               <svg
                                 class="svg-inline--fa fa-chevron-right fa-w-10 ms-1 fs--2"
@@ -236,7 +255,7 @@ const Dashboard = () => {
                                   d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
                                 ></path>
                               </svg>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </li>
@@ -261,12 +280,16 @@ const Dashboard = () => {
                                 ></path>
                               </svg>
                               <p class="fs--1 ps-2 mb-0">
-                                <strong>50+ orders</strong> need to be fulfilled
+                                <strong>{totalOrdersProcessing} orders</strong>{" "}
+                                need to be fulfilled
                               </p>
                             </div>
                           </div>
                           <div class="col-auto d-flex align-items-center">
-                            <a class="alert-link fs--1 fw-medium" href="#!">
+                            <Link
+                              class="alert-link fs--1 fw-medium"
+                              to="/admin/orders"
+                            >
                               View orders
                               <svg
                                 class="svg-inline--fa fa-chevron-right fa-w-10 ms-1 fs--2"
@@ -284,7 +307,7 @@ const Dashboard = () => {
                                   d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
                                 ></path>
                               </svg>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </li>
@@ -515,7 +538,7 @@ const Dashboard = () => {
             <div class="card py-3 mb-3">
               <div class="card-body py-3">
                 <div class="row g-0">
-                  <div class="col-6 col-md-4 border-200 border-bottom border-end pb-4">
+                  <div class="col-6 col-md-6 border-200 border-bottom border-end pb-4">
                     <h6 class="pb-1 text-700">Orders </h6>
                     <p class="font-sans-serif lh-1 mb-1 fs-2">
                       {orders && orders.length}
@@ -543,7 +566,7 @@ const Dashboard = () => {
                       </h6>
                     </div>
                   </div>
-                  <div class="col-6 col-md-4 border-200 border-md-200 border-bottom border-md-end pb-4 ps-3">
+                  <div class="col-6 col-md-6 border-200 border-md-200 border-bottom pb-4 ps-3">
                     <h6 class="pb-1 text-700">Items sold </h6>
 
                     <p class="font-sans-serif lh-1 mb-1 fs-2">{itemsSold}</p>
@@ -571,33 +594,7 @@ const Dashboard = () => {
                       </h6>
                     </div>
                   </div>
-                  <div class="col-6 col-md-4 border-200 border-bottom border-end border-md-end-0 pb-4 pt-4 pt-md-0 ps-md-3">
-                    <h6 class="pb-1 text-700">Refunds </h6>
-                    <p class="font-sans-serif lh-1 mb-1 fs-2">$145.65 </p>
-                    <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">13,675 </h6>
-                      <h6 class="fs--2 ps-3 mb-0 text-success">
-                        <svg
-                          class="svg-inline--fa fa-caret-up fa-w-10 me-1"
-                          aria-hidden="true"
-                          focusable="false"
-                          data-prefix="fas"
-                          data-icon="caret-up"
-                          role="img"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 320 512"
-                          data-fa-i2svg=""
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
-                          ></path>
-                        </svg>
-                        21.8%
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-4 border-200 border-md-200 border-bottom border-md-bottom-0 border-md-end pt-4 pb-md-0 ps-3 ps-md-0">
+                  <div class="col-6 col-md-6 border-200 border-md-200 border-bottom border-md-bottom-0 border-md-end pt-4 pb-md-0 ps-3 ps-md-0">
                     <h6 class="pb-1 text-700">Gross sale </h6>
                     <p class="font-sans-serif lh-1 mb-1 fs-2">
                       Rs {itemsSoldTotalPrice}
@@ -625,35 +622,11 @@ const Dashboard = () => {
                       </h6>
                     </div>
                   </div>
-                  <div class="col-6 col-md-4 border-200 border-md-bottom-0 border-end pt-4 pb-md-0 ps-md-3">
-                    <h6 class="pb-1 text-700">Shipping </h6>
-                    <p class="font-sans-serif lh-1 mb-1 fs-2">$365.53 </p>
-                    <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">13,675 </h6>
-                      <h6 class="fs--2 ps-3 mb-0 text-success">
-                        <svg
-                          class="svg-inline--fa fa-caret-up fa-w-10 me-1"
-                          aria-hidden="true"
-                          focusable="false"
-                          data-prefix="fas"
-                          data-icon="caret-up"
-                          role="img"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 320 512"
-                          data-fa-i2svg=""
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
-                          ></path>
-                        </svg>
-                        21.8%
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-4 pb-0 pt-4 ps-3">
+                  <div class="col-6 col-md-6 pb-0 pt-4 ps-3">
                     <h6 class="pb-1 text-700">Processing </h6>
-                    <p class="font-sans-serif lh-1 mb-1 fs-2">861 </p>
+                    <p class="font-sans-serif lh-1 mb-1 fs-2">
+                      {totalOrdersProcessing}
+                    </p>
                     <div class="d-flex align-items-center">
                       <h6 class="fs--1 text-500 mb-0">13,675 </h6>
                       <h6 class="fs--2 ps-3 mb-0 text-info">
@@ -1252,7 +1225,7 @@ const Dashboard = () => {
                               {item.orderItems}
                             </td>
                             <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                              {item.paymentStatus === "succeeded" ? (
+                              {item.paymentStatus === "success" ? (
                                 <span class="badge badge rounded-pill badge-soft-success">
                                   Success
                                   <svg
