@@ -8,6 +8,7 @@ const {
   updateOrder,
   deleteOrder,
   getTodayOrders,
+  getOrdersByDWM,
 } = require("../controllers/orderController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
@@ -22,8 +23,8 @@ router
   .get(isAuthenticatedUser, authorizeRoles("admin"), getAllOrders);
 
 router
-  .route("/admin/orders/today")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getTodayOrders);
+  .route("/admin/orders/dwm")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getOrdersByDWM);
 
 router
   .route("/admin/order/:id")

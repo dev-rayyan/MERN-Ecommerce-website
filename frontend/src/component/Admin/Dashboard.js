@@ -6,7 +6,12 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdminProduct } from "../../actions/productAction";
-import { getAllOrders, getTodayOrders } from "../../actions/orderAction.js";
+import {
+  getAllOrders,
+  getTodayOrders,
+  getWeekOrders,
+  getMonthOrders,
+} from "../../actions/orderAction.js";
 import { getAllUsers } from "../../actions/userAction.js";
 import MetaData from "../layout/MetaData";
 import { Chart, registerables } from "chart.js";
@@ -34,7 +39,7 @@ const Dashboard = () => {
 
   const { users } = useSelector((state) => state.allUsers);
 
-  const { todayOrders } = useSelector((state) => state.todayOrders);
+  const { dwmOrders } = useSelector((state) => state.dwmOrders);
 
   let outOfStock = 0;
 
@@ -50,6 +55,8 @@ const Dashboard = () => {
     dispatch(getAllOrders());
     dispatch(getAllUsers());
     dispatch(getTodayOrders());
+    dispatch(getWeekOrders());
+    dispatch(getMonthOrders());
   }, [dispatch]);
 
   let totalAmount = 0;
@@ -95,10 +102,10 @@ const Dashboard = () => {
       });
     });
 
-  todayOrders &&
-    todayOrders.forEach((order) => {
-      todaySales += order.totalPrice;
-    });
+  // todayOrders &&
+  //   todayOrders.forEach((order) => {
+  //     todaySales += order.totalPrice;
+  //   });
   orders &&
     orders.forEach((order) => {
       if (order.orderStatus === "Processing") {

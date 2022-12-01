@@ -70,20 +70,42 @@ exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Get Today's Orders -- Admin
-exports.getTodayOrders = catchAsyncErrors(async (req, res, next) => {
-  var start = new Date();
-  start.setHours(0, 0, 0, 0);
+// Get Orders by Daily/Weekly/Monthly -- Admin
+exports.getOrdersByDWM = catchAsyncErrors(async (req, res, next) => {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let first = today.getDate() - today.getDay();
+  let last = first + 6;
+  let firstday = new Date(today.setDate(first)).toUTCString();
+  let lastday = new Date(today.setDate(last)).toUTCString();
+  let firstDayMonth = new Date(today.setDate(1));
+  let lastDayMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  lastDayMonth.setHours(23, 59, 59, 0);
+  today = new Date().setHours(0, 0, 0, 0);
 
-  var end = new Date();
-  end.setHours(23, 59, 59, 999);
   const todayOrders = await Order.find({
-    createdAt: { $gte: start, $lt: end },
+    createdAt: {
+      $gte: today,
+    },
+  });
+  const weekOrders = await Order.find({
+    createdAt: {
+      $gte: firstday,
+      $lte: lastday,
+    },
+  });
+  const monthOrders = await Order.find({
+    createdAt: {
+      $gte: firstDayMonth,
+      $lte: lastDayMonth,
+    },
   });
 
   res.status(200).json({
     success: true,
     todayOrders,
+    weekOrders,
+    monthOrders,
   });
 });
 

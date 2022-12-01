@@ -21,6 +21,12 @@ import {
   TODAY_ORDERS_REQUEST,
   TODAY_ORDERS_SUCCESS,
   TODAY_ORDERS_FAIL,
+  WEEK_ORDERS_REQUEST,
+  WEEK_ORDERS_SUCCESS,
+  WEEK_ORDERS_FAIL,
+  MONTH_ORDERS_REQUEST,
+  MONTH_ORDERS_SUCCESS,
+  MONTH_ORDERS_FAIL,
 } from "../constants/orderConstants";
 
 import axios from "axios";
@@ -83,14 +89,36 @@ export const getTodayOrders = () => async (dispatch) => {
   try {
     dispatch({ type: TODAY_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/api/v1/admin/orders/today");
+    const { data } = await axios.get("/api/v1/admin/orders/dwm");
 
     dispatch({ type: TODAY_ORDERS_SUCCESS, payload: data.todayOrders });
   } catch (error) {
-    dispatch({
-      type: TODAY_ORDERS_FAIL,
-      payload: error.response.data.message,
-    });
+    dispatch({ type: TODAY_ORDERS_FAIL, payload: error.response.data.message });
+  }
+};
+
+// Get Weeks's Orders (admin)
+export const getWeekOrders = () => async (dispatch) => {
+  try {
+    dispatch({ type: WEEK_ORDERS_REQUEST });
+
+    const { data } = await axios.get("/api/v1/admin/orders/dwm");
+
+    dispatch({ type: WEEK_ORDERS_SUCCESS, payload: data.weekOrders });
+  } catch (error) {
+    dispatch({ type: WEEK_ORDERS_FAIL, payload: error.response.data.message });
+  }
+};
+// Get Month's Orders (admin)
+export const getMonthOrders = () => async (dispatch) => {
+  try {
+    dispatch({ type: MONTH_ORDERS_REQUEST });
+
+    const { data } = await axios.get("/api/v1/admin/orders/dwm");
+
+    dispatch({ type: MONTH_ORDERS_SUCCESS, payload: data.monthOrders });
+  } catch (error) {
+    dispatch({ type: MONTH_ORDERS_FAIL, payload: error.response.data.message });
   }
 };
 

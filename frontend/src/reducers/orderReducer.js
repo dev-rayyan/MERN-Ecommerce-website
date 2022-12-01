@@ -20,8 +20,15 @@ import {
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
   CLEAR_ERRORS,
-  TODAY_ORDERS_FAIL,
+  TODAY_ORDERS_REQUEST,
   TODAY_ORDERS_SUCCESS,
+  TODAY_ORDERS_FAIL,
+  WEEK_ORDERS_REQUEST,
+  WEEK_ORDERS_SUCCESS,
+  WEEK_ORDERS_FAIL,
+  MONTH_ORDERS_REQUEST,
+  MONTH_ORDERS_SUCCESS,
+  MONTH_ORDERS_FAIL,
 } from "../constants/orderConstants";
 
 export const newOrderReducer = (state = {}, action) => {
@@ -112,9 +119,14 @@ export const allOrdersReducer = (state = { orders: [] }, action) => {
   }
 };
 
-export const todayOrdersReducer = (state = { todayOrders: [] }, action) => {
+export const dwmOrdersReducer = (
+  state = { todayOrders: [], weekOrders: [], monthOrders: [] },
+  action
+) => {
   switch (action.type) {
-    case TODAY_ORDERS_FAIL:
+    case TODAY_ORDERS_REQUEST:
+    case WEEK_ORDERS_REQUEST:
+    case MONTH_ORDERS_REQUEST:
       return {
         loading: true,
       };
@@ -122,10 +134,25 @@ export const todayOrdersReducer = (state = { todayOrders: [] }, action) => {
     case TODAY_ORDERS_SUCCESS:
       return {
         loading: false,
+        ...state,
         todayOrders: action.payload,
+      };
+    case WEEK_ORDERS_SUCCESS:
+      return {
+        loading: false,
+        ...state,
+        weekOrders: action.payload,
+      };
+    case MONTH_ORDERS_SUCCESS:
+      return {
+        loading: false,
+        ...state,
+        monthOrders: action.payload,
       };
 
     case TODAY_ORDERS_FAIL:
+    case WEEK_ORDERS_FAIL:
+    case MONTH_ORDERS_FAIL:
       return {
         loading: false,
         error: action.payload,
