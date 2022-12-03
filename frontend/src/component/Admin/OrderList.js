@@ -235,7 +235,10 @@ const OrderList = () => {
                         Rs {item.totalPrice}
                       </td>
                       <td class="align-middle text-end createdAt">
-                        {String(item.createdAt).substr(0, 10)}
+                        {String(new Date(item.createdAt).toUTCString()).substr(
+                          5,
+                          11
+                        )}
                       </td>
                       <td class="align-middle white-space-nowrap text-end">
                         <div class="dropstart font-sans-serif position-static d-inline-block">

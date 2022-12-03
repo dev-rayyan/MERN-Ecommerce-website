@@ -112,39 +112,11 @@ const Sidebar = () => {
                   <li class="header-menu">
                     <span>General</span>
                   </li>
-                  <li class="sidebar-dropdown">
-                    <a href="#">
+                  <li>
+                    <Link to="/admin/dashboard">
                       <i class="fa fa-tachometer-alt"></i>
                       <span>Dashboard</span>
-                    </a>
-                    <div class="sidebar-submenu">
-                      <ul>
-                        <li class="sidebar-sub-dropdown">
-                          <a href="#">
-                            <span>Dashboard</span>
-                          </a>
-                          <div class="sidebar-sub-submenu">
-                            <ul>
-                              <li>
-                                <a href="#">Dashboard 1</a>
-                              </li>
-                              <li>
-                                <a href="#">Dashboard 2</a>
-                              </li>
-                              <li>
-                                <a href="#">Dashboard 3</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li>
-                          <a href="#">Dashboard 2</a>
-                        </li>
-                        <li>
-                          <a href="#">Dashboard 3</a>
-                        </li>
-                      </ul>
-                    </div>
+                    </Link>
                   </li>
                   <li class="sidebar-dropdown">
                     <a href="#">

@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./component/Admin/Dashboard.js";
 import ProductList from "./component/Admin/ProductList.js";
-import NewProduct from "./component/Admin/NewProduct.js";
+import AddProduct from "./component/Admin/AddProduct.js";
 import UpdateProduct from "./component/Admin/UpdateProduct.js";
 import OrderList from "./component/Admin/OrderList.js";
 import ProcessOrder from "./component/Admin/ProcessOrder.js";
@@ -47,7 +47,7 @@ const admin = () => {
               path="/product"
               element={
                 <ProtectedRoute>
-                  <NewProduct />
+                  <AddProduct />
                 </ProtectedRoute>
               }
             />

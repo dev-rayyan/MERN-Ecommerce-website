@@ -25,6 +25,7 @@ import {
   People,
   RateReview,
 } from "@mui/icons-material";
+import ReactEcharts from "echarts-for-react";
 
 Chart.register(...registerables);
 
@@ -95,19 +96,17 @@ const Dashboard = () => {
   var newUser = [];
   var totalItemsSold = 0;
   var todayItemsSold = 0;
+  var weekItemsSold = 0;
   var totalSales = 0;
   var totalOrdersProcessing = 0;
   var todaySales = 0;
   var weeklySales = 0;
   var monthlySales = 0;
   var pendingPayments = 0;
-
-  orders &&
-    orders.forEach((order) => {
-      order.orderItems.forEach((orderItem) => {
-        totalItemsSold += orderItem.quantity;
-      });
-    });
+  var monthlyChartXaxis = [];
+  var monthlyChartYaxis = [0];
+  var monthlyChartXaxisCounter = 0;
+  var monthlyChartYaxisCounter = 0;
 
   todayOrders &&
     todayOrders.forEach((order) => {
@@ -119,6 +118,9 @@ const Dashboard = () => {
 
   weekOrders &&
     weekOrders.forEach((order) => {
+      order.orderItems.forEach((orderItem) => {
+        weekItemsSold += orderItem.quantity;
+      });
       weeklySales += order.totalPrice;
     });
 
@@ -126,8 +128,18 @@ const Dashboard = () => {
     monthOrders.forEach((order) => {
       monthlySales += order.totalPrice;
     });
+
   orders &&
     orders.forEach((order) => {
+      monthlyChartXaxis[monthlyChartXaxisCounter] = String(
+        new Date(order.createdAt).toUTCString()
+      ).substr(5, 6);
+      monthlyChartYaxis[monthlyChartYaxisCounter] = order.totalPrice;
+      monthlyChartXaxisCounter++;
+      monthlyChartYaxisCounter++;
+      order.orderItems.forEach((orderItem) => {
+        totalItemsSold += orderItem.quantity;
+      });
       if (order.orderStatus === "Processing") {
         totalOrdersProcessing++;
       }
@@ -150,7 +162,29 @@ const Dashboard = () => {
         user: newUser,
       });
     });
-  console.log(Date.now());
+
+  const monthlyChart = {
+    tooltip: {
+      trigger: "axis",
+    },
+    xAxis: {
+      type: "category",
+      data: monthlyChartXaxis,
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: {
+        formatter: "Rs {value}",
+      },
+    },
+    series: [
+      {
+        data: monthlyChartYaxis,
+        symbolSize: 10,
+        type: "line",
+      },
+    ],
+  };
   return (
     <>
       <MetaData title="Dashboard - Admin Panel" />
@@ -544,8 +578,8 @@ const Dashboard = () => {
                               </svg>
                               {String(
                                 orders &&
-                                  todayOrders &&
-                                  (todayOrders.length / orders.length) * 100
+                                  weekOrders &&
+                                  (weekOrders.length / orders.length) * 100
                               ).substr(0, 4)}
                               %
                             </div>
@@ -585,7 +619,7 @@ const Dashboard = () => {
                     </p>
                     <div class="d-flex align-items-center">
                       <h6 class="fs--1 text-500 mb-0">
-                        {todayOrders && todayOrders.length}
+                        {weekOrders && weekOrders.length}
                       </h6>
                       <h6 class="fs--2 ps-3 mb-0 text-primary">
                         <svg
@@ -606,8 +640,8 @@ const Dashboard = () => {
                         </svg>
                         {String(
                           orders &&
-                            todayOrders &&
-                            (todayOrders.length / orders.length) * 100
+                            weekOrders &&
+                            (weekOrders.length / orders.length) * 100
                         ).substr(0, 4)}
                         %
                       </h6>
@@ -621,7 +655,7 @@ const Dashboard = () => {
                     </p>
 
                     <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">{todayItemsSold} </h6>
+                      <h6 class="fs--1 text-500 mb-0">{weekItemsSold} </h6>
                       <h6 class="fs--2 ps-3 mb-0 text-warning">
                         <svg
                           class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -639,7 +673,7 @@ const Dashboard = () => {
                             d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
                           ></path>
                         </svg>
-                        {String((todayItemsSold / totalItemsSold) * 100).substr(
+                        {String((weekItemsSold / totalItemsSold) * 100).substr(
                           0,
                           4
                         )}
@@ -653,7 +687,7 @@ const Dashboard = () => {
                       Rs {totalSales}
                     </p>
                     <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">Rs {todaySales}</h6>
+                      <h6 class="fs--1 text-500 mb-0">Rs {weeklySales}</h6>
                       <h6 class="fs--2 ps-3 mb-0 text-danger">
                         <svg
                           class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -671,7 +705,7 @@ const Dashboard = () => {
                             d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
                           ></path>
                         </svg>
-                        {String((todaySales / totalSales) * 100).substr(0, 4)}%
+                        {String((weeklySales / totalSales) * 100).substr(0, 4)}%
                       </h6>
                     </div>
                   </div>
@@ -681,7 +715,7 @@ const Dashboard = () => {
                       {totalOrdersProcessing}
                     </p>
                     <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                      <h6 class="fs--1 text-500 mb-0">2 </h6>
                       <h6 class="fs--2 ps-3 mb-0 text-info">
                         <svg
                           class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -714,42 +748,19 @@ const Dashboard = () => {
                   </div>
                   <div class="col-auto d-flex">
                     <div class="form-check mb-0 d-flex">
-                      <input
-                        class="form-check-input form-check-input-primary"
-                        id="ecommerceLastMonth"
-                        type="checkbox"
-                        checked="checked"
-                      />
                       <label
                         class="form-check-label ps-2 fs--2 text-600 mb-0"
                         for="ecommerceLastMonth"
                       >
                         Last Month
                         <span class="text-dark d-none d-md-inline">
-                          : $32,502.00
-                        </span>
-                      </label>
-                    </div>
-                    <div class="form-check mb-0 d-flex ps-0 ps-md-3">
-                      <input
-                        class="form-check-input ms-2 form-check-input-warning opacity-75"
-                        id="ecommercePrevYear"
-                        type="checkbox"
-                        checked="checked"
-                      />
-                      <label
-                        class="form-check-label ps-2 fs--2 text-600 mb-0"
-                        for="ecommercePrevYear"
-                      >
-                        Prev Year
-                        <span class="text-dark d-none d-md-inline">
-                          : $46,018.00
+                          : Rs {monthlySales}
                         </span>
                       </label>
                     </div>
                   </div>
                   <div class="col-auto">
-                    <div class="dropdown font-sans-serif btn-reveal-trigger">
+                    <div class="dropdown font-sans-serif btn-reveal-trigger d-flex justify-content-end">
                       <button
                         class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
                         type="button"
@@ -796,57 +807,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div class="card-body pe-xxl-0">
-                <div
-                  class="echart-line-total-sales-ecommerce"
-                  data-echart-responsive="true"
-                  data-options='{"optionOne":"ecommerceLastMonth","optionTwo":"ecommercePrevYear"}'
-                  _echarts_instance_="ec_1668765474996"
-                >
-                  <div>
-                    <canvas
-                      data-zr-dom-id="zr_0"
-                      width="571"
-                      height="299"
-                    ></canvas>
-                  </div>
-                  <div class="">
-                    <svg
-                      class="svg-inline--fa fa-circle fa-w-16"
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="circle"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                      data-fa-i2svg=""
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      ></path>
-                    </svg>
-                    <span class="text-600">Last Month: 30</span>
-                    <br />
-                    <svg
-                      class="svg-inline--fa fa-circle fa-w-16"
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="circle"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                      data-fa-i2svg=""
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      ></path>
-                    </svg>
-                    <span class="text-600">Previous Year: 60</span>
-                  </div>
-                </div>
+                <ReactEcharts option={monthlyChart} />
               </div>
             </div>
           </div>

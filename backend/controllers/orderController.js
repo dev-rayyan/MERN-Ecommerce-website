@@ -62,7 +62,7 @@ exports.myOrders = catchAsyncErrors(async (req, res, next) => {
 
 // Get All Orders -- Admin
 exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find().sort({ $natural: -1 });
+  const orders = await Order.find();
 
   res.status(200).json({
     success: true,
