@@ -76,10 +76,27 @@ exports.getOrdersByDWM = catchAsyncErrors(async (req, res, next) => {
   today.setHours(0, 0, 0, 0);
   let first = today.getDate() - today.getDay();
   let last = first + 6;
-  let firstday = new Date(today.setDate(first)).toUTCString();
+  let firstday = 0;
+  if (first < 0) {
+    firstday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      first
+    ).toUTCString();
+  } else {
+    firstday = new Date(today.setDate(first)).toUTCString();
+  }
   let lastday = new Date(today.setDate(last)).toUTCString();
-  let firstDayMonth = new Date(today.setDate(1));
-  let lastDayMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  let firstDayMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    today.getDate()
+  );
+  let lastDayMonth = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
   lastDayMonth.setHours(23, 59, 59, 0);
   today = new Date().setHours(0, 0, 0, 0);
 

@@ -133,20 +133,20 @@ export const dwmOrdersReducer = (
 
     case TODAY_ORDERS_SUCCESS:
       return {
-        loading: false,
         ...state,
+        loading: false,
         todayOrders: action.payload,
       };
     case WEEK_ORDERS_SUCCESS:
       return {
-        loading: false,
         ...state,
+        loading: false,
         weekOrders: action.payload,
       };
     case MONTH_ORDERS_SUCCESS:
       return {
-        loading: false,
         ...state,
+        loading: false,
         monthOrders: action.payload,
       };
 

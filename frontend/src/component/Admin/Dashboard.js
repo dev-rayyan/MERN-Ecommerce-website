@@ -39,7 +39,11 @@ const Dashboard = () => {
 
   const { users } = useSelector((state) => state.allUsers);
 
-  const { dwmOrders } = useSelector((state) => state.dwmOrders);
+  const { todayOrders } = useSelector((state) => state.dwmOrders);
+
+  const { weekOrders } = useSelector((state) => state.dwmOrders);
+
+  const { monthOrders } = useSelector((state) => state.dwmOrders);
 
   let outOfStock = 0;
 
@@ -89,23 +93,39 @@ const Dashboard = () => {
   };
   var newList = [];
   var newUser = [];
-  var itemsSold = 0;
-  var itemsSoldTotalPrice = 0;
+  var totalItemsSold = 0;
+  var todayItemsSold = 0;
+  var totalSales = 0;
   var totalOrdersProcessing = 0;
   var todaySales = 0;
+  var weeklySales = 0;
+  var monthlySales = 0;
   var pendingPayments = 0;
 
   orders &&
     orders.forEach((order) => {
       order.orderItems.forEach((orderItem) => {
-        itemsSold += orderItem.quantity;
+        totalItemsSold += orderItem.quantity;
       });
     });
 
-  // todayOrders &&
-  //   todayOrders.forEach((order) => {
-  //     todaySales += order.totalPrice;
-  //   });
+  todayOrders &&
+    todayOrders.forEach((order) => {
+      order.orderItems.forEach((orderItem) => {
+        todayItemsSold += orderItem.quantity;
+      });
+      todaySales += order.totalPrice;
+    });
+
+  weekOrders &&
+    weekOrders.forEach((order) => {
+      weeklySales += order.totalPrice;
+    });
+
+  monthOrders &&
+    monthOrders.forEach((order) => {
+      monthlySales += order.totalPrice;
+    });
   orders &&
     orders.forEach((order) => {
       if (order.orderStatus === "Processing") {
@@ -114,7 +134,7 @@ const Dashboard = () => {
       if (order.paymentInfo.status === "pending") {
         pendingPayments++;
       }
-      itemsSoldTotalPrice += order.totalPrice;
+      totalSales += order.totalPrice;
       users &&
         users.forEach((userData) => {
           if (order.user === userData._id) {
@@ -364,9 +384,15 @@ const Dashboard = () => {
                       <div class="card-body d-flex flex-column justify-content-end">
                         <div class="row">
                           <div class="col">
-                            <p class="font-sans-serif lh-1 mb-1 fs-2">$47K</p>
+                            <p class="font-sans-serif lh-1 mb-1 fs-2">
+                              Rs {weeklySales}
+                            </p>
                             <span class="badge badge-soft-success rounded-pill fs--2">
-                              +3.5%
+                              +
+                              {String(
+                                (weeklySales / monthlySales) * 100
+                              ).substr(0, 4)}
+                              %
                             </span>
                           </div>
                           <div class="col-auto ps-0">
@@ -496,7 +522,9 @@ const Dashboard = () => {
                       <div class="card-body">
                         <div class="row align-items-end">
                           <div class="col">
-                            <p class="font-sans-serif lh-1 mb-1 fs-2">58.4K</p>
+                            <p class="font-sans-serif lh-1 mb-1 fs-2">
+                              {orders && orders.length}
+                            </p>
                             <div class="badge badge-soft-primary rounded-pill fs--2">
                               <svg
                                 class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -514,7 +542,12 @@ const Dashboard = () => {
                                   d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
                                 ></path>
                               </svg>
-                              13.6%
+                              {String(
+                                orders &&
+                                  todayOrders &&
+                                  (todayOrders.length / orders.length) * 100
+                              ).substr(0, 4)}
+                              %
                             </div>
                           </div>
                           <div class="col-auto ps-0">
@@ -551,7 +584,9 @@ const Dashboard = () => {
                       {orders && orders.length}
                     </p>
                     <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                      <h6 class="fs--1 text-500 mb-0">
+                        {todayOrders && todayOrders.length}
+                      </h6>
                       <h6 class="fs--2 ps-3 mb-0 text-primary">
                         <svg
                           class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -569,17 +604,24 @@ const Dashboard = () => {
                             d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
                           ></path>
                         </svg>
-                        21.8%
+                        {String(
+                          orders &&
+                            todayOrders &&
+                            (todayOrders.length / orders.length) * 100
+                        ).substr(0, 4)}
+                        %
                       </h6>
                     </div>
                   </div>
                   <div class="col-6 col-md-6 border-200 border-md-200 border-bottom pb-4 ps-3">
                     <h6 class="pb-1 text-700">Items sold </h6>
 
-                    <p class="font-sans-serif lh-1 mb-1 fs-2">{itemsSold}</p>
+                    <p class="font-sans-serif lh-1 mb-1 fs-2">
+                      {totalItemsSold}
+                    </p>
 
                     <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                      <h6 class="fs--1 text-500 mb-0">{todayItemsSold} </h6>
                       <h6 class="fs--2 ps-3 mb-0 text-warning">
                         <svg
                           class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -597,17 +639,21 @@ const Dashboard = () => {
                             d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
                           ></path>
                         </svg>
-                        21.8%
+                        {String((todayItemsSold / totalItemsSold) * 100).substr(
+                          0,
+                          4
+                        )}
+                        %
                       </h6>
                     </div>
                   </div>
                   <div class="col-6 col-md-6 border-200 border-md-200 border-bottom border-md-bottom-0 border-md-end pt-4 pb-md-0 ps-3 ps-md-0">
                     <h6 class="pb-1 text-700">Gross sale </h6>
                     <p class="font-sans-serif lh-1 mb-1 fs-2">
-                      Rs {itemsSoldTotalPrice}
+                      Rs {totalSales}
                     </p>
                     <div class="d-flex align-items-center">
-                      <h6 class="fs--1 text-500 mb-0">$109.65 </h6>
+                      <h6 class="fs--1 text-500 mb-0">Rs {todaySales}</h6>
                       <h6 class="fs--2 ps-3 mb-0 text-danger">
                         <svg
                           class="svg-inline--fa fa-caret-up fa-w-10 me-1"
@@ -625,7 +671,7 @@ const Dashboard = () => {
                             d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"
                           ></path>
                         </svg>
-                        21.8%
+                        {String((todaySales / totalSales) * 100).substr(0, 4)}%
                       </h6>
                     </div>
                   </div>
