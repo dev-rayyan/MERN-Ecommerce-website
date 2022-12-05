@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllCategories } from "../../actions/categoryAction";
 import $ from "jquery";
 import { render } from "react-dom";
+import { getAllAttributes } from "../../actions/attributeAction";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ const NewProduct = () => {
 
   const { categories } = useSelector((state) => state.categories);
 
+  const { attributes } = useSelector((state) => state.attributes);
+
   const [SKU, setSKU] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [name, setName] = useState("");
@@ -28,9 +31,18 @@ const NewProduct = () => {
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
+  const [attributesSend, setAttributesSend] = useState([]);
+
+  const attributesHandler = (e) => {
+    attributesSend.push({
+      name: e.target.name,
+      value: e.target.value,
+    });
+  };
 
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(getAllAttributes());
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -59,8 +71,12 @@ const NewProduct = () => {
     images.forEach((image) => {
       myForm.append("images", image);
     });
+
+    attributesSend.forEach((attr) => {
+      myForm.append("attributes", attr);
+    });
+
     dispatch(createProduct(myForm));
-    console.log(myForm);
   };
 
   const createProductImagesChange = (e) => {
@@ -82,32 +98,41 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  var attributesListdb = ["Size", "Color", "Fabric"];
-
-  var Size = ["Small", "Medium", "Large"];
+  var attributesListdb = ["size", "color"];
 
   const Attribute = (props) => {
     return (
       <div className="col-lg-4" id="specdiv">
         <div>
-          <label for="stock">{props.item}</label>
-          <select required onChange={(e) => setCategory(e.target.value)}>
+          <label for="stock">{props.name}</label>
+          <select name={props.name} required onChange={attributesHandler}>
             <option disabled selected hidden>
-              Select {props.item}
+              Select {props.name}
             </option>
+            {attributes &&
+              attributes.map((item) => (
+                <>
+                  {item.name === props.name
+                    ? item.options.map((itemOptions) => (
+                        <option name={props.name} value={itemOptions.name}>
+                          {itemOptions.name}
+                        </option>
+                      ))
+                    : ""}
+                </>
+              ))}
           </select>
         </div>
       </div>
     );
   };
-
   const [attributesList, setAttributesList] = useState([]);
 
   const onAddBtnClick = (e) => {
     if (e.target.value) {
       setAttributesList(
         attributesList.concat(
-          <Attribute item={e.target.value} key={attributesList.length} />
+          <Attribute name={e.target.value} key={attributesList.length} />
         )
       );
     }

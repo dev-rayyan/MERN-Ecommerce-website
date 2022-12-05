@@ -42,7 +42,7 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
   let category = await Category.findById(req.params.id);
 
   if (!category) {
-    return next(new ErrorHander("Category not found", 404));
+    return next(new ErrorHandler("Category not found", 404));
   }
 
   category = await Category.findByIdAndUpdate(req.params.id, req.body, {

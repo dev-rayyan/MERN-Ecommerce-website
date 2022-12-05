@@ -77,6 +77,10 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
+  console.log(imagesLinks);
+
+  console.log(req.body.attributes);
+
   req.body.images = imagesLinks;
   req.body.user = req.user.id;
 
