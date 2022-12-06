@@ -10,6 +10,7 @@ import { getAllCategories } from "../../actions/categoryAction";
 import $ from "jquery";
 import { render } from "react-dom";
 import { getAllAttributes } from "../../actions/attributeAction";
+import Select from "react-select";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -32,13 +33,6 @@ const NewProduct = () => {
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [attributesSend, setAttributesSend] = useState([]);
-
-  const attributesHandler = (e) => {
-    attributesSend.push({
-      name: e.target.name,
-      value: e.target.value,
-    });
-  };
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -73,7 +67,8 @@ const NewProduct = () => {
     });
 
     attributesSend.forEach((attr) => {
-      myForm.append("attributes", attr);
+      myForm.append("attr_name", attr.name);
+      myForm.append("attr_val", attr.value);
     });
 
     dispatch(createProduct(myForm));
@@ -99,34 +94,55 @@ const NewProduct = () => {
     });
   };
   var attributesListdb = ["size", "color"];
-
   const Attribute = (props) => {
+    const SelectAttrOptions = [];
+    attributes &&
+      attributes.forEach((item) => {
+        if (item.name === props.name) {
+          item.options.forEach((itemOptions) => {
+            SelectAttrOptions.push({
+              value: itemOptions.name,
+              label: itemOptions.name,
+            });
+          });
+        }
+      });
     return (
       <div className="col-lg-4" id="specdiv">
         <div>
           <label for="stock">{props.name}</label>
-          <select name={props.name} required onChange={attributesHandler}>
-            <option disabled selected hidden>
-              Select {props.name}
-            </option>
-            {attributes &&
-              attributes.map((item) => (
-                <>
-                  {item.name === props.name
-                    ? item.options.map((itemOptions) => (
-                        <option name={props.name} value={itemOptions.name}>
-                          {itemOptions.name}
-                        </option>
-                      ))
-                    : ""}
-                </>
-              ))}
-          </select>
+          <Select
+            isMulti
+            name={props.name}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            options={SelectAttrOptions}
+            required
+            multiple
+            onChange={(selectedOption) =>
+              attributesHandler(selectedOption, props)
+            }
+          />
         </div>
       </div>
     );
   };
   const [attributesList, setAttributesList] = useState([]);
+
+  const [attributesList2, setAttributesList2] = useState([]);
+
+  const attributesHandler = (selectedOption, props) => {
+    setAttributesList2({
+      name: props.name,
+      value: selectedOption.map((opt) => [opt.value]),
+    });
+  };
+  attributesSend.push({
+    attributesList2,
+  });
+  console.log(attributesList2);
+  console.log("attrsend");
+  console.log(attributesSend);
 
   const onAddBtnClick = (e) => {
     if (e.target.value) {

@@ -77,10 +77,18 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
-  console.log(imagesLinks);
+  let attributes = req.body.attr_name;
 
-  console.log(req.body.attributes);
+  const attributesList = [];
 
+  for (let a = 0; a < attributes.length; a++) {
+    attributesList.push({
+      name: req.body.attr_name[a],
+      value: req.body.attr_val[a],
+    });
+  }
+
+  req.body.attributes = attributesList;
   req.body.images = imagesLinks;
   req.body.user = req.user.id;
 
