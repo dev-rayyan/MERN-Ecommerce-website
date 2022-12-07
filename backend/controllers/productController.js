@@ -78,20 +78,22 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   }
 
   let attributes = req.body.attr_name;
+  let attrs = JSON.parse(req.body.attrs);
 
-  console.log(req.body.attr_name[0]);
+  // console.log(attrs);
 
-  console.log(req.body.attr_val[0].val[0]);
+  // console.log(req.body.attr_name[0]);
+
+  // console.log(req.body.attr_val);
 
   const attributesList = [];
-
-  for (let a = 0; a < attributes.length; a++) {
+  attrs.forEach((attr) => {
     attributesList.push({
-      name: req.body.attr_name[a],
-      value: req.body.attr_val[a],
+      name: attr.name,
+      value: attr.value.map((val) => val),
     });
-  }
-
+  });
+  console.log(attributesList);
   req.body.attributes = attributesList;
   req.body.images = imagesLinks;
   req.body.user = req.user.id;

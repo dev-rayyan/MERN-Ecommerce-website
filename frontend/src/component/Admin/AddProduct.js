@@ -66,15 +66,13 @@ const NewProduct = () => {
       myForm.append("images", image);
     });
 
-    attributesSend.forEach((attr) => {
-      var value = [];
-      attr.value.forEach((attrval) => {
-        value.push({ val: [{ attrval }] });
-      });
-      myForm.append("attr_name", attr.name);
-      myForm.append("attr_val", value.val);
+    myForm.append("attrs", JSON.stringify(attributesSend));
 
-      console.log(value);
+    attributesSend.forEach((attr) => {
+      myForm.append("attr_name", attr.name);
+      myForm.append("attr_val", JSON.stringify(attr.value));
+
+      console.log(attr.value);
     });
 
     dispatch(createProduct(myForm));
@@ -142,7 +140,7 @@ const NewProduct = () => {
     if (attributesSend.length === 0) {
       attributesSend.push({
         name: props.name,
-        value: selectedOption.map((opt) => [opt.value]),
+        value: selectedOption.map((opt) => opt.value),
       });
     } else {
       attributesSend.forEach((item) => {
@@ -157,7 +155,7 @@ const NewProduct = () => {
             if (item.name === loopvar[i]) {
               attributesSend[counter] = {
                 name: props.name,
-                value: selectedOption.map((opt) => [opt.value]),
+                value: selectedOption.map((opt) => opt.value),
               };
             }
             counter++;
@@ -168,10 +166,11 @@ const NewProduct = () => {
       } else {
         attributesSend.push({
           name: props.name,
-          value: selectedOption.map((opt) => [opt.value]),
+          value: selectedOption.map((opt) => opt.value),
         });
       }
     }
+    console.log(attributesSend);
   };
 
   const onAddBtnClick = (e) => {
