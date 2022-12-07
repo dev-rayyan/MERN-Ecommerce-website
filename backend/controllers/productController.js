@@ -79,6 +79,10 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 
   let attributes = req.body.attr_name;
 
+  console.log(req.body.attr_name[0]);
+
+  console.log(req.body.attr_val[0].val[0]);
+
   const attributesList = [];
 
   for (let a = 0; a < attributes.length; a++) {

@@ -32,7 +32,7 @@ const NewProduct = () => {
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  const [attributesSend, setAttributesSend] = useState([]);
+  var [attributesSend, setAttributesSend] = useState([]);
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -67,8 +67,14 @@ const NewProduct = () => {
     });
 
     attributesSend.forEach((attr) => {
+      var value = [];
+      attr.value.forEach((attrval) => {
+        value.push({ val: [{ attrval }] });
+      });
       myForm.append("attr_name", attr.name);
-      myForm.append("attr_val", attr.value);
+      myForm.append("attr_val", value.val);
+
+      console.log(value);
     });
 
     dispatch(createProduct(myForm));
@@ -129,20 +135,44 @@ const NewProduct = () => {
   };
   const [attributesList, setAttributesList] = useState([]);
 
-  const [attributesList2, setAttributesList2] = useState([]);
-
   const attributesHandler = (selectedOption, props) => {
-    setAttributesList2({
-      name: props.name,
-      value: selectedOption.map((opt) => [opt.value]),
-    });
+    var loopvar = [];
+    var SelectName = props.name;
+
+    if (attributesSend.length === 0) {
+      attributesSend.push({
+        name: props.name,
+        value: selectedOption.map((opt) => [opt.value]),
+      });
+    } else {
+      attributesSend.forEach((item) => {
+        loopvar.push(item.name);
+      });
+      var isFound = false;
+      for (let i = 0; i < loopvar.length; i++) {
+        if (loopvar[i] === SelectName) {
+          isFound = true;
+          var counter = 0;
+          attributesSend.forEach((item) => {
+            if (item.name === loopvar[i]) {
+              attributesSend[counter] = {
+                name: props.name,
+                value: selectedOption.map((opt) => [opt.value]),
+              };
+            }
+            counter++;
+          });
+        }
+      }
+      if (isFound) {
+      } else {
+        attributesSend.push({
+          name: props.name,
+          value: selectedOption.map((opt) => [opt.value]),
+        });
+      }
+    }
   };
-  attributesSend.push({
-    attributesList2,
-  });
-  console.log(attributesList2);
-  console.log("attrsend");
-  console.log(attributesSend);
 
   const onAddBtnClick = (e) => {
     if (e.target.value) {
