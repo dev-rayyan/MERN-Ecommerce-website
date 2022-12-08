@@ -77,23 +77,17 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
-  let attributes = req.body.attr_name;
-  let attrs = JSON.parse(req.body.attrs);
-
-  // console.log(attrs);
-
-  // console.log(req.body.attr_name[0]);
-
-  // console.log(req.body.attr_val);
+  let attrs = JSON.parse(req.body.attributes);
 
   const attributesList = [];
+
   attrs.forEach((attr) => {
     attributesList.push({
       name: attr.name,
       value: attr.value.map((val) => val),
     });
   });
-  console.log(attributesList);
+
   req.body.attributes = attributesList;
   req.body.images = imagesLinks;
   req.body.user = req.user.id;

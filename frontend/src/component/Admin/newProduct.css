@@ -16,9 +16,11 @@
 .AddProductForm > div > div > div > label {
   margin: 0;
   font-size: 15px;
+  text-transform: capitalize;
 }
 .AddProductForm > div > div > div > input,
-.AddProductForm > div > div > div > select {
+.AddProductForm > div > div > div > select,
+#attrSelect {
   padding: 10px 20px;
   border-radius: 4px;
   border: 1px solid #dddfe2;
@@ -26,7 +28,8 @@
   outline: none;
   -webkit-appearance: none;
 }
-.AddProductForm > div > div > div > select:invalid {
+.AddProductForm > div > div > div > select:invalid,
+#attrSelect:invalid {
   color: #b6c1d2;
 }
 .AddProductForm > div > div > div > input[type="file"] {
@@ -65,4 +68,23 @@
   align-items: center;
   color: #b6c1d2;
   justify-content: center;
+}
+#attrSelect:invalid {
+  color: #b6c1d2;
+}
+#attrSelect {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid #dddfe2;
+  width: 100%;
+  outline: none;
+  -webkit-appearance: none;
+}
+.select__control {
+  border: 1px solid #dddfe2 !important;
+  min-height: 43px !important;
+}
+.select__control--is-focused {
+  border-color: #b1b1b1 !important;
+  box-shadow: none !important;
 }

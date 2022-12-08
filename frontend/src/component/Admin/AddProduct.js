@@ -11,6 +11,8 @@ import $ from "jquery";
 import { render } from "react-dom";
 import { getAllAttributes } from "../../actions/attributeAction";
 import Select from "react-select";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -66,14 +68,7 @@ const NewProduct = () => {
       myForm.append("images", image);
     });
 
-    myForm.append("attrs", JSON.stringify(attributesSend));
-
-    attributesSend.forEach((attr) => {
-      myForm.append("attr_name", attr.name);
-      myForm.append("attr_val", JSON.stringify(attr.value));
-
-      console.log(attr.value);
-    });
+    myForm.append("attributes", JSON.stringify(attributesSend));
 
     dispatch(createProduct(myForm));
   };
@@ -97,7 +92,6 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  var attributesListdb = ["size", "color"];
   const Attribute = (props) => {
     const SelectAttrOptions = [];
     attributes &&
@@ -170,20 +164,91 @@ const NewProduct = () => {
         });
       }
     }
-    console.log(attributesSend);
   };
+  const [etarval, setEtarval] = useState("");
 
   const onAddBtnClick = (e) => {
-    if (e.target.value) {
-      setAttributesList(
-        attributesList.concat(
-          <Attribute name={e.target.value} key={attributesList.length} />
-        )
-      );
+    if (e.value) {
+      setEtarval(e.value);
     }
   };
+  const attrSelectNo = [];
+
+  attributesList &&
+    attributesList.forEach((item) => {
+      attrSelectNo.push(item.props.name);
+    });
+
+  console.log(attrSelectNo);
+
+  const addAttrOnClick = (e) => {
+    e.preventDefault();
+    if (attrSelectNo.length === 0) {
+      setAttributesList(
+        attributesList.concat(
+          <Attribute name={etarval} key={attributesList.length} />
+        )
+      );
+    } else {
+      var isFound2 = false;
+      for (let i = 0; i < attrSelectNo.length; i++) {
+        if (etarval === attrSelectNo[i]) {
+          isFound2 = true;
+          alert.error(`${etarval} is already added`);
+        }
+      }
+      if (isFound2) {
+      } else {
+        setAttributesList(
+          attributesList.concat(
+            <Attribute name={etarval} key={attributesList.length} />
+          )
+        );
+      }
+    }
+  };
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const AddSelectAttrOptions = [];
+  attributes &&
+    attributes.forEach((item) => {
+      AddSelectAttrOptions.push({
+        value: item.name,
+        label: item.name,
+      });
+    });
+
+  const categorySelectOptions = [];
+  categories &&
+    categories.forEach((item) => {
+      categorySelectOptions.push({
+        value: item.name,
+        label: item.name,
+      });
+    });
   return (
     <Fragment>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Attributes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Select
+            className="basic-multi-select"
+            classNamePrefix="select"
+            options={AddSelectAttrOptions}
+            required
+            onChange={(e) => onAddBtnClick(e)}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={addAttrOnClick}>
+            Add
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <MetaData title="Create Product" />
       <div className="card">
         <h1 id="productListHeading">Add New Product</h1>
@@ -247,32 +312,22 @@ const NewProduct = () => {
               <div className="col-lg-4" id="specdiv">
                 <div>
                   <label for="stock">Category</label>
-                  <select
+                  <Select
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    options={categorySelectOptions}
                     required
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    <option disabled selected hidden>
-                      Select Product Category
-                    </option>
-                    {categories &&
-                      categories.map((item) => (
-                        <option value={item._id}>{item.name}</option>
-                      ))}
-                  </select>
+                    onChange={(e) => setCategory(e.value)}
+                  />
                 </div>
               </div>
               {attributesList}
               <div className="col-lg-4">
                 <div>
                   <label for="stock">Add Attributes</label>
-                  <select required onChange={onAddBtnClick}>
-                    <option disabled selected hidden>
-                      Add Attribute
-                    </option>
-                    {attributesListdb.map((item) => (
-                      <option value={item}>{item}</option>
-                    ))}
-                  </select>
+                  <Button variant="primary" onClick={handleShow}>
+                    Add Attributes
+                  </Button>
                 </div>
               </div>
 
