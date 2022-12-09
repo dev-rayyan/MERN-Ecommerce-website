@@ -16,6 +16,7 @@
 		"@mui/styles": "^5.10.9",
 		"@mui/x-data-grid": "^5.17.10",
 		"@popperjs/core": "^2.11.6",
+		"@splidejs/react-splide": "^0.7.12",
 		"@stripe/react-stripe-js": "^1.14.1",
 		"@stripe/stripe-js": "^1.42.1",
 		"@testing-library/jest-dom": "^5.16.5",

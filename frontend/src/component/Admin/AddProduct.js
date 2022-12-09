@@ -7,12 +7,10 @@ import MetaData from "../layout/MetaData";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate } from "react-router-dom";
 import { getAllCategories } from "../../actions/categoryAction";
-import $ from "jquery";
-import { render } from "react-dom";
 import { getAllAttributes } from "../../actions/attributeAction";
 import Select from "react-select";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import "@splidejs/react-splide/css";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -106,9 +104,11 @@ const NewProduct = () => {
         }
       });
     return (
-      <div className="col-lg-4" id="specdiv">
+      <div className="col col-lg-12">
         <div>
-          <label for="stock">{props.name}</label>
+          <label for="stock" className="prodFormLabel">
+            {props.name}
+          </label>
           <Select
             isMulti
             name={props.name}
@@ -179,16 +179,19 @@ const NewProduct = () => {
       attrSelectNo.push(item.props.name);
     });
 
-  console.log(attrSelectNo);
-
   const addAttrOnClick = (e) => {
     e.preventDefault();
     if (attrSelectNo.length === 0) {
-      setAttributesList(
-        attributesList.concat(
-          <Attribute name={etarval} key={attributesList.length} />
-        )
-      );
+      console.log(etarval.length);
+      if (etarval.length === 0) {
+        alert.error(`Select an Attribute`);
+      } else {
+        setAttributesList(
+          attributesList.concat(
+            <Attribute name={etarval} key={attributesList.length} />
+          )
+        );
+      }
     } else {
       var isFound2 = false;
       for (let i = 0; i < attrSelectNo.length; i++) {
@@ -207,9 +210,6 @@ const NewProduct = () => {
       }
     }
   };
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const AddSelectAttrOptions = [];
   attributes &&
@@ -230,25 +230,6 @@ const NewProduct = () => {
     });
   return (
     <Fragment>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Attributes</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Select
-            className="basic-multi-select"
-            classNamePrefix="select"
-            options={AddSelectAttrOptions}
-            required
-            onChange={(e) => onAddBtnClick(e)}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={addAttrOnClick}>
-            Add
-          </Button>
-        </Modal.Footer>
-      </Modal>
       <MetaData title="Create Product" />
       <div className="card">
         <h1 id="productListHeading">Add New Product</h1>
@@ -259,108 +240,207 @@ const NewProduct = () => {
             onSubmit={createProductSubmitHandler}
           >
             <div className="row">
-              <div className="col-lg-12">
-                <div>
-                  <label for="name">Product Title</label>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Enter Product Title"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
+              <div className="col-lg-9 border-right">
+                <div className="row">
+                  <div className="col col-lg-12">
+                    <div>
+                      <label for="name" className="prodFormLabel">
+                        Product Title
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter Product Title"
+                        className="prodFormInput"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col col-lg-3">
+                    <div>
+                      <label for="SKU" className="prodFormLabel">
+                        SKU
+                      </label>
+                      <input
+                        type="text"
+                        name="SKU"
+                        placeholder="Enter Product SKU"
+                        className="prodFormInput"
+                        required
+                        value={SKU}
+                        onChange={(e) => setSKU(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col col-lg-3">
+                    <div>
+                      <label for="price" className="prodFormLabel">
+                        Price
+                      </label>
+                      <input
+                        type="text"
+                        name="price"
+                        placeholder="Enter Product Price"
+                        className="prodFormInput"
+                        required
+                        onChange={(e) => setPrice(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col col-lg-3">
+                    <div>
+                      <label for="stock" className="prodFormLabel">
+                        Stock
+                      </label>
+                      <input
+                        type="text"
+                        name="stock"
+                        placeholder="Enter Product Stock"
+                        className="prodFormInput"
+                        required
+                        onChange={(e) => setStock(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col col-lg-3" id="specdiv">
+                    <div>
+                      <label for="stock" className="prodFormLabel">
+                        Category
+                      </label>
+                      <Select
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        options={categorySelectOptions}
+                        required
+                        onChange={(e) => setCategory(e.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col col-lg-12">
+                    <div>
+                      <label for="description" className="prodFormLabel">
+                        Description
+                      </label>
+                      <textarea
+                        type="text"
+                        name="description"
+                        placeholder="Enter Product Description..."
+                        className="prodFormTextArea"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  {imagesPreview.length === 0 ? (
+                    <div className="col col-lg-12 flex-column align-items-start">
+                      <label style={{ fontSize: "15px", margin: 0 }}>
+                        Images
+                      </label>
+                      <div className="file-input">
+                        <label className="forImg prodFormLabel" for="images">
+                          Select File
+                        </label>
+                        <input
+                          type="file"
+                          name="images"
+                          placeholder="Select Product Images"
+                          className="prodFormInputFile file"
+                          accept="image/*"
+                          onChange={createProductImagesChange}
+                          multiple
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col col-lg-4 flex-column align-items-start">
+                      <label style={{ fontSize: "15px", margin: 0 }}>
+                        Images
+                      </label>
+                      <div className="file-input">
+                        <label className="forImg prodFormLabel" for="images">
+                          Select Images...
+                        </label>
+                        <input
+                          type="file"
+                          name="images"
+                          placeholder="Select Product Images"
+                          className="prodFormInputFile file"
+                          accept="image/*"
+                          onChange={createProductImagesChange}
+                          multiple
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {imagesPreview.length !== 0 ? (
+                    <div className="col col-lg-8 flex-column align-items-start">
+                      <label className="prodFormLabel">Images Preview</label>
+                      <Splide
+                        options={{
+                          rewind: true,
+                          fixedWidth: 230,
+                          fixedHeight: 230,
+                          isNavigation: true,
+                          gap: 10,
+                          focus: "center",
+                          pagination: false,
+                          cover: true,
+                          arrows: false,
+                          dragMinThreshold: {
+                            mouse: 4,
+                            touch: 10,
+                          },
+                          breakpoints: {
+                            640: {
+                              fixedWidth: 66,
+                              fixedHeight: 38,
+                            },
+                          },
+                        }}
+                        aria-label="My Favorite Images"
+                      >
+                        {imagesPreview.map((image, index) => (
+                          <SplideSlide>
+                            <img key={index} src={image} alt={image} />
+                          </SplideSlide>
+                        ))}
+                      </Splide>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
-              <div className="col-lg-4">
-                <div>
-                  <label for="SKU">SKU</label>
-                  <input
-                    type="text"
-                    name="SKU"
-                    placeholder="Enter Product SKU"
-                    required
-                    value={SKU}
-                    onChange={(e) => setSKU(e.target.value)}
-                  />
+              <div className="col-lg-3">
+                <div className="row">
+                  <div className="col col-lg-12">
+                    <div>
+                      <label className="prodFormLabel">
+                        Product Attributes
+                      </label>
+                      <div className="selectAttrDiv">
+                        <Select
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          options={AddSelectAttrOptions}
+                          required
+                          onChange={(e) => onAddBtnClick(e)}
+                        />
+                        <button
+                          className="btn btn-primary ms-auto"
+                          onClick={addAttrOnClick}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  {attributesList}
                 </div>
               </div>
-              <div className="col-lg-4">
-                <div>
-                  <label for="price">Price</label>
-                  <input
-                    type="text"
-                    name="price"
-                    placeholder="Enter Product Price"
-                    required
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="col-lg-4">
-                <div>
-                  <label for="stock">Stock</label>
-                  <input
-                    type="text"
-                    name="stock"
-                    placeholder="Enter Product Stock"
-                    required
-                    onChange={(e) => setStock(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="col-lg-4" id="specdiv">
-                <div>
-                  <label for="stock">Category</label>
-                  <Select
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    options={categorySelectOptions}
-                    required
-                    onChange={(e) => setCategory(e.value)}
-                  />
-                </div>
-              </div>
-              {attributesList}
-              <div className="col-lg-4">
-                <div>
-                  <label for="stock">Add Attributes</label>
-                  <Button variant="primary" onClick={handleShow}>
-                    Add Attributes
-                  </Button>
-                </div>
-              </div>
-
-              <div className="col-lg-8">
-                <div>
-                  <label for="description">Description</label>
-                  <textarea
-                    type="text"
-                    name="description"
-                    placeholder="Enter Product Description..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="col-lg-4 flex-column align-items-start">
-                <label style={{ fontSize: "15px", margin: 0 }}>Images</label>
-                <div className="file-input">
-                  <label className="forImg" for="images">
-                    Select File
-                  </label>
-                  <input
-                    type="file"
-                    name="images"
-                    className="file"
-                    placeholder="Select Product Images"
-                    accept="image/*"
-                    onChange={createProductImagesChange}
-                    multiple
-                  />
-                </div>
-              </div>
-              <div className="col-lg-12">
+              <div className="col col-lg-12">
                 <div>
                   <input type="submit" className="btn btn-primary" />
                 </div>
