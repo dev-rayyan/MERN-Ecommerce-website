@@ -104,7 +104,7 @@ const NewProduct = () => {
         }
       });
     return (
-      <div className="col col-lg-12">
+      <div className="col1 col-lg-12">
         <div>
           <label for="stock" className="prodFormLabel">
             {props.name}
@@ -242,7 +242,7 @@ const NewProduct = () => {
             <div className="row">
               <div className="col-lg-9 border-right">
                 <div className="row">
-                  <div className="col col-lg-12">
+                  <div className="col1 col-lg-12">
                     <div>
                       <label for="name" className="prodFormLabel">
                         Product Title
@@ -258,7 +258,7 @@ const NewProduct = () => {
                       />
                     </div>
                   </div>
-                  <div className="col col-lg-3">
+                  <div className="col1 col-lg-3">
                     <div>
                       <label for="SKU" className="prodFormLabel">
                         SKU
@@ -274,7 +274,7 @@ const NewProduct = () => {
                       />
                     </div>
                   </div>
-                  <div className="col col-lg-3">
+                  <div className="col1 col-lg-3">
                     <div>
                       <label for="price" className="prodFormLabel">
                         Price
@@ -289,7 +289,7 @@ const NewProduct = () => {
                       />
                     </div>
                   </div>
-                  <div className="col col-lg-3">
+                  <div className="col1 col-lg-3">
                     <div>
                       <label for="stock" className="prodFormLabel">
                         Stock
@@ -304,7 +304,7 @@ const NewProduct = () => {
                       />
                     </div>
                   </div>
-                  <div className="col col-lg-3" id="specdiv">
+                  <div className="col1 col-lg-3" id="specdiv">
                     <div>
                       <label for="stock" className="prodFormLabel">
                         Category
@@ -318,7 +318,7 @@ const NewProduct = () => {
                       />
                     </div>
                   </div>
-                  <div className="col col-lg-12">
+                  <div className="col1 col-lg-12">
                     <div>
                       <label for="description" className="prodFormLabel">
                         Description
@@ -334,7 +334,7 @@ const NewProduct = () => {
                     </div>
                   </div>
                   {imagesPreview.length === 0 ? (
-                    <div className="col col-lg-12 flex-column align-items-start">
+                    <div className="col1 col-lg-12 flex-column align-items-start">
                       <label style={{ fontSize: "15px", margin: 0 }}>
                         Images
                       </label>
@@ -354,7 +354,7 @@ const NewProduct = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="col col-lg-4 flex-column align-items-start">
+                    <div className="col1 col-lg-4 flex-column align-items-start">
                       <label style={{ fontSize: "15px", margin: 0 }}>
                         Images
                       </label>
@@ -375,7 +375,7 @@ const NewProduct = () => {
                     </div>
                   )}
                   {imagesPreview.length !== 0 ? (
-                    <div className="col col-lg-8 flex-column align-items-start">
+                    <div className="col1 col-lg-8 flex-column align-items-start">
                       <label className="prodFormLabel">Images Preview</label>
                       <Splide
                         options={{
@@ -415,7 +415,7 @@ const NewProduct = () => {
               </div>
               <div className="col-lg-3">
                 <div className="row">
-                  <div className="col col-lg-12">
+                  <div className="col1 col-lg-12">
                     <div>
                       <label className="prodFormLabel">
                         Product Attributes
@@ -440,7 +440,7 @@ const NewProduct = () => {
                   {attributesList}
                 </div>
               </div>
-              <div className="col col-lg-12">
+              <div className="col1 col-lg-12">
                 <div>
                   <input type="submit" className="btn btn-primary" />
                 </div>

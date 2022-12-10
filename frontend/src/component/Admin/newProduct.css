@@ -1,13 +1,13 @@
 .AddProductForm .row {
   margin: 0;
 }
-.col {
+.col1 {
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.col > div {
+.col1 > div {
   height: 100%;
   width: 100%;
   display: flex;
