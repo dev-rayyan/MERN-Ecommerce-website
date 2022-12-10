@@ -22,8 +22,9 @@ import {
 import { Rating } from "@mui/material";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { useParams } from "react-router-dom";
+import $ from "jquery";
 
-const ProductDetails = ({ match }) => {
+const ProductDetails = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   let { id } = useParams();
@@ -44,6 +45,7 @@ const ProductDetails = ({ match }) => {
   };
 
   const [quantity, setQuantity] = useState(1);
+  const [attr, setAttr] = useState("");
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -63,7 +65,8 @@ const ProductDetails = ({ match }) => {
   };
 
   const addToCartHandler = () => {
-    dispatch(addItemsToCart(id, quantity));
+    console.log(attributes);
+    dispatch(addItemsToCart(id, quantity, attributes));
     alert.success("Item Added To Cart");
   };
 
@@ -84,6 +87,10 @@ const ProductDetails = ({ match }) => {
   };
 
   useEffect(() => {
+    $(".attributes").on("click", function () {
+      $(this).toggleClass("focus").siblings().removeClass("focus");
+    });
+
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -101,6 +108,47 @@ const ProductDetails = ({ match }) => {
     dispatch(getProductDetails(id));
   }, [dispatch, id, error, alert, reviewError, success]);
 
+  var [attributes, setAttributes] = useState([]);
+
+  const SelectAttr = (itemOpt, item) => {
+    var loopvar = [];
+    var SelectName = item.name;
+
+    if (attributes.length === 0) {
+      attributes.push({
+        name: item.name,
+        value: itemOpt,
+      });
+    } else {
+      attributes.forEach((itemS) => {
+        loopvar.push(itemS.name);
+      });
+      var isFound = false;
+      for (let i = 0; i < loopvar.length; i++) {
+        if (loopvar[i] === SelectName) {
+          isFound = true;
+          var counter = 0;
+          attributes.forEach((itemS) => {
+            if (itemS.name === loopvar[i]) {
+              attributes[counter] = {
+                name: itemS.name,
+                value: itemOpt,
+              };
+            }
+            counter++;
+          });
+        }
+      }
+      if (isFound) {
+      } else {
+        attributes.push({
+          name: item.name,
+          value: itemOpt,
+        });
+      }
+    }
+  };
+  console.log(attributes);
   return (
     <Fragment>
       {loading ? (
@@ -155,13 +203,19 @@ const ProductDetails = ({ match }) => {
                     product.attributes.map((item) => (
                       <>
                         <h2>{item.name}</h2>
-                        {item.value.map((itemOpt) => (
-                          <>
-                            <div className="attributesList">
-                              <div className="attributes">{itemOpt[0]}</div>
-                            </div>
-                          </>
-                        ))}
+                        <div className="attributesList">
+                          {item.value.map((itemOpt) => (
+                            <>
+                              <div
+                                className="attributes"
+                                name={item.name}
+                                onClick={() => SelectAttr(itemOpt, item)}
+                              >
+                                {itemOpt[0]}
+                              </div>
+                            </>
+                          ))}
+                        </div>
                       </>
                     ))}
                 </div>

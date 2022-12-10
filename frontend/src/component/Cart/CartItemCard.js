@@ -3,16 +3,27 @@ import "./CartItemCard.css";
 import { Link } from "react-router-dom";
 
 const CartItemCard = ({ item, deleteCartItems }) => {
-	return (
-		<div className="CartItemCard">
-			<img src={item.image} alt="ssa" />
-			<div>
-				<Link to={`/product/${item.product}`}>{item.name}</Link>
-				<span>{`Price: ₹${item.price}`}</span>
-				<p onClick={() => deleteCartItems(item.product)}>Remove</p>
-			</div>
-		</div>
-	);
+  return (
+    <div className="CartItemCard">
+      <img src={item.image} alt="ssa" />
+      <div>
+        <Link to={`/product/${item.product}`}>{item.name}</Link>
+        <span>{`Price: ₹${item.price}`}</span>
+        <p onClick={() => deleteCartItems(item.product)}>Remove</p>
+        <p>
+          Attributes :{" "}
+          {item.attributes &&
+            item.attributes.map((attr) => (
+              <>
+                <li>
+                  {attr.name}: {attr.value}
+                </li>
+              </>
+            ))}
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default CartItemCard;
