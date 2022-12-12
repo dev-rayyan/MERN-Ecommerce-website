@@ -46,3 +46,13 @@
     font: 300 4vw "Roboto";
   }
 }
+.attrOptions {
+  list-style: none;
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+}
+.attrOptions > li {
+  padding: 0 10px;
+  text-transform: capitalize;
+}

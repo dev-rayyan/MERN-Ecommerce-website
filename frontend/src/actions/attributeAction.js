@@ -19,7 +19,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/attributeConstants";
 
-// Get All Categories
+// Get All Attributes
 export const getAllAttributes = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_ATTRIBUTE_REQUEST });
@@ -36,4 +36,36 @@ export const getAllAttributes = () => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
+};
+
+// Create Attribute
+export const createAttribute = (AttributeData) => async (dispatch) => {
+  try {
+    dispatch({ type: CREATE_ATTRIBUTE_REQUEST });
+
+    const config = {
+      headers: { "Content-Type": "application/json" },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/admin/attribute/new`,
+      AttributeData,
+      config
+    );
+
+    dispatch({
+      type: CREATE_ATTRIBUTE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CREATE_ATTRIBUTE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Clearing Errors
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };
