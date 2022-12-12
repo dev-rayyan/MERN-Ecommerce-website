@@ -14,7 +14,19 @@ exports.getAllAttributes = catchAsyncErrors(async (req, res) => {
 
 // Create Attribute -- Admin
 exports.createAttribute = catchAsyncErrors(async (req, res, next) => {
+  let options = JSON.parse(req.body.options);
+
+  const optionsList = [];
+
+  options.forEach((opt) => {
+    optionsList.push({
+      name: opt.optionName,
+      label: opt.optionLabel,
+    });
+  });
+
   req.body.user = req.user.id;
+  req.body.options = optionsList;
   const attribute = await Attribute.create(req.body);
 
   res.status(200).json({

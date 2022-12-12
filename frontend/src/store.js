@@ -30,6 +30,7 @@ import {
 } from "./reducers/orderReducer";
 import { categoriesReducer } from "./reducers/categoryReducer";
 import {
+  attributeReducer,
   attributesReducer,
   newAttributeReducer,
 } from "./reducers/attributeReducer";
@@ -57,6 +58,7 @@ const reducer = combineReducers({
   categories: categoriesReducer,
   attributes: attributesReducer,
   newAttribute: newAttributeReducer,
+  attribute: attributeReducer,
 });
 
 let initialState = {

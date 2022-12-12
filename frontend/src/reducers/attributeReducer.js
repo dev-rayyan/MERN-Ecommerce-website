@@ -77,3 +77,51 @@ export const newAttributeReducer = (state = { attribute: {} }, action) => {
       return state;
   }
 };
+
+export const attributeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_ATTRIBUTE_REQUEST:
+    case UPDATE_ATTRIBUTE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_ATTRIBUTE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: action.payload,
+      };
+
+    case UPDATE_ATTRIBUTE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: action.payload,
+      };
+    case DELETE_ATTRIBUTE_FAIL:
+    case UPDATE_ATTRIBUTE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case DELETE_ATTRIBUTE_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+    case UPDATE_ATTRIBUTE_RESET:
+      return {
+        ...state,
+        isUpdated: false,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};

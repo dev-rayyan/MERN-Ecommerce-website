@@ -6,7 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
 import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
-import { getAllAttributes, clearErrors } from "../../actions/attributeAction";
+import {
+  getAllAttributes,
+  clearErrors,
+  deleteAttribute,
+} from "../../actions/attributeAction";
+import { DELETE_ATTRIBUTE_RESET } from "../../constants/attributeConstants";
 
 const Attributes = () => {
   const dispatch = useDispatch();
@@ -16,11 +21,11 @@ const Attributes = () => {
   const { error, attributes } = useSelector((state) => state.attributes);
 
   const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.product
+    (state) => state.attribute
   );
 
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProduct(id));
+  const deleteAttributeHandler = (id) => {
+    dispatch(deleteAttribute(id));
   };
 
   useEffect(() => {
@@ -35,9 +40,9 @@ const Attributes = () => {
     }
 
     if (isDeleted) {
-      alert.success("Product Deleted Successfully");
-      navigate("/admin/products");
-      dispatch({ type: DELETE_PRODUCT_RESET });
+      alert.success("Attribute Deleted Successfully");
+      navigate("/admin/attributes");
+      dispatch({ type: DELETE_ATTRIBUTE_RESET });
     }
 
     dispatch(getAllAttributes());
@@ -159,7 +164,7 @@ const Attributes = () => {
                           </Link>
                           <div class="dropdown-divider"></div>
                           <Link
-                            onClick={() => deleteProductHandler(item._id)}
+                            onClick={() => deleteAttributeHandler(item._id)}
                             class="dropdown-item text-danger"
                           >
                             Delete

@@ -32,7 +32,6 @@ const NewProduct = () => {
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  var [attributesSend, setAttributesSend] = useState([]);
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -66,7 +65,7 @@ const NewProduct = () => {
       myForm.append("images", image);
     });
 
-    myForm.append("attributes", JSON.stringify(attributesSend));
+    myForm.append("attributes", JSON.stringify(inputOptionList));
 
     dispatch(createProduct(myForm));
   };
@@ -90,81 +89,7 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  const Attribute = (props) => {
-    const SelectAttrOptions = [];
-    attributes &&
-      attributes.forEach((item) => {
-        if (item.name === props.name) {
-          item.options.forEach((itemOptions) => {
-            SelectAttrOptions.push({
-              value: itemOptions.name,
-              label: itemOptions.name,
-            });
-          });
-        }
-      });
-    return (
-      <div className="col1 col-lg-12">
-        <div>
-          <label for="stock" className="prodFormLabel">
-            {props.name}
-          </label>
-          <Select
-            isMulti
-            name={props.name}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            options={SelectAttrOptions}
-            required
-            multiple
-            onChange={(selectedOption) =>
-              attributesHandler(selectedOption, props)
-            }
-          />
-        </div>
-      </div>
-    );
-  };
-  const [attributesList, setAttributesList] = useState([]);
 
-  const attributesHandler = (selectedOption, props) => {
-    var loopvar = [];
-    var SelectName = props.name;
-
-    if (attributesSend.length === 0) {
-      attributesSend.push({
-        name: props.name,
-        value: selectedOption.map((opt) => opt.value),
-      });
-    } else {
-      attributesSend.forEach((item) => {
-        loopvar.push(item.name);
-      });
-      var isFound = false;
-      for (let i = 0; i < loopvar.length; i++) {
-        if (loopvar[i] === SelectName) {
-          isFound = true;
-          var counter = 0;
-          attributesSend.forEach((item) => {
-            if (item.name === loopvar[i]) {
-              attributesSend[counter] = {
-                name: props.name,
-                value: selectedOption.map((opt) => opt.value),
-              };
-            }
-            counter++;
-          });
-        }
-      }
-      if (isFound) {
-      } else {
-        attributesSend.push({
-          name: props.name,
-          value: selectedOption.map((opt) => opt.value),
-        });
-      }
-    }
-  };
   const [etarval, setEtarval] = useState("");
 
   const onAddBtnClick = (e) => {
@@ -172,46 +97,9 @@ const NewProduct = () => {
       setEtarval(e.value);
     }
   };
-  const attrSelectNo = [];
-
-  attributesList &&
-    attributesList.forEach((item) => {
-      attrSelectNo.push(item.props.name);
-    });
-
-  const addAttrOnClick = (e) => {
-    e.preventDefault();
-    if (attrSelectNo.length === 0) {
-      console.log(etarval.length);
-      if (etarval.length === 0) {
-        alert.error(`Select an Attribute`);
-      } else {
-        setAttributesList(
-          attributesList.concat(
-            <Attribute name={etarval} key={attributesList.length} />
-          )
-        );
-      }
-    } else {
-      var isFound2 = false;
-      for (let i = 0; i < attrSelectNo.length; i++) {
-        if (etarval === attrSelectNo[i]) {
-          isFound2 = true;
-          alert.error(`${etarval} is already added`);
-        }
-      }
-      if (isFound2) {
-      } else {
-        setAttributesList(
-          attributesList.concat(
-            <Attribute name={etarval} key={attributesList.length} />
-          )
-        );
-      }
-    }
-  };
 
   const AddSelectAttrOptions = [];
+
   attributes &&
     attributes.forEach((item) => {
       AddSelectAttrOptions.push({
@@ -221,6 +109,7 @@ const NewProduct = () => {
     });
 
   const categorySelectOptions = [];
+
   categories &&
     categories.forEach((item) => {
       categorySelectOptions.push({
@@ -228,6 +117,43 @@ const NewProduct = () => {
         label: item.name,
       });
     });
+
+  const [inputOptionList, setInputOptionList] = useState([]);
+
+  const handleOptionAdd = (e) => {
+    e.preventDefault();
+    if (etarval.length === 0) {
+      alert.error("Select an Attribute");
+    } else {
+      for (let i = 0; i < inputOptionList.length; i++) {
+        if (etarval === inputOptionList[i].name) {
+          alert.error(`${etarval} is already added`);
+          return;
+        }
+      }
+      setInputOptionList([
+        ...inputOptionList,
+        {
+          name: etarval,
+          value: [],
+        },
+      ]);
+    }
+  };
+
+  const handleInputOption = (selectedOption, index) => {
+    const newinputOptionList = [...inputOptionList];
+    newinputOptionList[index].value = selectedOption.map((opt) => opt.value);
+    setInputOptionList(newinputOptionList);
+  };
+
+  const handleRemoveOption = (e, index) => {
+    e.preventDefault();
+    const newList = [...inputOptionList];
+    newList.splice(index, 1);
+    setInputOptionList(newList);
+  };
+
   return (
     <Fragment>
       <MetaData title="Create Product" />
@@ -430,14 +356,64 @@ const NewProduct = () => {
                         />
                         <button
                           className="btn btn-primary ms-auto"
-                          onClick={addAttrOnClick}
+                          onClick={handleOptionAdd}
                         >
                           Add
                         </button>
                       </div>
                     </div>
                   </div>
-                  {attributesList}
+                  {inputOptionList.length > 0
+                    ? inputOptionList.map((input, index) => {
+                        const SelectAttrOptions = [];
+                        attributes &&
+                          attributes.forEach((item) => {
+                            if (item.name === input.name) {
+                              item.options.forEach((itemOptions) => {
+                                SelectAttrOptions.push({
+                                  value: itemOptions.name,
+                                  label: itemOptions.name,
+                                });
+                              });
+                            }
+                          });
+                        return (
+                          <Fragment>
+                            <div className="col1 col-lg-12">
+                              <div>
+                                <label for="stock" className="prodFormLabel">
+                                  {input.name}
+                                </label>
+                                <div className="selectAttrDiv">
+                                  <Select
+                                    isMulti
+                                    name={input.name}
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    options={SelectAttrOptions}
+                                    required
+                                    multiple
+                                    onChange={(selectedOption) =>
+                                      handleInputOption(selectedOption, index)
+                                    }
+                                  />
+                                  <button
+                                    className="btn btn-danger ms-auto"
+                                    onClick={(event) =>
+                                      handleRemoveOption(event, index)
+                                    }
+                                  >
+                                    <span role="img" aria-label="x emoji">
+                                      ❌
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </Fragment>
+                        );
+                      })
+                    : ""}
                 </div>
               </div>
               <div className="col1 col-lg-12">

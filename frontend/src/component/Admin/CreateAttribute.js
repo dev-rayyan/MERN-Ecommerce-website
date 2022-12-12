@@ -4,27 +4,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, createProduct } from "../../actions/productAction";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
-import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import { CREATE_ATTRIBUTE_RESET } from "../../constants/attributeConstants";
 import { useNavigate } from "react-router-dom";
 import { getAllCategories } from "../../actions/categoryAction";
 import {
   createAttribute,
   getAllAttributes,
 } from "../../actions/attributeAction";
-import Select from "react-select";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
 
 const CreateAttribute = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
 
-  const { loading, error, success } = useSelector((state) => state.newProduct);
+  const { loading, error, success } = useSelector(
+    (state) => state.newAttribute
+  );
 
   const [name, setName] = useState("");
-  const [optionName, setOptionName] = useState("");
-  const [optionLabel, setOptionLabel] = useState("");
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -35,9 +32,9 @@ const CreateAttribute = () => {
     }
 
     if (success) {
-      alert.success("Product Created Successfully");
-      navigate("/admin/products");
-      dispatch({ type: NEW_PRODUCT_RESET });
+      alert.success("Attribute Created Successfully");
+      navigate("/admin/attributes");
+      dispatch({ type: CREATE_ATTRIBUTE_RESET });
     }
   }, [dispatch, alert, error, navigate, success]);
 
@@ -48,55 +45,43 @@ const CreateAttribute = () => {
 
     myForm.set("name", name);
 
-    dispatch(createProduct(myForm));
+    myForm.set("options", JSON.stringify(inputOptionList));
+
+    dispatch(createAttribute(myForm));
   };
 
-  console.log(optionName, optionLabel);
-  const AttributeOptions = () => {
-    return (
-      <Fragment>
-        <div className="col1 col-lg-6">
-          <div>
-            <label for="stock" className="prodFormLabel">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter Option Name"
-              className="prodFormInput"
-              required
-              onChange={(e) => setOptionName(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="col1 col-lg-6">
-          <div>
-            <label for="stock" className="prodFormLabel">
-              Label
-            </label>
-            <input
-              type="text"
-              name="label"
-              placeholder="Enter Option Label"
-              className="prodFormInput"
-              required
-              onChange={(e) => setOptionLabel(e.target.value)}
-            />
-          </div>
-        </div>
-      </Fragment>
-    );
-  };
-  const [attributesOptions, setAttributesOptions] = useState([]);
+  const [inputOptionList, setInputOptionList] = useState([]);
 
-  const addAttrOptions = (e) => {
+  const handleOptionAdd = (e) => {
     e.preventDefault();
-    setAttributesOptions(
-      attributesOptions.concat(
-        <AttributeOptions key={attributesOptions.length} />
-      )
-    );
+    setInputOptionList([
+      ...inputOptionList,
+      {
+        optionName: "",
+        optionLabel: "",
+      },
+    ]);
+  };
+
+  const handleInputOptionName = (event, index) => {
+    const { value } = event.target;
+    const newinputOptionList = [...inputOptionList];
+    newinputOptionList[index].optionName = value;
+    setInputOptionList(newinputOptionList);
+  };
+
+  const handleInputOptionLabel = (event, index) => {
+    const { value } = event.target;
+    const newinputOptionList = [...inputOptionList];
+    newinputOptionList[index].optionLabel = value;
+    setInputOptionList(newinputOptionList);
+  };
+
+  const handleRemoveOption = (e, index) => {
+    e.preventDefault();
+    const newList = [...inputOptionList];
+    newList.splice(index, 1);
+    setInputOptionList(newList);
   };
 
   return (
@@ -127,10 +112,62 @@ const CreateAttribute = () => {
                   />
                 </div>
               </div>
-              {attributesOptions}
+              {inputOptionList.length > 0
+                ? inputOptionList.map((input, index) => (
+                    <Fragment>
+                      <div className="col1 col-lg-5" key={index}>
+                        <div>
+                          <label for="stock" className="prodFormLabel">
+                            Option Name
+                          </label>
+                          <input
+                            type="text"
+                            name="optionName"
+                            placeholder="Enter Option Name"
+                            className="prodFormInput"
+                            required
+                            label={`input ${index + 1}`}
+                            onChange={(event) =>
+                              handleInputOptionName(event, index)
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col1 col-lg-5">
+                        <div>
+                          <label for="stock" className="prodFormLabel">
+                            Option Label
+                          </label>
+                          <input
+                            type="text"
+                            name="optionLabel"
+                            placeholder="Enter Option Label"
+                            className="prodFormInput"
+                            required
+                            onChange={(event) =>
+                              handleInputOptionLabel(event, index)
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col1 col-lg-1">
+                        <div className="d-flex align-items-center justify-content-end">
+                          <button
+                            className="btn btn-danger"
+                            onClick={(e) => handleRemoveOption(e, index)}
+                          >
+                            <span role="img" aria-label="x emoji">
+                              ❌
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </Fragment>
+                  ))
+                : ""}
               <div className="col1 col-lg-12">
                 <div>
-                  <button className="btn btn-warning" onClick={addAttrOptions}>
+                  <button className="btn btn-warning" onClick={handleOptionAdd}>
                     Add Attribute Options
                   </button>
                 </div>

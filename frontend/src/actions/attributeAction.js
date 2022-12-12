@@ -65,6 +65,25 @@ export const createAttribute = (AttributeData) => async (dispatch) => {
   }
 };
 
+// Delete Product
+export const deleteAttribute = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_ATTRIBUTE_REQUEST });
+
+    const { data } = await axios.delete(`/api/v1/admin/attribute/${id}`);
+
+    dispatch({
+      type: DELETE_ATTRIBUTE_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_ATTRIBUTE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
