@@ -8,7 +8,6 @@ import {
 } from "../../actions/productAction";
 import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { Button } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
 import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 

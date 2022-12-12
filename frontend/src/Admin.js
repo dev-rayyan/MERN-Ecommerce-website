@@ -12,6 +12,9 @@ import ProductReviews from "./component/Admin/ProductReviews.js";
 import ProtectedRoute from "./component/Route/ProtectedRoute";
 import OrderDetails from "./component/Admin/OrderDetails.js";
 import Sidebar from "./component/Admin/Sidebar.js";
+import Attributes from "./component/Admin/Attributes.js";
+import CreateAttribute from "./component/Admin/CreateAttribute.js";
+
 import "./Admin.css";
 
 const admin = () => {
@@ -108,6 +111,26 @@ const admin = () => {
               element={
                 <ProtectedRoute>
                   <ProductReviews />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/attributes"
+              element={
+                <ProtectedRoute>
+                  <Attributes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/attributes/new"
+              element={
+                <ProtectedRoute>
+                  <CreateAttribute />
                 </ProtectedRoute>
               }
             />

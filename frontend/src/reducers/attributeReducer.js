@@ -43,3 +43,37 @@ export const attributesReducer = (state = { attributes: [] }, action) => {
       return state;
   }
 };
+
+export const newAttributeReducer = (state = { attribute: {} }, action) => {
+  switch (action.type) {
+    case CREATE_ATTRIBUTE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case CREATE_ATTRIBUTE_SUCCESS:
+      return {
+        loading: false,
+        success: action.payload.success,
+        attribute: action.payload.attribute,
+      };
+    case CREATE_ATTRIBUTE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CREATE_ATTRIBUTE_RESET:
+      return {
+        ...state,
+        success: false,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};

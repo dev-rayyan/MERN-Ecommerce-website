@@ -175,6 +175,26 @@ const Sidebar = () => {
                             </ul>
                           </div>
                         </li>
+                        <li class="sidebar-sub-dropdown">
+                          <a href="#">
+                            <i class="fas fa-wallet"></i>
+                            <span>Attributes</span>
+                          </a>
+                          <div class="sidebar-sub-submenu">
+                            <ul>
+                              <li>
+                                <Link to="/admin/attributes">
+                                  All Attributes
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/admin/attributes/new">
+                                  Add Attributes
+                                </Link>
+                              </li>
+                            </ul>
+                          </div>
+                        </li>
                         <li>
                           <Link to="/admin/users">
                             <i class="fas fa-users"></i>

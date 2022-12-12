@@ -29,7 +29,10 @@ import {
   dwmOrdersReducer,
 } from "./reducers/orderReducer";
 import { categoriesReducer } from "./reducers/categoryReducer";
-import { attributesReducer } from "./reducers/attributeReducer";
+import {
+  attributesReducer,
+  newAttributeReducer,
+} from "./reducers/attributeReducer";
 
 const reducer = combineReducers({
   products: productsReducer,
@@ -53,6 +56,7 @@ const reducer = combineReducers({
   dwmOrders: dwmOrdersReducer,
   categories: categoriesReducer,
   attributes: attributesReducer,
+  newAttribute: newAttributeReducer,
 });
 
 let initialState = {
