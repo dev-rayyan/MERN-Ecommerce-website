@@ -12,6 +12,20 @@ exports.getAllAttributes = catchAsyncErrors(async (req, res) => {
   });
 });
 
+// Get Attribute Details
+exports.getAttributeDetails = catchAsyncErrors(async (req, res, next) => {
+  const attribute = await Attribute.findById(req.params.id);
+
+  if (!attribute) {
+    return next(new ErrorHandler("Attribute not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    attribute,
+  });
+});
+
 // Create Attribute -- Admin
 exports.createAttribute = catchAsyncErrors(async (req, res, next) => {
   let options = JSON.parse(req.body.options);
@@ -42,6 +56,19 @@ exports.updateAttribute = catchAsyncErrors(async (req, res, next) => {
   if (!attribute) {
     return next(new ErrorHandler("Attribute not found", 404));
   }
+
+  let options = JSON.parse(req.body.options);
+
+  const optionsList = [];
+
+  options.forEach((opt) => {
+    optionsList.push({
+      name: opt.name,
+      label: opt.label,
+    });
+  });
+
+  req.body.options = optionsList;
 
   attribute = await Attribute.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

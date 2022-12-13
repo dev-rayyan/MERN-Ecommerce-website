@@ -5,6 +5,7 @@ const {
   createAttribute,
   deleteAttribute,
   updateAttribute,
+  getAttributeDetails,
 } = require("../controllers/attributeController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
@@ -16,6 +17,7 @@ router
 
 router
   .route("/admin/attribute/:id")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getAttributeDetails)
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateAttribute)
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteAttribute);
 

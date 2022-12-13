@@ -7,7 +7,6 @@ import {
 } from "../../actions/productAction";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
-
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
@@ -36,6 +35,7 @@ const UpdateProduct = () => {
   } = useSelector((state) => state.product);
 
   const [SKU, setSKU] = useState("");
+  const [visibility, setVisibility] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -44,7 +44,6 @@ const UpdateProduct = () => {
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  var [attributesSend, setAttributesSend] = useState([]);
 
   const productId = id;
 
@@ -95,6 +94,8 @@ const UpdateProduct = () => {
 
     const myForm = new FormData();
 
+    myForm.set("SKU", SKU);
+    myForm.set("visibleOnSite", visibility);
     myForm.set("name", name);
     myForm.set("price", price);
     myForm.set("description", description);
@@ -104,6 +105,9 @@ const UpdateProduct = () => {
     images.forEach((image) => {
       myForm.append("images", image);
     });
+
+    myForm.append("attributes", JSON.stringify(inputOptionList));
+
     dispatch(updateProduct(productId, myForm));
   };
 

@@ -40,18 +40,6 @@
   color: white;
 }
 
-/* .banner::after {
-	content: "";
-	width: 100vw;
-	height: 100vmin;
-	background-image: linear-gradient(to right, #635dc0, #3027ae);
-	position: absolute;
-	top: 0%;
-	left: 0;
-	clip-path: polygon(100% 68%, 0 100%, 100% 100%);
-	max-width: 100%;
-} */
-
 .homeHeading {
   text-align: center;
   font-family: Roboto;
@@ -200,4 +188,16 @@ a.clip-each:hover > div {
   .clip-border {
     margin-top: 20px;
   }
+}
+
+.home-section {
+  padding: 100px 0;
+}
+.section-title {
+  margin: auto;
+  text-align: center;
+  margin-bottom: 70px;
+  padding-bottom: 30px;
+  width: 30vmax;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.5);
 }

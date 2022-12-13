@@ -17,6 +17,9 @@ import {
   DELETE_ATTRIBUTE_FAIL,
   DELETE_ATTRIBUTE_RESET,
   CLEAR_ERRORS,
+  ATTRIBUTE_DETAILS_REQUEST,
+  ATTRIBUTE_DETAILS_SUCCESS,
+  ATTRIBUTE_DETAILS_FAIL,
 } from "../constants/attributeConstants";
 
 // Get All Attributes
@@ -33,6 +36,25 @@ export const getAllAttributes = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ALL_ATTRIBUTE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Get Attribute's Details
+export const getAttributeDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: ATTRIBUTE_DETAILS_REQUEST });
+
+    const { data } = await axios.get(`/api/v1/admin/attribute/${id}`);
+
+    dispatch({
+      type: ATTRIBUTE_DETAILS_SUCCESS,
+      payload: data.attribute,
+    });
+  } catch (error) {
+    dispatch({
+      type: ATTRIBUTE_DETAILS_FAIL,
       payload: error.response.data.message,
     });
   }
@@ -65,7 +87,34 @@ export const createAttribute = (AttributeData) => async (dispatch) => {
   }
 };
 
-// Delete Product
+// Update Attribute
+export const updateAttribute = (id, attributeData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_ATTRIBUTE_REQUEST });
+
+    const config = {
+      headers: { "Content-Type": "application/json" },
+    };
+
+    const { data } = await axios.put(
+      `/api/v1/admin/attribute/${id}`,
+      attributeData,
+      config
+    );
+
+    dispatch({
+      type: UPDATE_ATTRIBUTE_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_ATTRIBUTE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Delete Attribute
 export const deleteAttribute = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_ATTRIBUTE_REQUEST });

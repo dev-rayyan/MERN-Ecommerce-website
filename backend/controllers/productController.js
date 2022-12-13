@@ -106,7 +106,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHander("Product not found", 404));
+    return next(new ErrorHandler("Product not found", 404));
   }
 
   // Images Start Here
@@ -139,6 +139,19 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
 
     req.body.images = imagesLinks;
   }
+
+  let attrs = JSON.parse(req.body.attributes);
+
+  const attributesList = [];
+
+  attrs.forEach((attr) => {
+    attributesList.push({
+      name: attr.name,
+      value: attr.value.map((val) => val),
+    });
+  });
+
+  req.body.attributes = attributesList;
 
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

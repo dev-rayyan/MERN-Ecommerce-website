@@ -28,8 +28,14 @@ import {
   orderReducer,
   dwmOrdersReducer,
 } from "./reducers/orderReducer";
-import { categoriesReducer } from "./reducers/categoryReducer";
 import {
+  categoriesReducer,
+  categoryDetailsReducer,
+  categoryReducer,
+  newCategoryReducer,
+} from "./reducers/categoryReducer";
+import {
+  attributeDetailsReducer,
   attributeReducer,
   attributesReducer,
   newAttributeReducer,
@@ -56,9 +62,13 @@ const reducer = combineReducers({
   review: reviewReducer,
   dwmOrders: dwmOrdersReducer,
   categories: categoriesReducer,
+  newCategory: newCategoryReducer,
+  category: categoryReducer,
+  categoryDetails: categoryDetailsReducer,
   attributes: attributesReducer,
   newAttribute: newAttributeReducer,
   attribute: attributeReducer,
+  attributeDetails: attributeDetailsReducer,
 });
 
 let initialState = {

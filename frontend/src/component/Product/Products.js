@@ -10,18 +10,11 @@ import Slider from "@material-ui/core/Slider";
 import { useAlert } from "react-alert";
 import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
-
-const categories = [
-  "Laptop",
-  "Footwear",
-  "Bottom",
-  "Tops",
-  "Attire",
-  "Camera",
-  "SmartPhones",
-];
+import { getAllCategories } from "../../actions/categoryAction";
 
 const Products = () => {
+  const { categories } = useSelector((state) => state.categories);
+
   const dispatch = useDispatch();
 
   const alert = useAlert();
@@ -54,6 +47,7 @@ const Products = () => {
   };
 
   useEffect(() => {
+    dispatch(getAllCategories());
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -73,21 +67,22 @@ const Products = () => {
           <h1 className="heading">Products</h1>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-lg-3">
+              <div className="col-lg-2">
                 <div className="filterBox">
                   <h3>Filters</h3>
                   <div className="row">
                     <h5>Categories</h5>
                     <ul className="categoryBox">
-                      {categories.map((category) => (
-                        <li
-                          className="category-link"
-                          key={category}
-                          onClick={() => setCategory(category)}
-                        >
-                          {category}
-                        </li>
-                      ))}
+                      {categories &&
+                        categories.map((category) => (
+                          <li
+                            className="category-link"
+                            key={category._id}
+                            onClick={() => setCategory(category.name)}
+                          >
+                            {category.name}
+                          </li>
+                        ))}
                     </ul>
                   </div>
                   <Typography>Price</Typography>
@@ -114,7 +109,7 @@ const Products = () => {
                   </fieldset>
                 </div>
               </div>
-              <div className="col-lg-9">
+              <div className="col-lg-10">
                 <div className="products">
                   <div className="row">
                     {products &&

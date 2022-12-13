@@ -25,14 +25,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding-bottom: 15px;
 }
 .contentBox {
   padding: 15px;
 }
 .imgBox > img {
-  height: 200px;
-  width: 200px;
+  height: 100%;
+  width: 100%;
 }
 .prodTitle {
   font-size: 18px;

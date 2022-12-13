@@ -15,6 +15,9 @@ import {
   DELETE_ATTRIBUTE_FAIL,
   DELETE_ATTRIBUTE_RESET,
   CLEAR_ERRORS,
+  ATTRIBUTE_DETAILS_REQUEST,
+  ATTRIBUTE_DETAILS_SUCCESS,
+  ATTRIBUTE_DETAILS_FAIL,
 } from "../constants/attributeConstants";
 
 export const attributesReducer = (state = { attributes: [] }, action) => {
@@ -34,6 +37,34 @@ export const attributesReducer = (state = { attributes: [] }, action) => {
         loading: false,
         error: action.payload,
       };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const attributeDetailsReducer = (state = { attribute: {} }, action) => {
+  switch (action.type) {
+    case ATTRIBUTE_DETAILS_REQUEST:
+      return {
+        loading: true,
+        ...state,
+      };
+    case ATTRIBUTE_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        attribute: action.payload,
+      };
+    case ATTRIBUTE_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
     case CLEAR_ERRORS:
       return {
         ...state,

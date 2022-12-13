@@ -16,6 +16,10 @@ import Attributes from "./component/Admin/Attributes.js";
 import CreateAttribute from "./component/Admin/CreateAttribute.js";
 
 import "./Admin.css";
+import EditAttribute from "./component/Admin/EditAttribute.js";
+import Categories from "./component/Admin/Categories.js";
+import CreateCategory from "./component/Admin/CreateCategory.js";
+import EditCategory from "./component/Admin/EditCategory.js";
 
 const admin = () => {
   return (
@@ -131,6 +135,46 @@ const admin = () => {
               element={
                 <ProtectedRoute>
                   <CreateAttribute />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/attribute/:id"
+              element={
+                <ProtectedRoute>
+                  <EditAttribute />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/categories"
+              element={
+                <ProtectedRoute>
+                  <Categories />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/category/new"
+              element={
+                <ProtectedRoute>
+                  <CreateCategory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              isAdmin={true}
+              exact
+              path="/category/:id"
+              element={
+                <ProtectedRoute>
+                  <EditCategory />
                 </ProtectedRoute>
               }
             />

@@ -1,31 +1,29 @@
 import React, { Fragment, useEffect } from "react";
 import "./productList.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getAdminProduct, deleteProduct } from "../../actions/productAction";
 import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
-import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 import {
-  getAllAttributes,
+  deleteCategory,
+  getAllCategories,
   clearErrors,
-  deleteAttribute,
-} from "../../actions/attributeAction";
-import { DELETE_ATTRIBUTE_RESET } from "../../constants/attributeConstants";
+} from "../../actions/categoryAction";
+import { DELETE_CATEGORY_RESET } from "../../constants/categoryConstants";
 
-const Attributes = () => {
+const Categories = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const alert = useAlert();
 
-  const { error, attributes } = useSelector((state) => state.attributes);
+  const { error, categories } = useSelector((state) => state.categories);
 
   const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.attribute
+    (state) => state.category
   );
 
-  const deleteAttributeHandler = (id) => {
-    dispatch(deleteAttribute(id));
+  const deleteCategoryHandler = (id) => {
+    dispatch(deleteCategory(id));
   };
 
   useEffect(() => {
@@ -40,17 +38,17 @@ const Attributes = () => {
     }
 
     if (isDeleted) {
-      alert.success("Attribute Deleted Successfully");
-      navigate("/admin/attributes");
-      dispatch({ type: DELETE_ATTRIBUTE_RESET });
+      alert.success("Category Deleted Successfully");
+      navigate("/admin/categories");
+      dispatch({ type: DELETE_CATEGORY_RESET });
     }
 
-    dispatch(getAllAttributes());
+    dispatch(getAllCategories());
   }, [dispatch, alert, error, deleteError, navigate, isDeleted]);
 
   return (
     <div className="card">
-      <h1 id="productListHeading">All Attributes</h1>
+      <h1 id="productListHeading">All Categories</h1>
       <div class="card-body px-0 py-0">
         <div class="table-responsive scrollbar">
           <table class="table table-sm fs--1 mb-0 overflow-hidden">
@@ -72,13 +70,6 @@ const Attributes = () => {
                 >
                   Name
                 </th>
-
-                <th
-                  class="sort pe-1 align-middle white-space-nowrap"
-                  data-sort="options"
-                >
-                  Options
-                </th>
                 <th
                   class="sort pe-1 align-middle white-space-nowrap text-end"
                   data-sort="createdAt"
@@ -89,8 +80,8 @@ const Attributes = () => {
               </tr>
             </thead>
             <tbody class="list" id="table-purchase-body">
-              {attributes &&
-                attributes.map((item) => (
+              {categories &&
+                categories.map((item) => (
                   <tr class="btn-reveal-trigger">
                     <td class="align-middle">
                       <div class="form-check mb-0">
@@ -104,14 +95,6 @@ const Attributes = () => {
                     </td>
                     <td class="align-middle white-space-nowrap name text-capitalize">
                       {item.name}
-                    </td>
-
-                    <td class="align-middle white-space-nowrap options">
-                      <ul className="attrOptions">
-                        {item.options.map((itemOpt) => (
-                          <li>{itemOpt.name}</li>
-                        ))}
-                      </ul>
                     </td>
                     <td class="align-middle text-end createdAt">
                       {String(item.createdAt).substr(0, 10)}
@@ -152,19 +135,19 @@ const Attributes = () => {
                           <Link
                             class="dropdown-item"
                             target="_blank"
-                            to={`/product/${item._id}`}
+                            to={`/category/${item._id}`}
                           >
                             View
                           </Link>
                           <Link
                             class="dropdown-item"
-                            to={`/admin/attribute/${item._id}`}
+                            to={`/admin/category/${item._id}`}
                           >
                             Edit
                           </Link>
                           <div class="dropdown-divider"></div>
                           <Link
-                            onClick={() => deleteAttributeHandler(item._id)}
+                            onClick={() => deleteCategoryHandler(item._id)}
                             class="dropdown-item text-danger"
                           >
                             Delete
@@ -182,4 +165,4 @@ const Attributes = () => {
   );
 };
 
-export default Attributes;
+export default Categories;

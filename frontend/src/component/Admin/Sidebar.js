@@ -149,7 +149,9 @@ const Sidebar = () => {
                           <div class="sidebar-sub-submenu">
                             <ul>
                               <li>
-                                <Link to="/admin/category">Add Category</Link>
+                                <Link to="/admin/category/new">
+                                  Add Category
+                                </Link>
                               </li>
                               <li>
                                 <Link to="/admin/categories">

@@ -78,19 +78,23 @@ const Home = () => {
                 </defs>
               </svg>
             </div>
-            {/* <a href="#container">
-							<button>
-								Scroll <CgMouse />
-							</button>
-						</a> */}
           </div>
-          <h2 className="homeHeading">Featured Products</h2>
-
-          <div className="container1" id="container">
-            {products &&
-              products.map((product) => (
-                <ProductCard key={""} product={product} />
-              ))}
+          <div className="container-fluid bg-200 home-section">
+            <h1 className="section-title">Featured Products</h1>
+            <div className="container" id="container">
+              <div className="products">
+                <div className="row">
+                  {products &&
+                    products.map((product) => (
+                      <Fragment>
+                        <div className="col-lg-3">
+                          <ProductCard key={product._id} product={product} />
+                        </div>
+                      </Fragment>
+                    ))}
+                </div>
+              </div>
+            </div>
           </div>
         </Fragment>
       )}

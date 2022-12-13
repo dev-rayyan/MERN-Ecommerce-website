@@ -1,44 +1,73 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "./newProduct.css";
 import { useSelector, useDispatch } from "react-redux";
-import { clearErrors, createProduct } from "../../actions/productAction";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
-import { CREATE_ATTRIBUTE_RESET } from "../../constants/attributeConstants";
-import { useNavigate } from "react-router-dom";
+import {
+  CREATE_ATTRIBUTE_RESET,
+  UPDATE_ATTRIBUTE_RESET,
+} from "../../constants/attributeConstants";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllCategories } from "../../actions/categoryAction";
 import {
   createAttribute,
   getAllAttributes,
+  getAttributeDetails,
+  clearErrors,
+  updateAttribute,
 } from "../../actions/attributeAction";
 
-const CreateAttribute = () => {
+const EditAttribute = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
 
-  const { loading, error, success } = useSelector(
-    (state) => state.newAttribute
-  );
+  let { id } = useParams();
+
+  const { error, attribute } = useSelector((state) => state.attributeDetails);
+
+  const {
+    loading,
+    error: updateError,
+    isUpdated,
+  } = useSelector((state) => state.attribute);
 
   const [name, setName] = useState("");
 
+  const attributeId = id;
+
   useEffect(() => {
-    dispatch(getAllCategories());
-    dispatch(getAllAttributes());
+    if (attribute && attribute._id !== attributeId) {
+      dispatch(getAttributeDetails(attributeId));
+    } else {
+      setName(attribute.name);
+      setInputOptionList(attribute.options);
+    }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-
-    if (success) {
-      alert.success("Attribute Created Successfully");
-      navigate("/admin/attributes");
-      dispatch({ type: CREATE_ATTRIBUTE_RESET });
+    if (updateError) {
+      alert.error(updateError);
+      dispatch(clearErrors());
     }
-  }, [dispatch, alert, error, navigate, success]);
+    if (isUpdated) {
+      alert.success("Attribute Updated Successfully");
+      navigate("/admin/attributes");
+      dispatch({ type: UPDATE_ATTRIBUTE_RESET });
+    }
+  }, [
+    dispatch,
+    alert,
+    error,
+    navigate,
+    isUpdated,
+    attributeId,
+    attribute,
+    updateError,
+  ]);
 
-  const createAttributeSubmitHandler = (e) => {
+  const updateAttributeSubmitHandler = (e) => {
     e.preventDefault();
 
     const myForm = new FormData();
@@ -47,7 +76,7 @@ const CreateAttribute = () => {
 
     myForm.set("options", JSON.stringify(inputOptionList));
 
-    dispatch(createAttribute(myForm));
+    dispatch(updateAttribute(attributeId, myForm));
   };
 
   const [inputOptionList, setInputOptionList] = useState([]);
@@ -93,7 +122,7 @@ const CreateAttribute = () => {
           <form
             className="AddProductForm"
             encType="multipart/form-data"
-            onSubmit={createAttributeSubmitHandler}
+            onSubmit={updateAttributeSubmitHandler}
           >
             <div className="row">
               <div className="col1 col-lg-12">
@@ -126,6 +155,7 @@ const CreateAttribute = () => {
                             placeholder="Enter Option Name"
                             className="prodFormInput"
                             required
+                            value={input.name}
                             label={`input ${index + 1}`}
                             onChange={(event) =>
                               handleInputOptionName(event, index)
@@ -144,6 +174,7 @@ const CreateAttribute = () => {
                             placeholder="Enter Option Label"
                             className="prodFormInput"
                             required
+                            value={input.label}
                             onChange={(event) =>
                               handleInputOptionLabel(event, index)
                             }
@@ -186,4 +217,4 @@ const CreateAttribute = () => {
   );
 };
 
-export default CreateAttribute;
+export default EditAttribute;
