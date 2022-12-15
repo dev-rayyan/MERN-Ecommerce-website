@@ -15,7 +15,7 @@ import reactCSS from "reactcss";
 import ColorPicker from "react-best-gradient-color-picker";
 import Popup from "reactjs-popup";
 import Tooltip from "@mui/material/Tooltip";
-// import "reactjs-popup/dist/index.css";
+import Draggable from "react-draggable";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -241,12 +241,15 @@ const NewProduct = () => {
     newinputOptionList[index].value = selectedOption.map((opt) => opt.value);
     setInputOptionList(newinputOptionList);
   };
-
+  const [position, setPosition] = useState({ x: 100, y: 0 });
   const handleRemoveOption = (e, index) => {
     e.preventDefault();
     const newList = [...inputOptionList];
     newList.splice(index, 1);
     setInputOptionList(newList);
+  };
+  const trackPos = (data) => {
+    setPosition({ x: data.x, y: data.y });
   };
   return (
     <Fragment>
@@ -273,7 +276,7 @@ const NewProduct = () => {
                         }
                         position="right center"
                       >
-                        <div>
+                        <div className="bg-100 ml-5 p-2 rounded">
                           <ColorPicker
                             hideAdvancedSliders={true}
                             hidePresets={true}
@@ -307,17 +310,33 @@ const NewProduct = () => {
                       </div>
 
                       <div class="image-upload ab">
-                        <label for="file-input1">
-                          <img
-                            src={
-                              mainImage && mainImage.length > 0
-                                ? mainImage
-                                : "/imgs/select_grey1.png"
+                        <Draggable
+                          onDrag={(e, data) => trackPos(data)}
+                          positionOffset={{ x: "100px", y: "0" }}
+                        >
+                          <Tooltip
+                            placement="right"
+                            title={
+                              <label for="file-input1" className="m-0 p-0">
+                                Select Image
+                              </label>
                             }
-                            alt="Shoe"
-                            class="product-img"
-                          />
-                        </label>
+                          >
+                            <div className="box">
+                              <img
+                                src={
+                                  mainImage && mainImage.length > 0
+                                    ? mainImage
+                                    : "/imgs/select_grey1.png"
+                                }
+                                draggable="false"
+                                alt="Shoe"
+                                class="productImgAdmin"
+                              />
+                            </div>
+                          </Tooltip>
+                        </Draggable>
+
                         <input
                           onChange={mainImageHandler}
                           id="file-input1"
