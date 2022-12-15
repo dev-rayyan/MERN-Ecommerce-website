@@ -79,19 +79,661 @@ const Home = () => {
               </svg>
             </div>
           </div>
-          <div className="container-fluid bg-200 home-section">
+          <div className="container-fluid bg-100 home-section">
             <h1 className="section-title">Featured Products</h1>
             <div className="container" id="container">
               <div className="products">
                 <div className="row">
-                  {products &&
-                    products.map((product) => (
-                      <Fragment>
-                        <div className="col-lg-3">
-                          <ProductCard key={product._id} product={product} />
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-1">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/5.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Nemeziz</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
                         </div>
-                      </Fragment>
-                    ))}
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              19.4<b>Nemeziz</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-2">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/1.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Predator</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              .3<b>Predator</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-3">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/6.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Predator</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              .4<b>Predator</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-4">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/3.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Copa</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              .3<b>Copa</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-5">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/4.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">X Speedflow</h2> Support
+                            and Nike Zoom Air come together for a more
+                            supportive feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              .4<b>Speedflow</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-6">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/7.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Predator</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              .3<b>Predator</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-7">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/8.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Nemeziz</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              18.3<b>Nemeziz</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">
+                              Indoor Court Collection
+                            </span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3">
+                    <div class="productContainer">
+                      <div class="productCard">
+                        <div class="productCard-head-8">
+                          <img
+                            src="/imgs/adidas_white.png"
+                            alt="logo"
+                            class="card-logo"
+                          />
+                          <img
+                            src="/imgs/2.png"
+                            alt="Shoe"
+                            class="product-img"
+                          />
+                          <div class="product-detail">
+                            <h2 className="text-white">Nemeziz</h2> Support and
+                            Nike Zoom Air come together for a more supportive
+                            feel with high-speed responsiveness
+                          </div>
+                          <span class="back-text">FAS</span>
+                        </div>
+                        <div class="productCard-body">
+                          <div class="product-desc">
+                            <span class="product-title">
+                              .3<b>Nemeziz</b>
+                              <span class="badge">New</span>
+                            </span>
+                            <span class="product-caption">Turf Collection</span>
+                            <span class="product-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star grey"></i>
+                            </span>
+                          </div>
+                          <div class="product-properties">
+                            <span class="product-size">
+                              <h4>Size</h4>
+                              <ul class="ul-size">
+                                <li>
+                                  <a href="#">7</a>
+                                </li>
+                                <li>
+                                  <a href="#">8</a>
+                                </li>
+                                <li>
+                                  <a href="#">9</a>
+                                </li>
+                                <li>
+                                  <a href="#" class="active">
+                                    10
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">11</a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-color">
+                              <h4>Colour</h4>
+                              <ul class="ul-color">
+                                <li>
+                                  <a href="#" class="orange active"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="green"></a>
+                                </li>
+                                <li>
+                                  <a href="#" class="yellow"></a>
+                                </li>
+                              </ul>
+                            </span>
+                            <span class="product-price">
+                              USD<b>23,453</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
