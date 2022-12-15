@@ -61,7 +61,14 @@
   height: 500px;
   margin: 30px auto;
 }
-
+.productContainerAdmin {
+  width: 280px;
+  height: 800px;
+  margin: auto;
+  align-items: center;
+  display: flex;
+  transform: scale(1.3);
+}
 .productCard {
   border-radius: 25px;
   box-shadow: -11px 11px 10px rgba(0, 0, 0, 0.3);
@@ -406,4 +413,14 @@
 
 .yt:hover {
   background: rgba(0, 0, 0, 0.2);
+}
+.z-high {
+  z-index: 99;
+  position: relative;
+}
+.grad-icon {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: white;
 }

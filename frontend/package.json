@@ -35,6 +35,7 @@
 		"react": "^18.2.0",
 		"react-alert": "^7.0.3",
 		"react-alert-template-basic": "^1.0.2",
+		"react-best-gradient-color-picker": "^2.1.11",
 		"react-bootstrap": "^2.5.0",
 		"react-chartjs-2": "^4.3.1",
 		"react-color": "^2.19.3",
@@ -51,6 +52,7 @@
 		"react-scripts": "5.0.1",
 		"react-select": "^5.7.0",
 		"reactcss": "^1.2.3",
+		"reactjs-popup": "^2.0.5",
 		"redux": "^4.2.0",
 		"redux-devtools-extension": "^2.13.9",
 		"redux-thunk": "^2.4.1",
@@ -81,7 +83,7 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "http://192.168.100.13:4000",
+	"proxy": "http://192.168.1.4:4000",
 	"devDependencies": {
 		"react-script-tag": "^1.1.2"
 	}

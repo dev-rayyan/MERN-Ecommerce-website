@@ -12,8 +12,10 @@ import Select from "react-select";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import reactCSS from "reactcss";
-import { SketchPicker } from "react-color";
-import ContentEditable from "react-contenteditable";
+import ColorPicker from "react-best-gradient-color-picker";
+import Popup from "reactjs-popup";
+import Tooltip from "@mui/material/Tooltip";
+// import "reactjs-popup/dist/index.css";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -25,11 +27,14 @@ const NewProduct = () => {
   const { categories } = useSelector((state) => state.categories);
 
   const { attributes } = useSelector((state) => state.attributes);
-
+  const [color, setColor] = useState(
+    "linear-gradient(135deg, rgba(250, 120, 46, 1) 8%, rgba(200, 41, 48, 1) 83%)"
+  );
+  const [price, setPrice] = useState(1234);
   const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
   const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
   const [brandLogo, setBrandLogo] = useState();
-  const [productTitle, setProductTitle] = useState("Title");
+  const [productCategory, setProductCategory] = useState("Category");
   const [shortDescription, setShortDescription] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore"
   );
@@ -52,7 +57,7 @@ const NewProduct = () => {
   const [SKU, setSKU] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [Stock, setStock] = useState(0);
@@ -115,65 +120,10 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  const styles1 = reactCSS({
+  const styles = reactCSS({
     default: {
-      color: {
-        width: "36px",
-        height: "14px",
-        borderRadius: "2px",
-        background: `rgba(${color1.r}, ${color1.g}, ${color1.b}, ${color1.a})`,
-      },
-      swatch: {
-        padding: "5px",
-        background: "#fff",
-        borderRadius: "1px",
-        boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
-        display: "inline-block",
-        cursor: "pointer",
-      },
-      popover: {
-        position: "absolute",
-        zIndex: "2",
-      },
-      cover: {
-        position: "fixed",
-        top: "0px",
-        right: "0px",
-        bottom: "0px",
-        left: "0px",
-      },
       Phead: {
-        background: `linear-gradient(135deg, rgba(${color1.r}, ${color1.g}, ${color1.b}, ${color1.a}) 8%, rgba(${color2.r}, ${color2.g}, ${color2.b}, ${color2.a}) 83%)`,
-      },
-    },
-  });
-
-  const styles2 = reactCSS({
-    default: {
-      color: {
-        width: "36px",
-        height: "14px",
-        borderRadius: "2px",
-        background: `rgba(${color2.r}, ${color2.g}, ${color2.b}, ${color2.a})`,
-      },
-      swatch: {
-        padding: "5px",
-        background: "#fff",
-        borderRadius: "1px",
-        boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
-        display: "inline-block",
-        cursor: "pointer",
-      },
-      popover: {
-        position: "absolute",
-        zIndex: "2",
-      },
-      cover: {
-        position: "fixed",
-        top: "0px",
-        right: "0px",
-        bottom: "0px",
-        left: "0px",
+        background: color,
       },
     },
   });
@@ -298,7 +248,6 @@ const NewProduct = () => {
     newList.splice(index, 1);
     setInputOptionList(newList);
   };
-
   return (
     <Fragment>
       <MetaData title="Create Product" />
@@ -311,412 +260,52 @@ const NewProduct = () => {
             onSubmit={createProductSubmitHandler}
           >
             <div className="row">
-              <div className="col-lg-9 border-right">
-                <div className="row">
-                  <div className="col1 col-lg-4 flex-column align-items-start">
-                    <label style={{ fontSize: "15px", margin: 0 }}>
-                      Brand logo
-                    </label>
-                    <div className="file-input">
-                      <label className="forImg prodFormLabel" for="images">
-                        Select Image
-                      </label>
-                      <input
-                        type="file"
-                        name="images"
-                        placeholder="Select Product Images"
-                        className="prodFormInputFile file"
-                        accept="image/*"
-                        onChange={brandLogoHandler}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-4">
-                    <div>
-                      <label for="name" className="prodFormLabel">
-                        Product Title
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        maxLength="10"
-                        placeholder="Enter Product Title"
-                        className="prodFormInput"
-                        required
-                        value={productTitle}
-                        onChange={(e) => setProductTitle(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-4">
-                    <div>
-                      <label for="description" className="prodFormLabel">
-                        Short Description
-                      </label>
-                      <textarea
-                        type="text"
-                        name="description"
-                        maxlength="100"
-                        placeholder="Enter Short Description..."
-                        className="prodFormTextArea"
-                        value={shortDescription}
-                        onChange={(e) => setShortDescription(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-4 flex-column align-items-start">
-                    <label style={{ fontSize: "15px", margin: 0 }}>
-                      Main Image
-                    </label>
-                    <div className="file-input">
-                      <label className="forImg prodFormLabel" for="images">
-                        Select Image
-                      </label>
-                      <input
-                        type="file"
-                        name="images"
-                        placeholder="Select Product Images"
-                        className="prodFormInputFile file"
-                        accept="image/*"
-                        onChange={mainImageHandler}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-4">
-                    <div>
-                      <label for="name" className="prodFormLabel">
-                        Product Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Enter Product Title"
-                        className="prodFormInput"
-                        required
-                        value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-4">
-                    <div>
-                      <label for="name" className="prodFormLabel">
-                        Product Collection
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Enter Product Title"
-                        className="prodFormInput"
-                        required
-                        value={productCollection}
-                        onChange={(e) => setProductCollection(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-2">
-                    <div>
-                      <label for="name" className="prodFormLabel">
-                        Gradient Color 1
-                      </label>
-                      <div style={styles1.swatch} onClick={handleClick1}>
-                        <div style={styles1.color} />
-                      </div>
-                      {displayColorPicker1 ? (
-                        <div style={styles1.popover}>
-                          <div style={styles1.cover} onClick={handleClose1} />
-                          <SketchPicker
-                            color={color1}
-                            onChange={handleChange1}
-                          />
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-2">
-                    <div>
-                      <label for="name" className="prodFormLabel">
-                        Gradient Color 2
-                      </label>
-                      <div style={styles2.swatch} onClick={handleClick2}>
-                        <div style={styles2.color} />
-                      </div>
-                      {displayColorPicker2 ? (
-                        <div style={styles2.popover}>
-                          <div style={styles2.cover} onClick={handleClose2} />
-                          <SketchPicker
-                            color={color2}
-                            onChange={handleChange2}
-                          />
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-12">
-                    <div>
-                      <label for="name" className="prodFormLabel">
-                        Product Title
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Enter Product Title"
-                        className="prodFormInput"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-3">
-                    <div>
-                      <label for="SKU" className="prodFormLabel">
-                        SKU
-                      </label>
-                      <input
-                        type="text"
-                        name="SKU"
-                        placeholder="Enter Product SKU"
-                        className="prodFormInput"
-                        required
-                        value={SKU}
-                        onChange={(e) => setSKU(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-3">
-                    <div>
-                      <label for="price" className="prodFormLabel">
-                        Price
-                      </label>
-                      <input
-                        type="text"
-                        name="price"
-                        placeholder="Enter Product Price"
-                        className="prodFormInput"
-                        required
-                        onChange={(e) => setPrice(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-3">
-                    <div>
-                      <label for="stock" className="prodFormLabel">
-                        Stock
-                      </label>
-                      <input
-                        type="text"
-                        name="stock"
-                        placeholder="Enter Product Stock"
-                        className="prodFormInput"
-                        required
-                        onChange={(e) => setStock(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-3" id="specdiv">
-                    <div>
-                      <label for="stock" className="prodFormLabel">
-                        Category
-                      </label>
-                      <Select
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        options={categorySelectOptions}
-                        required
-                        onChange={(e) => setCategory(e.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col1 col-lg-12">
-                    <div>
-                      <label for="description" className="prodFormLabel">
-                        Description
-                      </label>
-                      <textarea
-                        type="text"
-                        name="description"
-                        placeholder="Enter Product Description..."
-                        className="prodFormTextArea"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  {imagesPreview.length === 0 ? (
-                    <div className="col1 col-lg-12 flex-column align-items-start">
-                      <label style={{ fontSize: "15px", margin: 0 }}>
-                        Images
-                      </label>
-                      <div className="file-input">
-                        <label className="forImg prodFormLabel" for="images">
-                          Select File
-                        </label>
-                        <input
-                          type="file"
-                          name="images"
-                          placeholder="Select Product Images"
-                          className="prodFormInputFile file"
-                          accept="image/*"
-                          onChange={createProductImagesChange}
-                          multiple
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="col1 col-lg-4 flex-column align-items-start">
-                      <label style={{ fontSize: "15px", margin: 0 }}>
-                        Images
-                      </label>
-                      <div className="file-input">
-                        <label className="forImg prodFormLabel" for="images">
-                          Select Images...
-                        </label>
-                        <input
-                          type="file"
-                          name="images"
-                          placeholder="Select Product Images"
-                          className="prodFormInputFile file"
-                          accept="image/*"
-                          onChange={createProductImagesChange}
-                          multiple
-                        />
-                      </div>
-                    </div>
-                  )}
-                  {imagesPreview.length !== 0 ? (
-                    <div className="col1 col-lg-8 flex-column align-items-start">
-                      <label className="prodFormLabel">Images Preview</label>
-                      <Splide
-                        options={{
-                          rewind: true,
-                          fixedWidth: 230,
-                          fixedHeight: 230,
-                          isNavigation: true,
-                          gap: 10,
-                          focus: "center",
-                          pagination: false,
-                          cover: true,
-                          arrows: false,
-                          dragMinThreshold: {
-                            mouse: 4,
-                            touch: 10,
-                          },
-                          breakpoints: {
-                            640: {
-                              fixedWidth: 66,
-                              fixedHeight: 38,
-                            },
-                          },
-                        }}
-                        aria-label="My Favorite Images"
-                      >
-                        {imagesPreview.map((image, index) => (
-                          <SplideSlide>
-                            <img key={index} src={image} alt={image} />
-                          </SplideSlide>
-                        ))}
-                      </Splide>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <div className="row">
-                    <div className="col1 col-lg-12">
-                      <div>
-                        <label className="prodFormLabel">
-                          Product Attributes
-                        </label>
-                        <div className="selectAttrDiv">
-                          <Select
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                            options={AddSelectAttrOptions}
-                            required
-                            onChange={(e) => onAddBtnClick(e)}
-                          />
-                          <button
-                            className="btn btn-primary ms-auto"
-                            onClick={handleOptionAdd}
-                          >
-                            Add
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {inputOptionList.length > 0
-                      ? inputOptionList.map((input, index) => {
-                          const SelectAttrOptions = [];
-                          attributes &&
-                            attributes.forEach((item) => {
-                              if (item.name === input.name) {
-                                item.options.forEach((itemOptions) => {
-                                  SelectAttrOptions.push({
-                                    value: itemOptions.name,
-                                    label: itemOptions.name,
-                                  });
-                                });
-                              }
-                            });
-                          return (
-                            <Fragment>
-                              <div className="col1 col-lg-12">
-                                <div>
-                                  <label for="stock" className="prodFormLabel">
-                                    {input.name}
-                                  </label>
-                                  <div className="selectAttrDiv">
-                                    <Select
-                                      isMulti
-                                      name={input.name}
-                                      className="basic-multi-select"
-                                      classNamePrefix="select"
-                                      options={SelectAttrOptions}
-                                      required
-                                      multiple
-                                      onChange={(selectedOption) =>
-                                        handleInputOption(selectedOption, index)
-                                      }
-                                    />
-                                    <button
-                                      className="btn btn-danger ms-auto"
-                                      onClick={(event) =>
-                                        handleRemoveOption(event, index)
-                                      }
-                                    >
-                                      <span role="img" aria-label="x emoji">
-                                        ❌
-                                      </span>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </Fragment>
-                          );
-                        })
-                      : ""}
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3">
+              <div className="col-lg-12">
                 <h3 className="text-center">ProductCard Preview</h3>
-                <div class="productContainer">
+                <div class="productContainerAdmin">
                   <div class="productCard">
-                    <div class="productCard-head-1" style={styles1.Phead}>
+                    <div class="productCard-head-1" style={styles.Phead}>
+                      <Popup
+                        trigger={
+                          <Tooltip title="Choose Color" placement="right" arrow>
+                            <i className="fas fa-palette grad-icon"></i>
+                          </Tooltip>
+                        }
+                        position="right center"
+                      >
+                        <div>
+                          <ColorPicker
+                            hideAdvancedSliders={true}
+                            hidePresets={true}
+                            hideColorGuide={true}
+                            hideInputType={true}
+                            value={color}
+                            onChange={setColor}
+                          />
+                        </div>
+                      </Popup>
+
                       <div class="image-upload">
-                        <label for="file-input2">
-                          {brandLogo && brandLogo.length > 0 ? (
-                            <img src={brandLogo} alt="Shoe" class="card-logo" />
-                          ) : (
-                            <h5 className="card-logo text-white">Logo</h5>
-                          )}
-                        </label>
+                        <Tooltip title="Choose Logo" placement="left" arrow>
+                          <label for="file-input2">
+                            {brandLogo && brandLogo.length > 0 ? (
+                              <img
+                                src={brandLogo}
+                                alt="Shoe"
+                                class="card-logo"
+                              />
+                            ) : (
+                              <h5 className="card-logo text-white">Logo</h5>
+                            )}
+                          </label>
+                        </Tooltip>
                         <input
                           onChange={brandLogoHandler}
                           id="file-input2"
                           type="file"
                         />
                       </div>
+
                       <div class="image-upload ab">
                         <label for="file-input1">
                           <img
@@ -736,59 +325,79 @@ const NewProduct = () => {
                         />
                       </div>
 
-                      <div class="product-detail">
+                      <div class="product-detail z-high">
                         <h2 className="text-white">
+                          <Tooltip title="Edit Category" placement="left" arrow>
+                            <div
+                              contentEditable="true"
+                              onInput={(e) =>
+                                setProductCategory(e.currentTarget.textContent)
+                              }
+                            >
+                              Category
+                            </div>
+                          </Tooltip>
+                        </h2>
+                        <Tooltip
+                          title="Edit Description"
+                          placement="left"
+                          arrow
+                        >
                           <div
                             contentEditable="true"
                             onInput={(e) =>
-                              setProductTitle(e.currentTarget.textContent)
+                              setShortDescription(e.currentTarget.textContent)
                             }
                           >
-                            Product Title
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore
                           </div>
-                        </h2>
-                        <div
-                          contentEditable="true"
-                          onInput={(e) =>
-                            setShortDescription(e.currentTarget.textContent)
-                          }
-                        >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore
-                        </div>
+                        </Tooltip>
                       </div>
                       {/* <span class="back-text">FAS</span> */}
                     </div>
                     <div class="productCard-body">
-                      <div class="product-desc">
+                      <div class="product-desc z-high">
                         <span class="product-title">
-                          <span
-                            contentEditable="true"
-                            onInput={(e) =>
-                              setProductName(e.currentTarget.textContent)
-                            }
-                          >
-                            19.4
-                          </span>
-                          <b
-                            contentEditable="true"
-                            onInput={(e) =>
-                              setProductTitle(e.currentTarget.textContent)
-                            }
-                          >
-                            Product Title
-                          </b>
+                          <Tooltip title="Edit Name" placement="left" arrow>
+                            <span
+                              contentEditable="true"
+                              onInput={(e) =>
+                                setProductName(e.currentTarget.textContent)
+                              }
+                            >
+                              Name
+                            </span>
+                          </Tooltip>
+                          <Tooltip title="Edit Category" placement="top" arrow>
+                            <b
+                              contentEditable="true"
+                              onInput={(e) =>
+                                setProductCategory(e.currentTarget.textContent)
+                              }
+                            >
+                              Category
+                            </b>
+                          </Tooltip>
                           <span class="badge">New</span>
                         </span>
                         <span class="product-caption">
-                          <div
-                            contentEditable="true"
-                            onInput={(e) =>
-                              setProductCollection(e.currentTarget.textContent)
-                            }
+                          <Tooltip
+                            title="Edit Collection"
+                            placement="left"
+                            arrow
                           >
-                            Collection
-                          </div>
+                            <div
+                              contentEditable="true"
+                              onInput={(e) =>
+                                setProductCollection(
+                                  e.currentTarget.textContent
+                                )
+                              }
+                            >
+                              Product Collection
+                            </div>
+                          </Tooltip>
                         </span>
                         <span class="product-rating">
                           <i class="fa fa-star"></i>
@@ -798,7 +407,7 @@ const NewProduct = () => {
                           <i class="fa fa-star grey"></i>
                         </span>
                       </div>
-                      <div class="product-properties">
+                      <div class="product-properties z-high">
                         <span class="product-size">
                           <h4>Size</h4>
                           <ul class="ul-size">
@@ -822,7 +431,7 @@ const NewProduct = () => {
                           </ul>
                         </span>
                         <span class="product-color">
-                          <h4>Colour</h4>
+                          <h4>Color</h4>
                           <ul class="ul-color">
                             <li>
                               <a href="#" class="orange active"></a>
@@ -836,12 +445,360 @@ const NewProduct = () => {
                           </ul>
                         </span>
                         <span class="product-price">
-                          USD<b>23,453</b>
+                          USD
+                          <b
+                            contentEditable="true"
+                            onInput={(e) =>
+                              setPrice(e.currentTarget.textContent)
+                            }
+                          >
+                            1234
+                          </b>
                         </span>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="col1 col-lg-4 flex-column align-items-start">
+                <label style={{ fontSize: "15px", margin: 0 }}>
+                  Brand logo
+                </label>
+                <div className="file-input">
+                  <label className="forImg prodFormLabel" for="images">
+                    Select Image
+                  </label>
+                  <input
+                    type="file"
+                    name="images"
+                    placeholder="Select Product Images"
+                    className="prodFormInputFile file"
+                    accept="image/*"
+                    onChange={brandLogoHandler}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-4">
+                <div>
+                  <label for="name" className="prodFormLabel">
+                    Product Category
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    maxLength="10"
+                    placeholder="Enter Product Category"
+                    className="prodFormInput"
+                    required
+                    value={productCategory}
+                    onChange={(e) => setProductCategory(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-4">
+                <div>
+                  <label for="description" className="prodFormLabel">
+                    Short Description
+                  </label>
+                  <textarea
+                    type="text"
+                    name="description"
+                    maxlength="100"
+                    placeholder="Enter Short Description..."
+                    className="prodFormTextArea"
+                    value={shortDescription}
+                    onChange={(e) => setShortDescription(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-4 flex-column align-items-start">
+                <label style={{ fontSize: "15px", margin: 0 }}>
+                  Main Image
+                </label>
+                <div className="file-input">
+                  <label className="forImg prodFormLabel" for="images">
+                    Select Image
+                  </label>
+                  <input
+                    type="file"
+                    name="images"
+                    placeholder="Select Product Images"
+                    className="prodFormInputFile file"
+                    accept="image/*"
+                    onChange={mainImageHandler}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-4">
+                <div>
+                  <label for="name" className="prodFormLabel">
+                    Product Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter Product Category"
+                    className="prodFormInput"
+                    required
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-4">
+                <div>
+                  <label for="name" className="prodFormLabel">
+                    Product Collection
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter Product Category"
+                    className="prodFormInput"
+                    required
+                    value={productCollection}
+                    onChange={(e) => setProductCollection(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-12">
+                <div>
+                  <label for="name" className="prodFormLabel">
+                    Product Category
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter Product Category"
+                    className="prodFormInput"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-3">
+                <div>
+                  <label for="SKU" className="prodFormLabel">
+                    SKU
+                  </label>
+                  <input
+                    type="text"
+                    name="SKU"
+                    placeholder="Enter Product SKU"
+                    className="prodFormInput"
+                    required
+                    value={SKU}
+                    onChange={(e) => setSKU(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-3">
+                <div>
+                  <label for="price" className="prodFormLabel">
+                    Price
+                  </label>
+                  <input
+                    type="text"
+                    name="price"
+                    placeholder="Enter Product Price"
+                    className="prodFormInput"
+                    required
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-3">
+                <div>
+                  <label for="stock" className="prodFormLabel">
+                    Stock
+                  </label>
+                  <input
+                    type="text"
+                    name="stock"
+                    placeholder="Enter Product Stock"
+                    className="prodFormInput"
+                    required
+                    onChange={(e) => setStock(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-3" id="specdiv">
+                <div>
+                  <label for="stock" className="prodFormLabel">
+                    Category
+                  </label>
+                  <Select
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    options={categorySelectOptions}
+                    required
+                    onChange={(e) => setCategory(e.value)}
+                  />
+                </div>
+              </div>
+              <div className="col1 col-lg-12">
+                <div>
+                  <label for="description" className="prodFormLabel">
+                    Description
+                  </label>
+                  <textarea
+                    type="text"
+                    name="description"
+                    placeholder="Enter Product Description..."
+                    className="prodFormTextArea"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+              </div>
+              {imagesPreview.length === 0 ? (
+                <div className="col1 col-lg-12 flex-column align-items-start">
+                  <label style={{ fontSize: "15px", margin: 0 }}>Images</label>
+                  <div className="file-input">
+                    <label className="forImg prodFormLabel" for="images">
+                      Select File
+                    </label>
+                    <input
+                      type="file"
+                      name="images"
+                      placeholder="Select Product Images"
+                      className="prodFormInputFile file"
+                      accept="image/*"
+                      onChange={createProductImagesChange}
+                      multiple
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="col1 col-lg-4 flex-column align-items-start">
+                  <label style={{ fontSize: "15px", margin: 0 }}>Images</label>
+                  <div className="file-input">
+                    <label className="forImg prodFormLabel" for="images">
+                      Select Images...
+                    </label>
+                    <input
+                      type="file"
+                      name="images"
+                      placeholder="Select Product Images"
+                      className="prodFormInputFile file"
+                      accept="image/*"
+                      onChange={createProductImagesChange}
+                      multiple
+                    />
+                  </div>
+                </div>
+              )}
+              {imagesPreview.length !== 0 ? (
+                <div className="col1 col-lg-8 flex-column align-items-start">
+                  <label className="prodFormLabel">Images Preview</label>
+                  <Splide
+                    options={{
+                      rewind: true,
+                      fixedWidth: 230,
+                      fixedHeight: 230,
+                      isNavigation: true,
+                      gap: 10,
+                      focus: "center",
+                      pagination: false,
+                      cover: true,
+                      arrows: false,
+                      dragMinThreshold: {
+                        mouse: 4,
+                        touch: 10,
+                      },
+                      breakpoints: {
+                        640: {
+                          fixedWidth: 66,
+                          fixedHeight: 38,
+                        },
+                      },
+                    }}
+                    aria-label="My Favorite Images"
+                  >
+                    {imagesPreview.map((image, index) => (
+                      <SplideSlide>
+                        <img key={index} src={image} alt={image} />
+                      </SplideSlide>
+                    ))}
+                  </Splide>
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="row">
+                <div className="col1 col-lg-12">
+                  <div>
+                    <label className="prodFormLabel">Product Attributes</label>
+                    <div className="selectAttrDiv">
+                      <Select
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        options={AddSelectAttrOptions}
+                        required
+                        onChange={(e) => onAddBtnClick(e)}
+                      />
+                      <button
+                        className="btn btn-primary ms-auto"
+                        onClick={handleOptionAdd}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {inputOptionList.length > 0
+                  ? inputOptionList.map((input, index) => {
+                      const SelectAttrOptions = [];
+                      attributes &&
+                        attributes.forEach((item) => {
+                          if (item.name === input.name) {
+                            item.options.forEach((itemOptions) => {
+                              SelectAttrOptions.push({
+                                value: itemOptions.name,
+                                label: itemOptions.name,
+                              });
+                            });
+                          }
+                        });
+                      return (
+                        <Fragment>
+                          <div className="col1 col-lg-12">
+                            <div>
+                              <label for="stock" className="prodFormLabel">
+                                {input.name}
+                              </label>
+                              <div className="selectAttrDiv">
+                                <Select
+                                  isMulti
+                                  name={input.name}
+                                  className="basic-multi-select"
+                                  classNamePrefix="select"
+                                  options={SelectAttrOptions}
+                                  required
+                                  multiple
+                                  onChange={(selectedOption) =>
+                                    handleInputOption(selectedOption, index)
+                                  }
+                                />
+                                <button
+                                  className="btn btn-danger ms-auto"
+                                  onClick={(event) =>
+                                    handleRemoveOption(event, index)
+                                  }
+                                >
+                                  <span role="img" aria-label="x emoji">
+                                    ❌
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </Fragment>
+                      );
+                    })
+                  : ""}
               </div>
               <div className="col1 col-lg-12">
                 <div>
