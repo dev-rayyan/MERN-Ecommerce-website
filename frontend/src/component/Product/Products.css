@@ -221,7 +221,6 @@
 .productImgAdmin {
   width: 300px;
   height: 300px;
-  transform: rotate(25deg);
 }
 .image-upload > label {
   cursor: pointer;
@@ -428,4 +427,16 @@
   right: 15px;
   top: 15px;
   color: white;
+}
+.square {
+  display: none;
+}
+.resizable-handler {
+  display: none;
+}
+.rotate {
+  display: none !important;
+}
+.rect.single-resizer {
+  border: none;
 }

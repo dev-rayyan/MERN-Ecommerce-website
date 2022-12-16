@@ -107,3 +107,10 @@
 .splide__track--nav > .splide__list > .splide__slide.is-active {
   border: none !important;
 }
+.ul-size-add {
+  padding: 0;
+  height: 25px;
+}
+.ul-size-add > li {
+  margin-right: 11px !important;
+}

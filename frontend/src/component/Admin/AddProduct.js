@@ -16,6 +16,8 @@ import ColorPicker from "react-best-gradient-color-picker";
 import Popup from "reactjs-popup";
 import Tooltip from "@mui/material/Tooltip";
 import Draggable from "react-draggable";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import ResizableRect from "./ResizeableReact";
 
 const NewProduct = () => {
   const dispatch = useDispatch();
@@ -41,50 +43,14 @@ const NewProduct = () => {
   const [mainImage, setMainImage] = useState([]);
   const [productName, setProductName] = useState("Name");
   const [productCollection, setProductCollection] = useState("Collection");
-  console.log(brandLogo);
-  const [color1, setColor1] = useState({
-    r: "182",
-    g: "182",
-    b: "182",
-    a: "1",
-  });
-  const [color2, setColor2] = useState({
-    r: "0",
-    g: "0",
-    b: "0",
-    a: "1",
-  });
   const [SKU, setSKU] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [name, setName] = useState("");
-
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-
-  const handleClick1 = () => {
-    setDisplayColorPicker1(!displayColorPicker1);
-  };
-
-  const handleClose1 = () => {
-    setDisplayColorPicker1(false);
-  };
-  const handleChange1 = (color1) => {
-    setColor1(color1.rgb);
-  };
-
-  const handleClick2 = () => {
-    setDisplayColorPicker2(!displayColorPicker2);
-  };
-
-  const handleClose2 = () => {
-    setDisplayColorPicker2(false);
-  };
-  const handleChange2 = (color2) => {
-    setColor2(color2.rgb);
-  };
 
   const brandLogoHandler = (e) => {
     const files = Array.from(e.target.files);
@@ -241,15 +207,88 @@ const NewProduct = () => {
     newinputOptionList[index].value = selectedOption.map((opt) => opt.value);
     setInputOptionList(newinputOptionList);
   };
-  const [position, setPosition] = useState({ x: 100, y: 0 });
+  const [positionImage, setPositionImage] = useState({ x: 0, y: 0 });
+
+  const trackPosImage = (data) => {
+    setPositionImage({ x: data.x, y: data.y });
+  };
+
+  const [positionCategory, setPositionCategory] = useState({ x: 0, y: 0 });
+
+  const trackPosCategory = (data) => {
+    setPositionCategory({ x: data.x, y: data.y });
+  };
+
+  const [positionShortDesc, setPositionShortDesc] = useState({ x: 0, y: 0 });
+
+  const trackPosShortDesc = (data) => {
+    setPositionShortDesc({ x: data.x, y: data.y });
+  };
   const handleRemoveOption = (e, index) => {
     e.preventDefault();
     const newList = [...inputOptionList];
     newList.splice(index, 1);
     setInputOptionList(newList);
   };
-  const trackPos = (data) => {
-    setPosition({ x: data.x, y: data.y });
+  const [open, setOpen] = useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  };
+  const [sizeList, setSizeList] = useState([]);
+  const addSize = (e, val) => {
+    e.preventDefault();
+    for (let i = 0; i < sizeList.length; i++) {
+      if (val.label === sizeList[i]) {
+        alert.error("Size Already Added");
+        return;
+      }
+    }
+    sizeList.push(val.label);
+
+    handleTooltipClose();
+  };
+  const [height, setHeight] = useState(300);
+  const [width, setWidth] = useState(300);
+  const [top, setTop] = useState(0);
+  const [left, setLeft] = useState(100);
+  const [rotateAngle, setRotateAngle] = useState(25);
+
+  const handleResize = (style, isShiftKey, type) => {
+    if (TrueVar === true) {
+      let { top, left, width, height } = style;
+      top = Math.round(top);
+      left = Math.round(left);
+      width = Math.round(width);
+      height = Math.round(height);
+      setHeight(height);
+      setWidth(width);
+      setTop(top);
+      setLeft(left);
+    }
+  };
+  const handleRotate = (rotateAngle) => {
+    if (TrueVar === true) {
+      setRotateAngle(rotateAngle);
+    }
+  };
+  const handleDrag = (deltaX, deltaY) => {
+    if (TrueVar === true) {
+      setLeft(left + deltaX);
+      setTop(top + deltaY);
+    }
+  };
+  const [TrueVar, setTrueVar] = useState(false);
+  const handleClick = (e) => {
+    switch (e.detail) {
+      case 2:
+        setTrueVar(true);
+        break;
+    }
   };
   return (
     <Fragment>
@@ -310,9 +349,16 @@ const NewProduct = () => {
                       </div>
 
                       <div class="image-upload ab">
-                        <Draggable
-                          onDrag={(e, data) => trackPos(data)}
-                          positionOffset={{ x: "100px", y: "0" }}
+                        <ResizableRect
+                          left={left}
+                          top={top}
+                          width={width}
+                          height={height}
+                          rotateAngle={rotateAngle}
+                          zoomable="n, w, s, e, nw, ne, se, sw"
+                          onRotate={handleRotate}
+                          onResize={handleResize}
+                          onDrag={handleDrag}
                         >
                           <Tooltip
                             placement="right"
@@ -331,12 +377,12 @@ const NewProduct = () => {
                                 }
                                 draggable="false"
                                 alt="Shoe"
-                                class="productImgAdmin"
+                                width={width}
+                                height={height}
                               />
                             </div>
                           </Tooltip>
-                        </Draggable>
-
+                        </ResizableRect>
                         <input
                           onChange={mainImageHandler}
                           id="file-input1"
@@ -346,32 +392,66 @@ const NewProduct = () => {
 
                       <div class="product-detail z-high">
                         <h2 className="text-white">
-                          <Tooltip title="Edit Category" placement="left" arrow>
-                            <div
-                              contentEditable="true"
-                              onInput={(e) =>
-                                setProductCategory(e.currentTarget.textContent)
-                              }
+                          <Draggable
+                            onDrag={(e, data) => trackPosCategory(data)}
+                            positionOffset={{ x: "0", y: "0" }}
+                          >
+                            <Tooltip
+                              placement="left"
+                              arrow
+                              title="Edit Category"
                             >
-                              Category
-                            </div>
-                          </Tooltip>
-                        </h2>
-                        <Tooltip
-                          title="Edit Description"
-                          placement="left"
-                          arrow
-                        >
-                          <div
+                              <div className="box">
+                                <div
+                                  suppressContentEditableWarning={true}
+                                  contentEditable="true"
+                                  onInput={(e) =>
+                                    setProductCategory(
+                                      e.currentTarget.textContent
+                                    )
+                                  }
+                                >
+                                  Category
+                                </div>
+                              </div>
+                            </Tooltip>
+                          </Draggable>
+                          {/* <div
+                            suppressContentEditableWarning={true}
                             contentEditable="true"
                             onInput={(e) =>
-                              setShortDescription(e.currentTarget.textContent)
+                              setProductCategory(e.currentTarget.textContent)
                             }
                           >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore
-                          </div>
-                        </Tooltip>
+                            Category
+                          </div> */}
+                        </h2>
+                        <Draggable
+                          onDrag={(e, data) => trackPosShortDesc(data)}
+                          positionOffset={{ x: "0", y: "0" }}
+                        >
+                          <Tooltip
+                            placement="left"
+                            arrow
+                            title="Edit Description"
+                          >
+                            <div className="box">
+                              <div
+                                contentEditable="true"
+                                suppressContentEditableWarning={true}
+                                onInput={(e) =>
+                                  setShortDescription(
+                                    e.currentTarget.textContent
+                                  )
+                                }
+                              >
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore
+                              </div>
+                            </div>
+                          </Tooltip>
+                        </Draggable>
                       </div>
                       {/* <span class="back-text">FAS</span> */}
                     </div>
@@ -381,6 +461,7 @@ const NewProduct = () => {
                           <Tooltip title="Edit Name" placement="left" arrow>
                             <span
                               contentEditable="true"
+                              suppressContentEditableWarning={true}
                               onInput={(e) =>
                                 setProductName(e.currentTarget.textContent)
                               }
@@ -391,6 +472,7 @@ const NewProduct = () => {
                           <Tooltip title="Edit Category" placement="top" arrow>
                             <b
                               contentEditable="true"
+                              suppressContentEditableWarning={true}
                               onInput={(e) =>
                                 setProductCategory(e.currentTarget.textContent)
                               }
@@ -408,6 +490,7 @@ const NewProduct = () => {
                           >
                             <div
                               contentEditable="true"
+                              suppressContentEditableWarning={true}
                               onInput={(e) =>
                                 setProductCollection(
                                   e.currentTarget.textContent
@@ -430,22 +513,71 @@ const NewProduct = () => {
                         <span class="product-size">
                           <h4>Size</h4>
                           <ul class="ul-size">
-                            <li>
-                              <a href="#">7</a>
-                            </li>
-                            <li>
+                            {sizeList &&
+                              sizeList.map((item) => (
+                                <Fragment>
+                                  <li>
+                                    <a>{item}</a>
+                                  </li>
+                                </Fragment>
+                              ))}
+                            {/* <li>
                               <a href="#">8</a>
                             </li>
                             <li>
                               <a href="#">9</a>
                             </li>
                             <li>
-                              <a href="#" class="active">
-                                10
-                              </a>
+                              <a href="#">10</a>
                             </li>
                             <li>
                               <a href="#">11</a>
+                            </li> */}
+                            <li>
+                              <ClickAwayListener
+                                onClickAway={handleTooltipClose}
+                              >
+                                <div>
+                                  <Tooltip
+                                    PopperProps={{
+                                      disablePortal: true,
+                                    }}
+                                    onClose={handleTooltipClose}
+                                    open={open}
+                                    disableFocusListener
+                                    disableHoverListener
+                                    disableTouchListener
+                                    title={
+                                      <ul class="ul-size-add">
+                                        {attributes &&
+                                          attributes.map((item) =>
+                                            item.name === "size"
+                                              ? item.options.map((val) => (
+                                                  <Fragment>
+                                                    <li>
+                                                      <a
+                                                        value={val.label}
+                                                        onClick={(e) =>
+                                                          addSize(e, val)
+                                                        }
+                                                      >
+                                                        {val.label}
+                                                      </a>
+                                                    </li>
+                                                  </Fragment>
+                                                ))
+                                              : ""
+                                          )}
+                                      </ul>
+                                    }
+                                    placement="right"
+                                  >
+                                    <a onClick={handleTooltipOpen}>
+                                      <i class="fas fa-plus"></i>
+                                    </a>
+                                  </Tooltip>
+                                </div>
+                              </ClickAwayListener>
                             </li>
                           </ul>
                         </span>
@@ -467,6 +599,7 @@ const NewProduct = () => {
                           USD
                           <b
                             contentEditable="true"
+                            suppressContentEditableWarning={true}
                             onInput={(e) =>
                               setPrice(e.currentTarget.textContent)
                             }
