@@ -18,8 +18,21 @@ import Tooltip from "@mui/material/Tooltip";
 import Draggable from "react-draggable";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import ResizableRect from "./ResizeableReact";
+import $ from "jquery";
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  withStyles,
+} from "@material-ui/core/styles";
 
 const NewProduct = () => {
+  const BlueOnGreenTooltip = withStyles({
+    tooltip: {
+      color: "black",
+      borderRadius: "100px",
+      backgroundColor: "#e0e0e0",
+    },
+  })(Tooltip);
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
@@ -33,8 +46,6 @@ const NewProduct = () => {
     "linear-gradient(135deg, rgba(250, 120, 46, 1) 8%, rgba(200, 41, 48, 1) 83%)"
   );
   const [price, setPrice] = useState(1234);
-  const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
-  const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
   const [brandLogo, setBrandLogo] = useState();
   const [productCategory, setProductCategory] = useState("Category");
   const [shortDescription, setShortDescription] = useState(
@@ -224,6 +235,19 @@ const NewProduct = () => {
   const trackPosShortDesc = (data) => {
     setPositionShortDesc({ x: data.x, y: data.y });
   };
+
+  const [positionLogo, setPositionLogo] = useState({ x: 0, y: 0 });
+
+  const trackPosLogo = (data) => {
+    setPositionLogo({ x: data.x, y: data.y });
+  };
+
+  const [positionMain, setPositionMain] = useState({ x: 0, y: 0 });
+
+  const trackPosMain = (data) => {
+    setPositionMain({ x: data.x, y: data.y });
+  };
+
   const handleRemoveOption = (e, index) => {
     e.preventDefault();
     const newList = [...inputOptionList];
@@ -254,9 +278,15 @@ const NewProduct = () => {
   };
   const [height, setHeight] = useState(300);
   const [width, setWidth] = useState(300);
-  const [top, setTop] = useState(0);
+  const [top, setTop] = useState(80);
   const [left, setLeft] = useState(100);
   const [rotateAngle, setRotateAngle] = useState(25);
+
+  const [heightLogo, setHeightLogo] = useState(50);
+  const [widthLogo, setWidthLogo] = useState(70);
+  const [topLogo, setTopLogo] = useState(10);
+  const [leftLogo, setLeftLogo] = useState(20);
+  const [rotateAngleLogo, setRotateAngleLogo] = useState(0);
 
   const handleResize = (style, isShiftKey, type) => {
     if (TrueVar === true) {
@@ -282,12 +312,68 @@ const NewProduct = () => {
       setTop(top + deltaY);
     }
   };
+
+  const handleResizeLogo = (style, isShiftKey, type) => {
+    if (TrueVarLogo === true) {
+      let { top, left, width, height } = style;
+      top = Math.round(top);
+      left = Math.round(left);
+      width = Math.round(width);
+      height = Math.round(height);
+      setHeightLogo(height);
+      setWidthLogo(width);
+      setTopLogo(top);
+      setLeftLogo(left);
+    }
+  };
+  const handleRotateLogo = (rotateAngleLogo) => {
+    if (TrueVarLogo === true) {
+      setRotateAngleLogo(rotateAngleLogo);
+    }
+  };
+  const handleDragLogo = (deltaX, deltaY) => {
+    if (TrueVarLogo === true) {
+      setLeftLogo(leftLogo + deltaX);
+      setTopLogo(topLogo + deltaY);
+    }
+  };
   const [TrueVar, setTrueVar] = useState(false);
+  const [TrueVarLogo, setTrueVarLogo] = useState(false);
+
+  if (TrueVar === false) {
+    $(".main > div > .single-resizer").css({ boxShadow: "none" });
+    $(".main > div > .single-resizer > .rotate").hide();
+    $(".main > div > .single-resizer > .square").hide();
+    $(".main > div > .single-resizer > .resizable-handler").hide();
+  } else {
+    $(".main > div > .single-resizer").css({
+      boxShadow: "black 0px 0px 0px 1px",
+    });
+    $(".main > div > .single-resizer > .rotate").show();
+    $(".main > div > .single-resizer > .square").show();
+    $(".main > div > .single-resizer > .resizable-handler").show();
+  }
+  if (TrueVarLogo === false) {
+    $(".logo > div > .single-resizer").css({ boxShadow: "none" });
+    $(".logo > div > .single-resizer > .rotate").hide();
+    $(".logo > div > .single-resizer > .square").hide();
+    $(".logo > div > .single-resizer > .resizable-handler").hide();
+  } else {
+    $(".logo > div > .single-resizer").css({
+      boxShadow: "black 0px 0px 0px 1px",
+    });
+    $(".logo > div > .single-resizer > .rotate").show();
+    $(".logo > div > .single-resizer > .square").show();
+    $(".logo > div > .single-resizer > .resizable-handler").show();
+  }
   const handleClick = (e) => {
-    switch (e.detail) {
-      case 2:
-        setTrueVar(true);
-        break;
+    if (e.detail === 2) {
+      setTrueVar(true);
+    }
+  };
+  const handleClickLogo = (e) => {
+    if (e.detail === 2) {
+      setTrueVarLogo(true);
     }
   };
   return (
@@ -295,6 +381,12 @@ const NewProduct = () => {
       <MetaData title="Create Product" />
       <div className="card">
         <h1 id="productListHeading">Add New Product</h1>
+        <label for="file-input1" className="m-0 p-0">
+          Select Image
+        </label>
+        <label for="file-input2" className="m-0 p-0">
+          Select Logo
+        </label>
         <div className="card-body px-0 py-0">
           <form
             className="AddProductForm"
@@ -304,9 +396,9 @@ const NewProduct = () => {
             <div className="row">
               <div className="col-lg-12">
                 <h3 className="text-center">ProductCard Preview</h3>
-                <div class="productContainerAdmin">
-                  <div class="productCard">
-                    <div class="productCard-head-1" style={styles.Phead}>
+                <div className="productContainerAdmin">
+                  <div className="productCard">
+                    <div className="productCard-head-1" style={styles.Phead}>
                       <Popup
                         trigger={
                           <Tooltip title="Choose Color" placement="right" arrow>
@@ -327,20 +419,49 @@ const NewProduct = () => {
                         </div>
                       </Popup>
 
-                      <div class="image-upload">
-                        <Tooltip title="Choose Logo" placement="left" arrow>
-                          <label for="file-input2">
-                            {brandLogo && brandLogo.length > 0 ? (
-                              <img
-                                src={brandLogo}
-                                alt="Shoe"
-                                class="card-logo"
-                              />
-                            ) : (
-                              <h5 className="card-logo text-white">Logo</h5>
-                            )}
-                          </label>
-                        </Tooltip>
+                      <div className="image-upload logo">
+                        <Draggable
+                          bounds={{
+                            left: 0,
+                            top: 0,
+                            right: 170,
+                            bottom: 190,
+                          }}
+                          onDrag={(e, data) => trackPosLogo(data)}
+                          positionOffset={{ x: "0", y: "0" }}
+                          disabled={TrueVarLogo}
+                        >
+                          <div>
+                            <ResizableRect
+                              left={leftLogo}
+                              top={topLogo}
+                              width={widthLogo}
+                              height={heightLogo}
+                              rotateAngle={rotateAngleLogo}
+                              zoomable="n, w, s, e, nw, ne, se, sw"
+                              onRotate={handleRotateLogo}
+                              onResize={handleResizeLogo}
+                            >
+                              <ClickAwayListener
+                                onClickAway={(e) => setTrueVarLogo(false)}
+                              >
+                                <div className="box" onClick={handleClickLogo}>
+                                  <img
+                                    src={
+                                      brandLogo && brandLogo.length > 0
+                                        ? brandLogo
+                                        : "/imgs/logo.png"
+                                    }
+                                    draggable="false"
+                                    alt="Shoe"
+                                    width={widthLogo}
+                                    height={heightLogo}
+                                  />
+                                </div>
+                              </ClickAwayListener>
+                            </ResizableRect>
+                          </div>
+                        </Draggable>
                         <input
                           onChange={brandLogoHandler}
                           id="file-input2"
@@ -348,41 +469,50 @@ const NewProduct = () => {
                         />
                       </div>
 
-                      <div class="image-upload ab">
-                        <ResizableRect
-                          left={left}
-                          top={top}
-                          width={width}
-                          height={height}
-                          rotateAngle={rotateAngle}
-                          zoomable="n, w, s, e, nw, ne, se, sw"
-                          onRotate={handleRotate}
-                          onResize={handleResize}
-                          onDrag={handleDrag}
+                      <div className="image-upload main">
+                        <Draggable
+                          bounds={{
+                            left: -170,
+                            top: -200,
+                            right: 0,
+                            bottom: 0,
+                          }}
+                          onDrag={(e, data) => trackPosMain(data)}
+                          positionOffset={{ x: "0", y: "0" }}
+                          disabled={TrueVar}
                         >
-                          <Tooltip
-                            placement="right"
-                            title={
-                              <label for="file-input1" className="m-0 p-0">
-                                Select Image
-                              </label>
-                            }
-                          >
-                            <div className="box">
-                              <img
-                                src={
-                                  mainImage && mainImage.length > 0
-                                    ? mainImage
-                                    : "/imgs/select_grey1.png"
-                                }
-                                draggable="false"
-                                alt="Shoe"
-                                width={width}
-                                height={height}
-                              />
-                            </div>
-                          </Tooltip>
-                        </ResizableRect>
+                          <div>
+                            <ResizableRect
+                              left={left}
+                              top={top}
+                              width={width}
+                              height={height}
+                              rotateAngle={rotateAngle}
+                              zoomable="n, w, s, e, nw, ne, se, sw"
+                              onRotate={handleRotate}
+                              onResize={handleResize}
+                              onDrag={handleDrag}
+                            >
+                              <ClickAwayListener
+                                onClickAway={(e) => setTrueVar(false)}
+                              >
+                                <div className="box" onClick={handleClick}>
+                                  <img
+                                    src={
+                                      mainImage && mainImage.length > 0
+                                        ? mainImage
+                                        : "/imgs/select_grey1.png"
+                                    }
+                                    draggable="false"
+                                    alt="Shoe"
+                                    width={width}
+                                    height={height}
+                                  />
+                                </div>
+                              </ClickAwayListener>
+                            </ResizableRect>
+                          </div>
+                        </Draggable>
                         <input
                           onChange={mainImageHandler}
                           id="file-input1"
@@ -390,11 +520,17 @@ const NewProduct = () => {
                         />
                       </div>
 
-                      <div class="product-detail z-high">
+                      <div className="product-detail">
                         <h2 className="text-white">
                           <Draggable
+                            bounds={{
+                              left: 0,
+                              top: -50,
+                              right: 0,
+                              bottom: 150,
+                            }}
                             onDrag={(e, data) => trackPosCategory(data)}
-                            positionOffset={{ x: "0", y: "0" }}
+                            positionOffset={{ x: "0", y: "75px" }}
                           >
                             <Tooltip
                               placement="left"
@@ -416,19 +552,16 @@ const NewProduct = () => {
                               </div>
                             </Tooltip>
                           </Draggable>
-                          {/* <div
-                            suppressContentEditableWarning={true}
-                            contentEditable="true"
-                            onInput={(e) =>
-                              setProductCategory(e.currentTarget.textContent)
-                            }
-                          >
-                            Category
-                          </div> */}
                         </h2>
                         <Draggable
+                          bounds={{
+                            left: 0,
+                            top: -50,
+                            right: 0,
+                            bottom: 90,
+                          }}
                           onDrag={(e, data) => trackPosShortDesc(data)}
-                          positionOffset={{ x: "0", y: "0" }}
+                          positionOffset={{ x: "0", y: "70px" }}
                         >
                           <Tooltip
                             placement="left"
@@ -453,11 +586,11 @@ const NewProduct = () => {
                           </Tooltip>
                         </Draggable>
                       </div>
-                      {/* <span class="back-text">FAS</span> */}
+                      {/* <span className="back-text">FAS</span> */}
                     </div>
-                    <div class="productCard-body">
-                      <div class="product-desc z-high">
-                        <span class="product-title">
+                    <div className="productCard-body">
+                      <div className="product-desc">
+                        <span className="product-title">
                           <Tooltip title="Edit Name" placement="left" arrow>
                             <span
                               contentEditable="true"
@@ -480,9 +613,9 @@ const NewProduct = () => {
                               Category
                             </b>
                           </Tooltip>
-                          <span class="badge">New</span>
+                          <span className="badge">New</span>
                         </span>
-                        <span class="product-caption">
+                        <span className="product-caption">
                           <Tooltip
                             title="Edit Collection"
                             placement="left"
@@ -501,18 +634,18 @@ const NewProduct = () => {
                             </div>
                           </Tooltip>
                         </span>
-                        <span class="product-rating">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star grey"></i>
+                        <span className="product-rating">
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star grey"></i>
                         </span>
                       </div>
-                      <div class="product-properties z-high">
-                        <span class="product-size">
+                      <div className="product-properties ">
+                        <span className="product-size">
                           <h4>Size</h4>
-                          <ul class="ul-size">
+                          <ul className="ul-size">
                             {sizeList &&
                               sizeList.map((item) => (
                                 <Fragment>
@@ -521,24 +654,12 @@ const NewProduct = () => {
                                   </li>
                                 </Fragment>
                               ))}
-                            {/* <li>
-                              <a href="#">8</a>
-                            </li>
-                            <li>
-                              <a href="#">9</a>
-                            </li>
-                            <li>
-                              <a href="#">10</a>
-                            </li>
-                            <li>
-                              <a href="#">11</a>
-                            </li> */}
                             <li>
                               <ClickAwayListener
                                 onClickAway={handleTooltipClose}
                               >
                                 <div>
-                                  <Tooltip
+                                  <BlueOnGreenTooltip
                                     PopperProps={{
                                       disablePortal: true,
                                     }}
@@ -548,7 +669,7 @@ const NewProduct = () => {
                                     disableHoverListener
                                     disableTouchListener
                                     title={
-                                      <ul class="ul-size-add">
+                                      <ul className="ul-size-add">
                                         {attributes &&
                                           attributes.map((item) =>
                                             item.name === "size"
@@ -573,29 +694,29 @@ const NewProduct = () => {
                                     placement="right"
                                   >
                                     <a onClick={handleTooltipOpen}>
-                                      <i class="fas fa-plus"></i>
+                                      <i className="fas fa-plus"></i>
                                     </a>
-                                  </Tooltip>
+                                  </BlueOnGreenTooltip>
                                 </div>
                               </ClickAwayListener>
                             </li>
                           </ul>
                         </span>
-                        <span class="product-color">
+                        <span className="product-color">
                           <h4>Color</h4>
-                          <ul class="ul-color">
+                          <ul className="ul-color">
                             <li>
-                              <a href="#" class="orange active"></a>
+                              <a href="#" className="orange active"></a>
                             </li>
                             <li>
-                              <a href="#" class="green"></a>
+                              <a href="#" className="green"></a>
                             </li>
                             <li>
-                              <a href="#" class="yellow"></a>
+                              <a href="#" className="yellow"></a>
                             </li>
                           </ul>
                         </span>
-                        <span class="product-price">
+                        <span className="product-price">
                           USD
                           <b
                             contentEditable="true"

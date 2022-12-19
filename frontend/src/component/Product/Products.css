@@ -198,7 +198,10 @@
   /* IE6-9 fallback on horizontal gradient */
   border-radius: 25px 25px 0 0;
 }
-.image-upload.ab {
+.image-upload.main {
+  position: absolute;
+}
+.image-upload.logo {
   position: absolute;
 }
 .image-upload > input {
@@ -428,7 +431,7 @@
   top: 15px;
   color: white;
 }
-.square {
+/* .square {
   display: none;
 }
 .resizable-handler {
@@ -436,7 +439,7 @@
 }
 .rotate {
   display: none !important;
-}
-.rect.single-resizer {
-  border: none;
-}
+} */
+/* .rect.single-resizer {
+  border: solid 1px black;
+} */
