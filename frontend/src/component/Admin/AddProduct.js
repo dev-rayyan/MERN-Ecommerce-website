@@ -24,15 +24,9 @@ import {
   MuiThemeProvider,
   withStyles,
 } from "@material-ui/core/styles";
+import { WidthFull, WorkRounded } from "@mui/icons-material";
 
 const NewProduct = () => {
-  const BlueOnGreenTooltip = withStyles({
-    tooltip: {
-      color: "black",
-      borderRadius: "100px",
-      backgroundColor: "#e0e0e0",
-    },
-  })(Tooltip);
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
@@ -46,6 +40,7 @@ const NewProduct = () => {
     "linear-gradient(135deg, rgba(250, 120, 46, 1) 8%, rgba(200, 41, 48, 1) 83%)"
   );
   const [price, setPrice] = useState(1234);
+  const [currency, setCurrency] = useState("");
   const [brandLogo, setBrandLogo] = useState();
   const [productCategory, setProductCategory] = useState("Category");
   const [shortDescription, setShortDescription] = useState(
@@ -261,14 +256,18 @@ const NewProduct = () => {
   };
 
   const handleTooltipOpen = () => {
-    setOpen(true);
+    if (open === true) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
   };
   const [sizeList, setSizeList] = useState([]);
   const addSize = (e, val) => {
     e.preventDefault();
     for (let i = 0; i < sizeList.length; i++) {
       if (val.label === sizeList[i]) {
-        alert.error("Size Already Added");
+        alert.error(`${val.label} Already Added`);
         return;
       }
     }
@@ -381,12 +380,6 @@ const NewProduct = () => {
       <MetaData title="Create Product" />
       <div className="card">
         <h1 id="productListHeading">Add New Product</h1>
-        <label for="file-input1" className="m-0 p-0">
-          Select Image
-        </label>
-        <label for="file-input2" className="m-0 p-0">
-          Select Logo
-        </label>
         <div className="card-body px-0 py-0">
           <form
             className="AddProductForm"
@@ -420,99 +413,45 @@ const NewProduct = () => {
                       </Popup>
 
                       <div className="image-upload logo">
-                        <Draggable
-                          bounds={{
-                            left: 0,
-                            top: 0,
-                            right: 170,
-                            bottom: 190,
-                          }}
-                          onDrag={(e, data) => trackPosLogo(data)}
-                          positionOffset={{ x: "0", y: "0" }}
-                          disabled={TrueVarLogo}
-                        >
-                          <div>
-                            <ResizableRect
-                              left={leftLogo}
-                              top={topLogo}
-                              width={widthLogo}
-                              height={heightLogo}
-                              rotateAngle={rotateAngleLogo}
-                              zoomable="n, w, s, e, nw, ne, se, sw"
-                              onRotate={handleRotateLogo}
-                              onResize={handleResizeLogo}
-                            >
-                              <ClickAwayListener
-                                onClickAway={(e) => setTrueVarLogo(false)}
-                              >
-                                <div className="box" onClick={handleClickLogo}>
-                                  <img
-                                    src={
-                                      brandLogo && brandLogo.length > 0
-                                        ? brandLogo
-                                        : "/imgs/logo.png"
-                                    }
-                                    draggable="false"
-                                    alt="Shoe"
-                                    width={widthLogo}
-                                    height={heightLogo}
-                                  />
-                                </div>
-                              </ClickAwayListener>
-                            </ResizableRect>
-                          </div>
-                        </Draggable>
+                        <Tooltip placement="left" arrow title="Edit Logo">
+                          <label for="file-input2" className="m-0 p-0">
+                            <div className="box">
+                              <img
+                                src={
+                                  brandLogo && brandLogo.length > 0
+                                    ? brandLogo
+                                    : "/imgs/logo.png"
+                                }
+                                draggable="false"
+                                alt="Shoe"
+                                className="card-logo-add"
+                              />
+                            </div>
+                          </label>
+                        </Tooltip>
+
                         <input
                           onChange={brandLogoHandler}
                           id="file-input2"
                           type="file"
                         />
                       </div>
-
                       <div className="image-upload main">
-                        <Draggable
-                          bounds={{
-                            left: -170,
-                            top: -200,
-                            right: 0,
-                            bottom: 0,
-                          }}
-                          onDrag={(e, data) => trackPosMain(data)}
-                          positionOffset={{ x: "0", y: "0" }}
-                          disabled={TrueVar}
-                        >
-                          <div>
-                            <ResizableRect
-                              left={left}
-                              top={top}
-                              width={width}
-                              height={height}
-                              rotateAngle={rotateAngle}
-                              zoomable="n, w, s, e, nw, ne, se, sw"
-                              onRotate={handleRotate}
-                              onResize={handleResize}
-                              onDrag={handleDrag}
-                            >
-                              <ClickAwayListener
-                                onClickAway={(e) => setTrueVar(false)}
-                              >
-                                <div className="box" onClick={handleClick}>
-                                  <img
-                                    src={
-                                      mainImage && mainImage.length > 0
-                                        ? mainImage
-                                        : "/imgs/select_grey1.png"
-                                    }
-                                    draggable="false"
-                                    alt="Shoe"
-                                    width={width}
-                                    height={height}
-                                  />
-                                </div>
-                              </ClickAwayListener>
-                            </ResizableRect>
-                          </div>
-                        </Draggable>
+                        <label for="file-input1" className="m-0 p-0">
+                          <Tooltip placement="right" arrow title="Edit Image">
+                            <img
+                              src={
+                                mainImage && mainImage.length > 0
+                                  ? mainImage
+                                  : "/imgs/select_grey.png"
+                              }
+                              draggable="false"
+                              alt="Shoe"
+                              className="product-img-add"
+                            />
+                          </Tooltip>
+                        </label>
+
                         <input
                           onChange={mainImageHandler}
                           id="file-input1"
@@ -520,76 +459,47 @@ const NewProduct = () => {
                         />
                       </div>
 
-                      <div className="product-detail">
+                      <div className="product-detail z-high">
                         <h2 className="text-white">
-                          <Draggable
-                            bounds={{
-                              left: 0,
-                              top: -50,
-                              right: 0,
-                              bottom: 150,
-                            }}
-                            onDrag={(e, data) => trackPosCategory(data)}
-                            positionOffset={{ x: "0", y: "75px" }}
-                          >
-                            <Tooltip
-                              placement="left"
-                              arrow
-                              title="Edit Category"
-                            >
-                              <div className="box">
-                                <div
-                                  suppressContentEditableWarning={true}
-                                  contentEditable="true"
-                                  onInput={(e) =>
-                                    setProductCategory(
-                                      e.currentTarget.textContent
-                                    )
-                                  }
-                                >
-                                  Category
-                                </div>
-                              </div>
-                            </Tooltip>
-                          </Draggable>
-                        </h2>
-                        <Draggable
-                          bounds={{
-                            left: 0,
-                            top: -50,
-                            right: 0,
-                            bottom: 90,
-                          }}
-                          onDrag={(e, data) => trackPosShortDesc(data)}
-                          positionOffset={{ x: "0", y: "70px" }}
-                        >
-                          <Tooltip
-                            placement="left"
-                            arrow
-                            title="Edit Description"
-                          >
+                          <Tooltip placement="left" arrow title="Edit Category">
                             <div className="box">
                               <div
-                                contentEditable="true"
                                 suppressContentEditableWarning={true}
+                                contentEditable="true"
                                 onInput={(e) =>
-                                  setShortDescription(
+                                  setProductCategory(
                                     e.currentTarget.textContent
                                   )
                                 }
                               >
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore
+                                Category
                               </div>
                             </div>
                           </Tooltip>
-                        </Draggable>
+                        </h2>
+
+                        <Tooltip
+                          placement="left"
+                          arrow
+                          title="Edit Description"
+                        >
+                          <div className="box">
+                            <div
+                              contentEditable="true"
+                              suppressContentEditableWarning={true}
+                              onInput={(e) =>
+                                setShortDescription(e.currentTarget.textContent)
+                              }
+                            >
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit, sed do eiusmod tempor incididunt ut labore
+                            </div>
+                          </div>
+                        </Tooltip>
                       </div>
-                      {/* <span className="back-text">FAS</span> */}
                     </div>
                     <div className="productCard-body">
-                      <div className="product-desc">
+                      <div className="product-desc z-high">
                         <span className="product-title">
                           <Tooltip title="Edit Name" placement="left" arrow>
                             <span
@@ -642,7 +552,7 @@ const NewProduct = () => {
                           <i className="fa fa-star grey"></i>
                         </span>
                       </div>
-                      <div className="product-properties ">
+                      <div className="product-properties z-high">
                         <span className="product-size">
                           <h4>Size</h4>
                           <ul className="ul-size">
@@ -659,9 +569,29 @@ const NewProduct = () => {
                                 onClickAway={handleTooltipClose}
                               >
                                 <div>
-                                  <BlueOnGreenTooltip
+                                  <Tooltip
+                                    componentsProps={{
+                                      tooltip: {
+                                        sx: {
+                                          bgcolor: "#e0e0e0",
+                                          color: "black",
+                                          borderRadius: "100px",
+                                          "& .MuiTooltip-tooltip": {
+                                            margin: "10px",
+                                          },
+                                        },
+                                      },
+                                    }}
                                     PopperProps={{
                                       disablePortal: true,
+                                      modifiers: [
+                                        {
+                                          name: "offset",
+                                          options: {
+                                            offset: [0, 15],
+                                          },
+                                        },
+                                      ],
                                     }}
                                     onClose={handleTooltipClose}
                                     open={open}
@@ -693,10 +623,22 @@ const NewProduct = () => {
                                     }
                                     placement="right"
                                   >
-                                    <a onClick={handleTooltipOpen}>
-                                      <i className="fas fa-plus"></i>
-                                    </a>
-                                  </BlueOnGreenTooltip>
+                                    <div>
+                                      {sizeList && sizeList.length >= 5 ? (
+                                        ""
+                                      ) : (
+                                        <a onClick={handleTooltipOpen}>
+                                          <Tooltip
+                                            placement="top"
+                                            arrow
+                                            title="Add Size"
+                                          >
+                                            <i className="fas fa-plus"></i>
+                                          </Tooltip>
+                                        </a>
+                                      )}
+                                    </div>
+                                  </Tooltip>
                                 </div>
                               </ClickAwayListener>
                             </li>
@@ -717,16 +659,28 @@ const NewProduct = () => {
                           </ul>
                         </span>
                         <span className="product-price">
-                          USD
-                          <b
-                            contentEditable="true"
-                            suppressContentEditableWarning={true}
-                            onInput={(e) =>
-                              setPrice(e.currentTarget.textContent)
-                            }
-                          >
-                            1234
-                          </b>
+                          <Tooltip placement="left" arrow title="Edit Currency">
+                            <span
+                              contentEditable="true"
+                              suppressContentEditableWarning={true}
+                              onInput={(e) =>
+                                setCurrency(e.currentTarget.textContent)
+                              }
+                            >
+                              USD
+                            </span>
+                          </Tooltip>
+                          <Tooltip placement="right" arrow title="Edit Price">
+                            <b
+                              contentEditable="true"
+                              suppressContentEditableWarning={true}
+                              onInput={(e) =>
+                                setPrice(e.currentTarget.textContent)
+                              }
+                            >
+                              1234
+                            </b>
+                          </Tooltip>
                         </span>
                       </div>
                     </div>

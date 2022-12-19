@@ -112,5 +112,8 @@
   height: 25px;
 }
 .ul-size-add > li {
-  margin-right: 11px !important;
+  margin: 0px 4px !important;
+}
+.ul-size-add li a {
+  cursor: pointer;
 }

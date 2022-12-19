@@ -198,12 +198,6 @@
   /* IE6-9 fallback on horizontal gradient */
   border-radius: 25px 25px 0 0;
 }
-.image-upload.main {
-  position: absolute;
-}
-.image-upload.logo {
-  position: absolute;
-}
 .image-upload > input {
   display: none;
 }
@@ -211,7 +205,10 @@
   width: 55px;
   margin: 20px;
 }
-
+.card-logo-add {
+  width: 70px;
+  margin: 20px;
+}
 .product-img {
   position: absolute;
   left: 0;
@@ -443,3 +440,14 @@
 /* .rect.single-resizer {
   border: solid 1px black;
 } */
+.product-img-add {
+  position: absolute;
+  left: 0;
+  margin-left: 85px;
+  width: 300px;
+  height: 300px;
+  transform: rotate(25deg);
+}
+.image-upload.main {
+  position: absolute;
+}
