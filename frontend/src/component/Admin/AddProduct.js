@@ -250,9 +250,13 @@ const NewProduct = () => {
     setInputOptionList(newList);
   };
   const [open, setOpen] = useState(false);
+  const [openColor, setOpenColor] = useState(false);
 
   const handleTooltipClose = () => {
     setOpen(false);
+  };
+  const handleTooltipCloseColor = () => {
+    setOpenColor(false);
   };
 
   const handleTooltipOpen = () => {
@@ -260,6 +264,13 @@ const NewProduct = () => {
       setOpen(false);
     } else {
       setOpen(true);
+    }
+  };
+  const handleTooltipOpenColor = () => {
+    if (openColor === true) {
+      setOpenColor(false);
+    } else {
+      setOpenColor(true);
     }
   };
   const [sizeList, setSizeList] = useState([]);
@@ -274,6 +285,20 @@ const NewProduct = () => {
     sizeList.push(val.label);
 
     handleTooltipClose();
+  };
+  const colors = ["#f35e3d", "#11e95b", "#ffd414"];
+  const [colorList, setColorList] = useState([]);
+  const addColor = (e, color) => {
+    e.preventDefault();
+    for (let i = 0; i < colorList.length; i++) {
+      if (color === colorList[i]) {
+        alert.error(`${color} Already Added`);
+        return;
+      }
+    }
+    colorList.push(color);
+
+    handleTooltipCloseColor();
   };
   const [height, setHeight] = useState(300);
   const [width, setWidth] = useState(300);
@@ -552,7 +577,10 @@ const NewProduct = () => {
                           <i className="fa fa-star grey"></i>
                         </span>
                       </div>
-                      <div className="product-properties z-high">
+                      <div
+                        className="product-properties z-high"
+                        style={{ display: "grid" }}
+                      >
                         <span className="product-size">
                           <h4>Size</h4>
                           <ul className="ul-size">
@@ -564,101 +592,127 @@ const NewProduct = () => {
                                   </li>
                                 </Fragment>
                               ))}
-                            <li>
-                              <ClickAwayListener
-                                onClickAway={handleTooltipClose}
-                              >
-                                <div>
-                                  <Tooltip
-                                    componentsProps={{
-                                      tooltip: {
-                                        sx: {
-                                          bgcolor: "#e0e0e0",
-                                          color: "black",
-                                          borderRadius: "100px",
-                                          "& .MuiTooltip-tooltip": {
-                                            margin: "10px",
-                                          },
-                                        },
+
+                            <ClickAwayListener onClickAway={handleTooltipClose}>
+                              <Tooltip
+                                componentsProps={{
+                                  tooltip: {
+                                    sx: {
+                                      bgcolor: "#e0e0e0",
+                                      color: "black",
+                                      borderRadius: "100px",
+                                      "& .MuiTooltip-tooltip": {
+                                        margin: "10px",
                                       },
-                                    }}
-                                    PopperProps={{
-                                      disablePortal: true,
-                                      modifiers: [
-                                        {
-                                          name: "offset",
-                                          options: {
-                                            offset: [0, 15],
-                                          },
-                                        },
-                                      ],
-                                    }}
-                                    onClose={handleTooltipClose}
-                                    open={open}
-                                    disableFocusListener
-                                    disableHoverListener
-                                    disableTouchListener
-                                    title={
-                                      <ul className="ul-size-add">
-                                        {attributes &&
-                                          attributes.map((item) =>
-                                            item.name === "size"
-                                              ? item.options.map((val) => (
-                                                  <Fragment>
-                                                    <li>
-                                                      <a
-                                                        value={val.label}
-                                                        onClick={(e) =>
-                                                          addSize(e, val)
-                                                        }
-                                                      >
-                                                        {val.label}
-                                                      </a>
-                                                    </li>
-                                                  </Fragment>
-                                                ))
-                                              : ""
-                                          )}
-                                      </ul>
-                                    }
-                                    placement="right"
-                                  >
-                                    <div>
-                                      {sizeList && sizeList.length >= 5 ? (
-                                        ""
-                                      ) : (
-                                        <a onClick={handleTooltipOpen}>
-                                          <Tooltip
-                                            placement="top"
-                                            arrow
-                                            title="Add Size"
-                                          >
-                                            <i className="fas fa-plus"></i>
-                                          </Tooltip>
-                                        </a>
+                                    },
+                                  },
+                                }}
+                                PopperProps={{
+                                  disablePortal: true,
+                                  modifiers: [
+                                    {
+                                      name: "offset",
+                                      options: {
+                                        offset: [0, 15],
+                                      },
+                                    },
+                                  ],
+                                }}
+                                onClose={handleTooltipClose}
+                                open={open}
+                                disableFocusListener
+                                disableHoverListener
+                                disableTouchListener
+                                title={
+                                  <ul className="ul-size-add">
+                                    {attributes &&
+                                      attributes.map((item) =>
+                                        item.name === "size"
+                                          ? item.options.map((val) => (
+                                              <Fragment>
+                                                <li>
+                                                  <a
+                                                    value={val.label}
+                                                    onClick={(e) =>
+                                                      addSize(e, val)
+                                                    }
+                                                  >
+                                                    {val.label}
+                                                  </a>
+                                                </li>
+                                              </Fragment>
+                                            ))
+                                          : ""
                                       )}
-                                    </div>
-                                  </Tooltip>
-                                </div>
-                              </ClickAwayListener>
-                            </li>
+                                  </ul>
+                                }
+                                placement="right"
+                              >
+                                {sizeList && sizeList.length >= 5 ? (
+                                  ""
+                                ) : (
+                                  <li>
+                                    <a onClick={handleTooltipOpen}>
+                                      <Tooltip
+                                        placement="top"
+                                        arrow
+                                        title="Add Size"
+                                      >
+                                        <i className="fas fa-plus"></i>
+                                      </Tooltip>
+                                    </a>
+                                  </li>
+                                )}
+                              </Tooltip>
+                            </ClickAwayListener>
                           </ul>
                         </span>
                         <span className="product-color">
                           <h4>Color</h4>
                           <ul className="ul-color">
+                            {colorList &&
+                              colorList.map((color) => (
+                                <li>
+                                  <a style={{ background: color }}></a>
+                                </li>
+                              ))}
                             <li>
-                              <a href="#" className="orange active"></a>
-                            </li>
-                            <li>
-                              <a href="#" className="green"></a>
-                            </li>
-                            <li>
-                              <a href="#" className="yellow"></a>
+                              <Popup
+                                offsetX={0}
+                                offsetY={10}
+                                arrow={false}
+                                open={openColor}
+                                trigger={
+                                  <a>
+                                    <i className="fas fa-plus"></i>
+                                  </a>
+                                }
+                                position="right center"
+                                closeOnDocumentClick
+                              >
+                                <ul
+                                  className="ul-size ul-size-add"
+                                  style={{
+                                    background: "#e0e0e0",
+                                    padding: "10px",
+                                    borderRadius: "100px",
+                                  }}
+                                >
+                                  {colors.map((color) => (
+                                    <li>
+                                      <a
+                                        value={color}
+                                        onClick={(e) => addColor(e, color)}
+                                        style={{ background: color }}
+                                      ></a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </Popup>
                             </li>
                           </ul>
                         </span>
-                        <span className="product-price">
+                        <span className="product-price-add">
                           <Tooltip placement="left" arrow title="Edit Currency">
                             <span
                               contentEditable="true"
