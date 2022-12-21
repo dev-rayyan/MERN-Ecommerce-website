@@ -62,7 +62,9 @@
   margin: 30px auto;
 }
 .productContainerAdmin {
-  width: 280px;
+  width: 380px;
+  padding: 0px 50px;
+  overflow: hidden;
   height: 800px;
   margin: auto;
   align-items: center;
@@ -207,7 +209,6 @@
 }
 .card-logo-add {
   width: 70px;
-  margin: 20px;
 }
 .product-img {
   position: absolute;
@@ -342,13 +343,23 @@
 .product-color h4 {
   font-size: 11px;
   padding: 0 21px;
-  margin-top: 20px;
-  padding-bottom: 20px;
+  margin-top: 15px;
+  padding-bottom: 10px;
   text-transform: uppercase;
 }
-
+.addBtn {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 11px;
+  width: 22px;
+  height: 22px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 23px;
+  color: #000;
+}
 .ul-color {
-  margin-left: 27px;
+  margin-left: 15px;
 }
 
 .ul-color li {
@@ -417,7 +428,9 @@
   right: -15px;
   box-shadow: -10px 20px 15px -10px rgba(17, 233, 91, 0.3);
 }
-
+.product-price-add > span {
+  text-transform: uppercase;
+}
 .product-price b {
   margin-left: 5px;
 }
@@ -457,14 +470,15 @@
 /* .rect.single-resizer {
   border: solid 1px black;
 } */
+
 .product-img-add {
-  position: absolute;
   left: 0;
   margin-left: 85px;
   width: 300px;
   height: 300px;
   transform: rotate(25deg);
 }
+
 .image-upload.main {
   position: absolute;
 }

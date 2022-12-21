@@ -25,7 +25,7 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import { WidthFull, WorkRounded } from "@mui/icons-material";
-
+import Editable from "react-text-content-editable";
 const NewProduct = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -40,7 +40,7 @@ const NewProduct = () => {
     "linear-gradient(135deg, rgba(250, 120, 46, 1) 8%, rgba(200, 41, 48, 1) 83%)"
   );
   const [price, setPrice] = useState(1234);
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("USD");
   const [brandLogo, setBrandLogo] = useState();
   const [productCategory, setProductCategory] = useState("Category");
   const [shortDescription, setShortDescription] = useState(
@@ -48,7 +48,8 @@ const NewProduct = () => {
   );
   const [mainImage, setMainImage] = useState([]);
   const [productName, setProductName] = useState("Name");
-  const [productCollection, setProductCollection] = useState("Collection");
+  const [productCollection, setProductCollection] =
+    useState("Product Collection");
   const [SKU, setSKU] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [name, setName] = useState("");
@@ -59,46 +60,40 @@ const NewProduct = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
 
   const brandLogoHandler = (e) => {
-    const files = Array.from(e.target.files);
+    setLogoLibaray(true);
+    // const files = Array.from(e.target.files);
 
-    setBrandLogo([]);
+    // setBrandLogo([]);
 
-    files.forEach((file) => {
-      const reader = new FileReader();
+    // files.forEach((file) => {
+    //   const reader = new FileReader();
 
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setBrandLogo((old) => [...old, reader.result]);
-        }
-      };
+    //   reader.onload = () => {
+    //     if (reader.readyState === 2) {
+    //       setBrandLogo((old) => [...old, reader.result]);
+    //     }
+    //   };
 
-      reader.readAsDataURL(file);
-    });
+    //   reader.readAsDataURL(file);
+    // });
   };
+  const [mainLibaray, setMainLibaray] = useState(false);
+  const [logoLibaray, setLogoLibaray] = useState(false);
+
   const mainImageHandler = (e) => {
-    const files = Array.from(e.target.files);
-
-    setMainImage([]);
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setMainImage((old) => [...old, reader.result]);
-        }
-      };
-
-      reader.readAsDataURL(file);
-    });
+    setMainLibaray(true);
+    // const files = Array.from(e.target.files);
+    // setMainImage([]);
+    // files.forEach((file) => {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     if (reader.readyState === 2) {
+    //       setMainImage((old) => [...old, reader.result]);
+    //     }
+    //   };
+    //   reader.readAsDataURL(file);
+    // });
   };
-  const styles = reactCSS({
-    default: {
-      Phead: {
-        background: color,
-      },
-    },
-  });
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -400,11 +395,118 @@ const NewProduct = () => {
       setTrueVarLogo(true);
     }
   };
+  $(".resize-input").on("input", function () {
+    this.style.width = this.value.length + 1.2 + "ch";
+  });
+  $(".resize-input-2").on("input", function () {
+    this.style.width = this.value.length + 0.5 + "ch";
+  });
+
+  $("#eb").on("click", function () {
+    $(".productContainerAdmin").addClass("change");
+  });
+  $("#fed").on("click", function () {
+    $(".productContainerAdmin").removeClass("change");
+  });
   return (
     <Fragment>
       <MetaData title="Create Product" />
       <div className="card">
         <h1 id="productListHeading">Add New Product</h1>
+        <div
+          className="imagesLibaray"
+          style={{ display: logoLibaray ? "block" : "none" }}
+        >
+          <div className="imagesLibarayContent">
+            <img
+              src="/imgs/adidas_white.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setBrandLogo("/imgs/adidas_white.png");
+                setLogoLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/nike_white.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setBrandLogo("/imgs/nike_white.png");
+                setLogoLibaray(false);
+              }}
+            />
+          </div>
+        </div>
+        <div
+          className="imagesLibaray"
+          style={{ display: mainLibaray ? "block" : "none" }}
+        >
+          <div className="imagesLibarayContent">
+            <img
+              src="/imgs/1.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/1.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/2.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/2.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/3.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/3.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/4.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/4.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/5.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/5.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/6.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/6.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/7.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/7.png");
+                setMainLibaray(false);
+              }}
+            />
+            <img
+              src="/imgs/8.png"
+              className="img-fluid"
+              onClick={(e) => {
+                setMainImage("/imgs/8.png");
+                setMainLibaray(false);
+              }}
+            />
+          </div>
+        </div>
         <div className="card-body px-0 py-0">
           <form
             className="AddProductForm"
@@ -416,7 +518,10 @@ const NewProduct = () => {
                 <h3 className="text-center">ProductCard Preview</h3>
                 <div className="productContainerAdmin">
                   <div className="productCard">
-                    <div className="productCard-head-1" style={styles.Phead}>
+                    <div
+                      className="productCard-head-1"
+                      style={{ background: color }}
+                    >
                       <Popup
                         trigger={
                           <Tooltip title="Choose Color" placement="right" arrow>
@@ -439,7 +544,11 @@ const NewProduct = () => {
 
                       <div className="image-upload logo">
                         <Tooltip placement="left" arrow title="Edit Logo">
-                          <label for="file-input2" className="m-0 p-0">
+                          <label
+                            for="file-input2"
+                            className="p-0"
+                            style={{ margin: "20px" }}
+                          >
                             <div className="box">
                               <img
                                 src={
@@ -450,16 +559,17 @@ const NewProduct = () => {
                                 draggable="false"
                                 alt="Shoe"
                                 className="card-logo-add"
+                                onClick={brandLogoHandler}
                               />
                             </div>
                           </label>
                         </Tooltip>
 
-                        <input
+                        {/* <input
                           onChange={brandLogoHandler}
                           id="file-input2"
                           type="file"
-                        />
+                        /> */}
                       </div>
                       <div className="image-upload main">
                         <label for="file-input1" className="m-0 p-0">
@@ -473,33 +583,29 @@ const NewProduct = () => {
                               draggable="false"
                               alt="Shoe"
                               className="product-img-add"
+                              onClick={mainImageHandler}
                             />
                           </Tooltip>
                         </label>
 
-                        <input
+                        {/* <input
                           onChange={mainImageHandler}
                           id="file-input1"
                           type="file"
-                        />
+                        /> */}
                       </div>
 
                       <div className="product-detail z-high">
                         <h2 className="text-white">
                           <Tooltip placement="left" arrow title="Edit Category">
-                            <div className="box">
-                              <div
-                                suppressContentEditableWarning={true}
-                                contentEditable="true"
-                                onInput={(e) =>
-                                  setProductCategory(
-                                    e.currentTarget.textContent
-                                  )
-                                }
-                              >
-                                Category
-                              </div>
-                            </div>
+                            <input
+                              className="prodCardInput category"
+                              maxLength="10"
+                              value={productCategory}
+                              onChange={(e) =>
+                                setProductCategory(e.target.value)
+                              }
+                            />
                           </Tooltip>
                         </h2>
 
@@ -509,16 +615,16 @@ const NewProduct = () => {
                           title="Edit Description"
                         >
                           <div className="box">
-                            <div
-                              contentEditable="true"
-                              suppressContentEditableWarning={true}
-                              onInput={(e) =>
-                                setShortDescription(e.currentTarget.textContent)
+                            <textarea
+                              className="prodCardInput shortDesc"
+                              maxLength="100"
+                              cols="35"
+                              rows="3"
+                              value={shortDescription}
+                              onChange={(e) =>
+                                setShortDescription(e.target.value)
                               }
-                            >
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit, sed do eiusmod tempor incididunt ut labore
-                            </div>
+                            />
                           </div>
                         </Tooltip>
                       </div>
@@ -527,26 +633,22 @@ const NewProduct = () => {
                       <div className="product-desc z-high">
                         <span className="product-title">
                           <Tooltip title="Edit Name" placement="left" arrow>
-                            <span
-                              contentEditable="true"
-                              suppressContentEditableWarning={true}
-                              onInput={(e) =>
-                                setProductName(e.currentTarget.textContent)
-                              }
-                            >
-                              Name
-                            </span>
+                            <input
+                              className="prodCardInput name resize-input"
+                              maxLength="5"
+                              value={productName}
+                              onChange={(e) => setProductName(e.target.value)}
+                            />
                           </Tooltip>
                           <Tooltip title="Edit Category" placement="top" arrow>
-                            <b
-                              contentEditable="true"
-                              suppressContentEditableWarning={true}
-                              onInput={(e) =>
-                                setProductCategory(e.currentTarget.textContent)
+                            <input
+                              className="prodCardInput category-bold resize-input"
+                              maxLength="10"
+                              value={productCategory}
+                              onChange={(e) =>
+                                setProductCategory(e.target.value)
                               }
-                            >
-                              Category
-                            </b>
+                            />
                           </Tooltip>
                           <span className="badge">New</span>
                         </span>
@@ -556,17 +658,14 @@ const NewProduct = () => {
                             placement="left"
                             arrow
                           >
-                            <div
-                              contentEditable="true"
-                              suppressContentEditableWarning={true}
-                              onInput={(e) =>
-                                setProductCollection(
-                                  e.currentTarget.textContent
-                                )
+                            <input
+                              className="prodCardInput collection"
+                              maxLength="20"
+                              value={productCollection}
+                              onChange={(e) =>
+                                setProductCollection(e.target.value)
                               }
-                            >
-                              Product Collection
-                            </div>
+                            />
                           </Tooltip>
                         </span>
                         <span className="product-rating">
@@ -586,13 +685,10 @@ const NewProduct = () => {
                           <ul className="ul-size">
                             {sizeList &&
                               sizeList.map((item) => (
-                                <Fragment>
-                                  <li>
-                                    <a>{item}</a>
-                                  </li>
-                                </Fragment>
+                                <li>
+                                  <a>{item}</a>
+                                </li>
                               ))}
-
                             <ClickAwayListener onClickAway={handleTooltipClose}>
                               <Tooltip
                                 componentsProps={{
@@ -613,7 +709,7 @@ const NewProduct = () => {
                                     {
                                       name: "offset",
                                       options: {
-                                        offset: [0, 15],
+                                        offset: [5, 0],
                                       },
                                     },
                                   ],
@@ -652,7 +748,10 @@ const NewProduct = () => {
                                   ""
                                 ) : (
                                   <li>
-                                    <a onClick={handleTooltipOpen}>
+                                    <div
+                                      className="addBtn"
+                                      onClick={handleTooltipOpen}
+                                    >
                                       <Tooltip
                                         placement="top"
                                         arrow
@@ -660,7 +759,7 @@ const NewProduct = () => {
                                       >
                                         <i className="fas fa-plus"></i>
                                       </Tooltip>
-                                    </a>
+                                    </div>
                                   </li>
                                 )}
                               </Tooltip>
@@ -676,64 +775,94 @@ const NewProduct = () => {
                                   <a style={{ background: color }}></a>
                                 </li>
                               ))}
-                            <li>
-                              <Popup
-                                offsetX={0}
-                                offsetY={10}
-                                arrow={false}
+                            <ClickAwayListener
+                              onClickAway={handleTooltipCloseColor}
+                            >
+                              <Tooltip
+                                componentsProps={{
+                                  tooltip: {
+                                    sx: {
+                                      bgcolor: "#e0e0e0",
+                                      color: "black",
+                                      borderRadius: "100px",
+                                      "& .MuiTooltip-tooltip": {
+                                        margin: "10px",
+                                      },
+                                    },
+                                  },
+                                }}
+                                PopperProps={{
+                                  disablePortal: true,
+                                  modifiers: [
+                                    {
+                                      name: "offset",
+                                      options: {
+                                        offset: [-10, 0],
+                                      },
+                                    },
+                                  ],
+                                }}
+                                onClose={handleTooltipCloseColor}
                                 open={openColor}
-                                trigger={
-                                  <a>
-                                    <i className="fas fa-plus"></i>
-                                  </a>
+                                disableFocusListener
+                                disableHoverListener
+                                disableTouchListener
+                                title={
+                                  <ul className="ul-color-add">
+                                    {colors.map((color) => (
+                                      <li>
+                                        <a
+                                          value={color}
+                                          onClick={(e) => addColor(e, color)}
+                                          style={{ background: color }}
+                                        ></a>
+                                      </li>
+                                    ))}
+                                  </ul>
                                 }
-                                position="right center"
-                                closeOnDocumentClick
+                                placement="right"
                               >
-                                <ul
-                                  className="ul-size ul-size-add"
-                                  style={{
-                                    background: "#e0e0e0",
-                                    padding: "10px",
-                                    borderRadius: "100px",
-                                  }}
-                                >
-                                  {colors.map((color) => (
-                                    <li>
-                                      <a
-                                        value={color}
-                                        onClick={(e) => addColor(e, color)}
-                                        style={{ background: color }}
-                                      ></a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </Popup>
-                            </li>
+                                {sizeList && sizeList.length >= 5 ? (
+                                  ""
+                                ) : (
+                                  <li>
+                                    <div
+                                      className="addBtn"
+                                      onClick={handleTooltipOpenColor}
+                                    >
+                                      <Tooltip
+                                        placement="top"
+                                        arrow
+                                        title="Add Color"
+                                      >
+                                        <i className="fas fa-plus"></i>
+                                      </Tooltip>
+                                    </div>
+                                  </li>
+                                )}
+                              </Tooltip>
+                            </ClickAwayListener>
                           </ul>
                         </span>
                         <span className="product-price-add">
                           <Tooltip placement="left" arrow title="Edit Currency">
-                            <span
-                              contentEditable="true"
-                              suppressContentEditableWarning={true}
-                              onInput={(e) =>
-                                setCurrency(e.currentTarget.textContent)
-                              }
-                            >
-                              USD
-                            </span>
+                            <input
+                              className="prodCardInput currency resize-input-2"
+                              maxLength="4"
+                              value={currency}
+                              onChange={(e) => setCurrency(e.target.value)}
+                            />
                           </Tooltip>
                           <Tooltip placement="right" arrow title="Edit Price">
-                            <b
-                              contentEditable="true"
-                              suppressContentEditableWarning={true}
-                              onInput={(e) =>
-                                setPrice(e.currentTarget.textContent)
-                              }
-                            >
-                              1234
-                            </b>
+                            <input
+                              type="number"
+                              className="prodCardInput price resize-input-2"
+                              maxlength="3"
+                              min="1"
+                              max="999"
+                              value={price}
+                              onChange={(e) => setPrice(e.target.value)}
+                            />
                           </Tooltip>
                         </span>
                       </div>
