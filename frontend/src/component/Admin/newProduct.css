@@ -206,6 +206,7 @@ input::-webkit-inner-spin-button {
   width: 80%; /* Could be more or less, depending on screen size */
 }
 .imagesLibarayContent > img {
+  cursor: pointer;
   height: 250px;
   width: 250px;
 }

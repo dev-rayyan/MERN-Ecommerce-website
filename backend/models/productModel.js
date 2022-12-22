@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
+  brandLogo: { type: String },
+  model: { type: String },
+  shortDescription: { type: String },
+  mainImage: { type: String },
+  productCollection: { type: String },
   SKU: {
     type: String,
     required: [true, "Please Enter Product SKU"],
